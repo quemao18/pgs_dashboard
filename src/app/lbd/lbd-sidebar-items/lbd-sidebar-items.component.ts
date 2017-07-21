@@ -1,5 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { NavItem } from '../lbd.module';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'lbd-sidebar-items',
@@ -16,5 +18,18 @@ export class LbdSidebarItemsComponent {
   @Input()
   showSeparator: boolean;
 
-  constructor() { }
+  //@Input()
+  isLoggedIn : boolean;
+
+  @Input()
+  userName: string;
+  constructor(private userService: UserService, private auth:AuthService) { 
+
+    this.auth.getLoggedInName.subscribe(name => this.changeName(name)); 
+  }
+
+      private changeName(name: string): void {
+        this.userName = name;
+    }
+
 }

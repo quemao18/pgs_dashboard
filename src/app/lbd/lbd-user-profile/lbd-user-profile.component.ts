@@ -19,7 +19,17 @@ export class LbdUserProfileComponent {
   username: string;
 
   @Input()
+  email: string;
+
+  @Input()
   about: string;
+
+  @Input()
+  phone: string;
+
+  @Input()
+  address: string;
+
 
   constructor() { }
 }

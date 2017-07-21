@@ -13,11 +13,16 @@ export class FooterLayoutComponent implements OnInit {
 
   public ngOnInit() {
     this.footerItems = [
-      { title: 'Home', routerLink: '' },
-      { title: 'Company', routerLink: '' },
-      { title: 'Portfolio', routerLink: '' },
-      { title: 'Blog', routerLink: '' }
-    ];
-    this.copyright = '&copy; 2016 <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web';
+      /*
+      { title: 'Inicio', routerLink: '/dashboard' },
+      { title: 'Usuarios', routerLink: '/users' },
+      { title: 'Usuarios App', routerLink: '/users-app' },
+      { title: 'Audios', routerLink: '/audios' },
+      { title: 'Videos', routerLink: '/videos' },
+      { title: 'Escuela de Negocios', routerLink: '/schooll' },
+      { title: 'Noticias', routerLink: '/news' },
+      */
+   ];
+    this.copyright = '&copy; <a href="http://www.npeht.com">NPEHT</a>';
   }
 }

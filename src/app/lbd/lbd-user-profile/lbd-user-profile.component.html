@@ -5,7 +5,7 @@
   </div>
   <div class="content">
     <div class="author">
-      <a href="#">
+      <a>
         <img class="avatar border-gray" [src]="avatarImage" alt="..."/>
 
         <h4 class="title">{{ name }}<br />
@@ -13,8 +13,9 @@
         </h4>
       </a>
     </div>
-    <p class="description text-center" [innerHtml]="about">
-    </p>
+    <p class="text-center"><a href="mailto:{{email}}">{{email}}</a></p>
+    <em><p class="description text-center" [innerHtml]="address"></p></em>
+    <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">{{phone}}</a></p>
   </div>
   <hr>
   <div class="text-center">

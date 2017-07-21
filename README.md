@@ -1,8 +1,4 @@
-# Light Bootstrap Dashboard Angular CLI
-
-This is a re-implementation of the [Light-Bootstrap-Dashboard-Angular2](https://github.com/creativetimofficial/light-bootstrap-dashboard-angular) 		 +This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.0. dashboard template from [creative-tim](http://www.creative-tim.com/), see their GitHub for more information. It has been written to be a bit more component-focused and to work better with Angular CLI. 
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.0.
+# NPEHT
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

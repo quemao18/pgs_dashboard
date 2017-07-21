@@ -12,7 +12,8 @@
 
     <lbd-sidebar-items [navItems]="navbarItems" [navbarClass]="'nav-mobile-menu'" [showSeparator]="true"></lbd-sidebar-items>
     <lbd-sidebar-items [navItems]="sidebarItems" [showSeparator]="false"></lbd-sidebar-items>
+    
   </div>
 
-  <div *ngIf="backgroundImg" class="sidebar-background" [ngStyle]="backgroundStyle"></div>
+  <div *ngIf="backgroundImg" class="sidebar-background" [ngStyle]="backgroundStyle()"></div>
 </div>

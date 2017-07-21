@@ -2,6 +2,8 @@ import {Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} fr
 import { NavbarTitleService } from '../services/navbar-title.service';
 import { NavItem, NavItemType } from '../lbd.module';
 import { MobileSidebarToggleService } from '../services/mobile-sidebar-toggle.service';
+import { AuthService } from '../../services/auth.service';
+export type BackgroundColor = 'blue' | 'azure' | 'green' | 'orange' | 'red' | 'purple';
 
 @Component({
   selector: 'lbd-navbar',
@@ -9,34 +11,35 @@ import { MobileSidebarToggleService } from '../services/mobile-sidebar-toggle.se
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LbdNavbarComponent implements OnInit {
+
+
   @Input()
   public navItems: NavItem[];
 
   public title: string;
+  public userName: string;
 
   public mobileSidebarOpen = false;
   public navCloseIcon = false;
 
   constructor(private navbarTitleService: NavbarTitleService, private mobileSidebarToggleService: MobileSidebarToggleService,
-              private cd: ChangeDetectorRef) { }
+              private cd: ChangeDetectorRef, public auth: AuthService) { }
 
   public ngOnInit(): void {
     this.navbarTitleService.titleChanged$.subscribe(title => {
       this.title = title;
+      //this.userName = this.auth.getNameUser();
       this.cd.markForCheck();
     });
 
-    this.mobileSidebarToggleService.mobileSidebarVisibilityChanged$.subscribe(visible => {
-      visible ? this.openMobileNav() : this.closeMobileNav();
-    });
   }
-
+  
   public get leftNavItems(): NavItem[] {
-    return this.navItems.filter(i => i.type === NavItemType.NavbarLeft);
+    return this.navItems.filter(i => i.type === NavItemType.NavbarLeft && i.isLoggedIn === this.auth.authenticated());
   }
 
   public get rightNavItems(): NavItem[] {
-    return this.navItems.filter(i => i.type === NavItemType.NavbarRight);
+    return this.navItems.filter(i => i.type === NavItemType.NavbarRight && i.isLoggedIn === this.auth.authenticated());
   }
 
   public navbarToggle() {
