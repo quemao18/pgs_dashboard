@@ -185,9 +185,9 @@ export class LoginComponent implements OnInit {
     //this.pService.done();
     this.progress = false;
     this.authService.setLoggedIn(false);
-    console.log(error.message);
-    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
-    
+    //console.log(error.message);
+    this.showNotification('top', 'center', '<b>'+vars.apiError+'</b>', 'pe-7s-attention', 4);
+    this.authService.logout();
   }
   
   onCompleteLogin(){

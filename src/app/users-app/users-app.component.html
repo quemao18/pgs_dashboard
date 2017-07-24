@@ -4,7 +4,7 @@
     <div class="col-md-12 card" [@cardtable1]>
 
   <div class="header">
-    <h4 class="title"><a *ngIf="isAdmin() || isAuth()" (click)="newUser()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-add-user"></i></a></h4>
+    <h4 class="title"><a *ngIf="isAdmin()" (click)="newUser()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-add-user"></i></a></h4>
     <p class="category">{{ subtitle }} </p>
     
 
@@ -270,7 +270,7 @@
               <div class="col-md-6">
                 <div [formGroup]="myFormSponsor" class="form-group">
                   <label for="sponsor">Patrocinador</label>
-                 <input  ngui-auto-complete required
+                 <input  ngui-auto-complete
                    [(ngModel)]="formData.sponsor"
                    formControlName="sponsor"
                    [source]="data_sponsor"
@@ -288,7 +288,7 @@
               <div class="col-md-6">
                 <div [formGroup]="myFormPlatinum" class="form-group">
                   <label for="platinum">Platino directo</label>
-                 <input  ngui-auto-complete required
+                 <input  ngui-auto-complete
                    [(ngModel)]="formData.platinum"
                    formControlName="platinum"
                    [source]="data_platinum"

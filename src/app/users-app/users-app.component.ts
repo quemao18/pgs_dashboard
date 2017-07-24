@@ -141,7 +141,7 @@ export class UsersAppComponent implements OnInit {
    }
 
   public ngOnInit() {
-    console.log(this.userService.isAuth())
+  
     this.navbarTitleService.updateTitle('Usuarios APP');
     if(!this.userService.isAdmin() && !this.userService.isAuth() )
         this.router.navigate(['/dashboard']);
@@ -366,8 +366,13 @@ export class UsersAppComponent implements OnInit {
 
   public onSuccessUsers(response){
   this.progress = false;
-  this.data = response.json().filter(i => i.id_rol == '4' && i.ita_platinum == localStorage.getItem('ita')); 
   this.usersAll = response.json();
+
+  if(this.userService.isAdmin())
+    this.data = response.json();//.filter(i => i.id_rol == '4');
+  else
+    this.data = response.json().filter(i => i.id_rol == '4' && i.ita_platinum == localStorage.getItem('ita')); 
+  
   //this.data = this.data.filter(i => i.id_rol < '4') ;
   }
 
