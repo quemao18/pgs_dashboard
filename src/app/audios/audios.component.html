@@ -1,0 +1,52 @@
+<spinner-component [spinnerShow]="progress"></spinner-component>
+<div *ngIf="!showEditForm && !showCardUser && !showNewForm" class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 card" [@cardtable1]>
+
+  <div class="header">
+    <h4 class="title"><a *ngIf="isAdmin() || isAuth()" (click)="newUser()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-add-user"></i></a></h4>
+    <p class="category">{{ subtitle }} </p>
+    
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 pull-right">
+          <div class="inner-addon left-addon">
+        <i class="glyphicon glyphicon-search"></i>
+        <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter 
+        (keyup)="0">
+        </div>
+        </div>
+      </div>
+  </div>
+
+
+  <div class="content table-responsive table-full-width">
+    <table class="table table-hover table-striped table-responsive">
+      <thead>
+        <tr>
+          <th *ngFor="let header of tableData.headerRow">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data | filterBy: ['ita', 'name']: searchFilter.value | paginate: { itemsPerPage: pagination, currentPage: page }">
+         <!--<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
+         <td>  </td>
+         <td> {{row.name}} </td>
+         <td>  </td> 
+         <td> {{ getNameUser(row.ita_creator) }} </td> <!-- Patrocinador -->
+          <td> 
+              <a (click)="showUser(row)" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
+              <a (click)="editUser(row)" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
+              <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i (onCreate)="getStatusUser(row.ita)" [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
+          </td>  
+        </tr>
+
+      </tbody>
+    </table>
+    <div align="center" class="has-text-centered">
+      <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>

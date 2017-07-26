@@ -1,0 +1,22 @@
+<div class="wrapper">
+  
+  <lbd-sidebar 
+    [headerText]="'NPEHT'"
+    [headerLink]="''"
+    [headerLogoImg]="'assets/img/angular2-logo-white.png'"
+    [backgroundColor]="'blue'"
+    [backgroundImg]="'assets/img/sidebar-5.jpg'"
+    [navItems]="navItems">
+  </lbd-sidebar>
+  
+  <div class="main-panel" >
+    <lbd-navbar  
+    [navItems]="navItems">
+  </lbd-navbar>
+  
+    <router-outlet></router-outlet>
+  </div>
+  
+  <lbd-close-layer></lbd-close-layer>
+</div>
+

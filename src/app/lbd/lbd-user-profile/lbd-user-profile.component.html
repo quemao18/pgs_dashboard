@@ -1,0 +1,26 @@
+
+<div class="card card-user">
+  <div class="image">
+    <img [src]="backgroundImage" alt="..."/>
+  </div>
+  <div class="content">
+    <div class="author">
+      <a>
+        <img class="avatar border-gray" [src]="avatarImage" alt="..."/>
+
+        <h4 class="title">{{ name }}<br />
+          <small>{{ username }}</small>
+        </h4>
+      </a>
+    </div>
+    <p class="text-center"><a href="mailto:{{email}}">{{email}}</a></p>
+    <em><p class="description text-center" [innerHtml]="address"></p></em>
+    <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p>
+  </div>
+  <hr>
+  <div class="text-center">
+    <button href="#" class="btn btn-simple"><i class="fa fa-facebook-square"></i></button>
+    <button href="#" class="btn btn-simple"><i class="fa fa-twitter"></i></button>
+    <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>
+  </div>
+</div>

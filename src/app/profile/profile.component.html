@@ -1,0 +1,143 @@
+ <!--- Edit form -->
+<spinner-component [spinnerShow]="progress"></spinner-component>
+<div  class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card" [@carduserprofile]>
+        <div class="header">
+          <h4 class="title">Perfil Usuario</h4>
+        </div>
+        <div class="content">
+          <form #form="ngForm" (ngSubmit)="onSubmitEditUser()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="ita">ITA</label>
+                  <input type="text" class="form-control" disabled id="ita" name="ita" required placeholder="ITA" [(ngModel)]="formData.ita">
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="firstName">Nombre</label>
+                  <input type="text" required class="form-control" id="name" name="name" placeholder="Nombre" [(ngModel)]="formData.name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="lastName">Apellido</label>
+                  <input type="text" required class="form-control" id="last" name="last" placeholder="Apellido" [(ngModel)]="formData.last">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="address">Dirección</label>
+                  <input type="text" required class="form-control" id="address" name="address" placeholder="Dirección" [(ngModel)]="formData.address">
+                </div>
+              </div>
+            </div>
+              <div class="row">
+              <div class="col-md-6">
+                <div [formGroup]="myFormSponsor" class="form-group">
+                  <label for="sponsor">Patrocinador</label>
+                 <input  ngui-auto-complete
+                   [(ngModel)]="formData.sponsor"
+                   formControlName="sponsor"
+                   [source]="data_sponsor"
+                   [list-formatter]="autocompleListFormatter"
+                   value-property-name="ita"
+                   display-property-name = "name"
+                   max-num-list ="10"
+                   min-chars = "3"
+                   placeholder="Buscar patrocinador"
+                   loading-text = "Buscando..."
+                   no-match-found-text = "Nada encontrado"
+                   class="form-control">
+                </div> 
+                </div>
+              <div class="col-md-6">
+                <div [formGroup]="myFormPlatinum" class="form-group">
+                  <label for="platinum">Platino directo</label>
+                 <input  ngui-auto-complete
+                   [(ngModel)]="formData.platinum"
+                   formControlName="platinum"
+                   [source]="data_platinum"
+                   [list-formatter]="autocompleListFormatter"
+                   value-property-name="ita"
+                   display-property-name="name" 
+                   max-num-list ="10"
+                   min-chars = "3"
+                   placeholder="Buscar platino directo"
+                   loading-text = "Buscando..."
+                   no-match-found-text = "Nada encontrado"
+                   class="form-control">
+                </div> 
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="phone">Teléfono</label>
+                  <input type="text" required class="form-control" id="phone" name="phone" placeholder="Teléfono" [(ngModel)]="formData.phone">
+              </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                <label for="rol">Pregunta secreta</label>
+                <select required name="questions" id="questions" [(ngModel)]="formData.id_question" class="form-control" id="inlineFormCustomSelect">
+                  <option *ngFor="let q of questions " [value]="q.id_question" [selected]="formData.id_question == q.id_question" >
+                    {{q.question }}
+                  </option>
+                </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+            <div class="form-group">
+                <label for="answer">Respuesta</label>
+                <input type="test" required class="form-control" id="answer" name="answer" placeholder="Respuesta" [(ngModel)]="formData.answer">
+              </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Deje en blanco para no cambiar" [(ngModel)]="formData.password">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="btn-toolbar">
+            <button [disabled]="!form.valid || !formData.sponsor || !formData.platinum" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button (click)="location.back();" type="button" class="btn btn-info btn-fill pull-right">Cancelar</button>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4" [@cardprofile]>
+      <lbd-user-profile
+        [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
+        [avatarImage]="'assets/img/faces/face-0.jpg'"
+        [name]="formData.name+' '+formData.last"
+        [username]="formData.ita"
+        [email]="formData.email"
+        [phone]="formData.phone"
+        [address]="formData.address"
+        >
+      </lbd-user-profile>
+    </div>
+  </div>
+</div>
