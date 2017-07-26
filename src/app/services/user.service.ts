@@ -42,7 +42,7 @@ export class UserService {
       return this.http.get(vars.apiUrl + '/users/users_questions/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
-  public getUsers(){
+     public getUsers(){
       //console.log(pago);
       return this.http.get(vars.apiUrl + '/users/users/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
@@ -52,12 +52,12 @@ export class UserService {
       return this.http.get(vars.apiUrl + '/users/users_app/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
- public getUsersBackEnd(){
+    public getUsersBackEnd(){
       //console.log(pago);
       return this.http.get(vars.apiUrl + '/users/users_backend/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
- public updateUser(user){
+    public updateUser(user){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
@@ -65,14 +65,14 @@ export class UserService {
       .map(res => res);
   }
 
- public updateUserApp(user, sponsor, platinum){
+    public updateUserApp(user, sponsor, platinum){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/users/update_user_app/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
       .map(res => res);
   }
- public newUser(user){
+    public newUser(user){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
@@ -80,7 +80,7 @@ export class UserService {
       .map(res => res);
   }
 
-   public newUserApp(user, sponsor, platinum){
+     public newUserApp(user, sponsor, platinum){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
@@ -88,7 +88,7 @@ export class UserService {
       .map(res => res);
   }
 
-   public updateStatus(user){
+    public updateStatus(user){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
@@ -96,9 +96,14 @@ export class UserService {
       .map(res => res);
   }
 
-  public getStatus(ita){
+    public getStatus(ita){
       //console.log(pago);
       return this.http.get(vars.apiUrl + '/users/user_status/ita/'+ ita +'/' + vars.nameKeyApi + '/' + vars.keyApi)
+  }
+
+  public getUserIta(ita){
+      //console.log(pago);
+      return this.http.get(vars.apiUrl + '/users/user_ita/ita/'+ ita +'/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
    forgetPass(user){

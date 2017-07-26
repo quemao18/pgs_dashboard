@@ -38,6 +38,7 @@ import { NewsComponent } from './news/news.component';
 import { SchoolComponent } from './school/school.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { ProfileComponent } from './profile/profile.component';
 
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 
@@ -56,6 +57,7 @@ const appRoutes: Routes = [
       { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent,  },
       { path: 'change-pass', component: ChangePassComponent, },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'logout', component: LogoutComponent, },
       { path: 'table', component: TableComponent },
       { path: 'typography', component: TypographyComponent },
@@ -90,7 +92,8 @@ const appRoutes: Routes = [
     AudiosComponent,
     VideosComponent,
     NewsComponent,
-    SchoolComponent
+    SchoolComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

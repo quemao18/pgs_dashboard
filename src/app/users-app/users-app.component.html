@@ -276,7 +276,7 @@
                    [source]="data_sponsor"
                    [list-formatter]="autocompleListFormatter"
                    value-property-name="ita"
-                   display-property-name="name" 
+                   display-property-name = "name"
                    max-num-list ="10"
                    min-chars = "3"
                    placeholder="Buscar patrocinador"
@@ -382,7 +382,7 @@
         [name]="formData.name+' '+formData.last"
         [username]="formData.position + ' - ITA: ' + formData.ita"
         [email]="formData.email"
-        [phone]="'Teléfono: '+ formData.phone"
+        [phone]="formData.phone"
         [address]="formData.address"
         >
       </lbd-user-profile>

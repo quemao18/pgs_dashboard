@@ -8,6 +8,8 @@ import { UserService } from '../services/user.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
 import { AppComponent } from '../app.component';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-login',
@@ -64,16 +66,22 @@ export class LoginComponent implements OnInit {
   public progress: boolean = false;
   public error: string = '';
   public showForgetForm :boolean = false;
+  public showRegisterForm :boolean = false;
   public showChangePassForm :boolean = false;
   @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
+  public data_sponsor: FormControl;
+  public data_platinum: FormControl;
+  public usersAll:Array<any> = [];
+  public row: any;
+  public ita: string;
+  public myFormSponsor: FormGroup;
+  public myFormPlatinum: FormGroup;
 
-  constructor(public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
+  constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     //this.forget = this.router.get('id');
    }
 
   public ngOnInit() {
-
-
           //this.authService.setName('');
           this.authService.logout();
           //this.isLoggedIn();
@@ -82,20 +90,97 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/dashboard']);
             
           this.formData = {
-            username: '',
-            password: '',
           };
 
           this.formDataForget = {
-            ita: '',
-            email: '',
-            id_question: '',
-            answer: ''
           };
 
           this.getQuestions();
-          
-    
+          //this.showCompletForm = true;           
+  }
+
+    public register(){
+      this.showRegisterForm = true;
+      this.myFormSponsor = this.builder.group({
+        sponsor : "",
+      });
+      this.myFormPlatinum = this.builder.group({
+        platinum : "",
+      });
+
+    }
+
+
+    public getUserIta(){
+    this.progress=true;
+    //console.log('Submitting values', this.formData);
+     this.userService.getUserIta(this.formData.ita).subscribe(
+        (response) => this.onSuccessUserIta(response.json()), 
+        (error) => this.onErrorUserIta(error.json()), 
+        () => this.onCompleteUserIta()
+      );
+  }
+
+    onSuccessUserIta(response){
+    //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    //console.log(response);
+    if(response.email ==null || response.id_question ==null || response.email =='' || response.id_question =='')
+      {
+        this.showRegisterForm = true;
+      }else{  
+        this.showRegisterForm = false;
+        this.formData = {};
+        this.formData.username = this.formData.ita;
+        this.showNotification('top', 'center', '<b>Ya está registrado. Por favor inicie sesión.</b>', 'pe-7s-check', 2);
+      }
+  }
+
+    onErrorUserIta(error){
+    this.progress = false;
+    this.showRegisterForm = false;
+    this.formData = {};
+    this.showNotification('top', 'center', '<b>'+error.message+' Por favor comuniquese con su platino directo o patrocinante...</b>', 'pe-7s-attention', 4);
+    //this.router.navigate(['/login']);
+    //console.log(error.message);  
+  }
+  
+  onCompleteUserIta(){
+    this.progress = false;
+    this.myFormSponsor = this.builder.group({
+        sponsor : "",
+      });
+      this.myFormPlatinum = this.builder.group({
+        platinum : "",
+      });
+      if(this.showRegisterForm)
+      this.getUsers();      
+
+    }
+
+    public getUserIta2(){
+      //this.ita = this.formData.ita;
+      this.myFormSponsor = this.builder.group({
+        sponsor : "",
+      });
+      this.myFormPlatinum = this.builder.group({
+        platinum : "",
+      });
+      
+      this.getUsers();      
+    }
+
+    public getNameUser(ita){
+    let name = '';
+    this.usersAll.filter(i => i.ita == ita ).forEach(element => {
+      //console.log(element.name);
+       name = element.name + ' '+ element.last;
+    });
+    return name;
+  }
+
+     autocompleListFormatter = (data: any) : SafeHtml => {
+    let html = `<span>${data.name} ${data.last}</span>`;
+    return this._sanitizer.bypassSecurityTrustHtml(html);
   }
 
     public forgetPass() {
@@ -112,21 +197,21 @@ export class LoginComponent implements OnInit {
   
   onSuccessForget(response){
   this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
-  console.log(response);
+  //console.log(response);
   
   }
   
   onErrorForget(error){
   this.progress = false;
   this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
-  console.log(error);  
+  //console.log(error);  
   }
 
   onCompleteForget(){
   //this.pService.done();
   this.progress = false;
   this.showForgetForm = false;
-  console.log('ok');
+  //console.log('ok');
   //this.app.ngOnInit();
   this.router.navigate(['/login']);
   }
@@ -144,13 +229,24 @@ export class LoginComponent implements OnInit {
     }
     onSuccessLogin(response){
       
-    localStorage.setItem('ita', response.ita);
-    localStorage.setItem('name', response.name);
-    localStorage.setItem('last', response.last);
-    localStorage.setItem('id_rol', response.id_rol);
-    localStorage.setItem('id_position', response.id_position);
-    
-    this.authService.setLoggedIn(true);
+    if(response.email==null || response.id_question ==null || response.email=='' || response.id_question =='')
+    {
+      this.showRegisterForm = true;  
+      //this.formData = response;
+      this.register();
+      //this.getUserIta();
+      this.formData.ita = response.ita;
+      this.getUsers();
+
+    }else{
+      this.showRegisterForm = false;  
+      localStorage.setItem('ita', response.ita);
+      localStorage.setItem('name', response.name);
+      localStorage.setItem('last', response.last);
+      localStorage.setItem('id_rol', response.id_rol);
+      localStorage.setItem('id_position', response.id_position);
+      localStorage.setItem('user', JSON.stringify(response));
+      this.authService.setLoggedIn(true);
 
     if(response.id_rol == '1') 
         this.userService.setIsAdmin(true) 
@@ -171,12 +267,14 @@ export class LoginComponent implements OnInit {
       this.userService.setIsUser(true);
       this.showNotification('top', 'center', '<b>Usted no tiene acceso al dashboard</b>', 'pe-7s-attention', 4);
       this.authService.logout();
-    }else 
+    }else{ 
         this.userService.setIsUser(false) 
-    
+    }
     this.authService.setName(response.name + ' ' + response.last);
-
+    
+  }
     this.progress = false;
+
     //console.log(response);
     
   }
@@ -185,20 +283,88 @@ export class LoginComponent implements OnInit {
     //this.pService.done();
     this.progress = false;
     this.authService.setLoggedIn(false);
-    //console.log(error.message);
-    this.showNotification('top', 'center', '<b>'+vars.apiError+'</b>', 'pe-7s-attention', 4);
-    this.authService.logout();
+    //console.log(error);
+    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    //this.authService.logout();
   }
   
   onCompleteLogin(){
     //this.pService.done();
     this.progress = false;
+    if(this.showRegisterForm){
+      //this.getUsers();
+      this.showRegisterForm = true;
+    }
+    else
     //console.log('ok');
     //this.app.ngOnInit();
     this.router.navigate(['/dashboard']);
   }
+
+  public onSubmitEditUser(){
+    this.progress=true;
+    //console.log('Submitting values', this.formData);
+     this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+        (response) => this.onSuccessUpdate(response.json()), 
+        (error) => this.onErrorUpdate(error.json()), 
+        () => this.onCompleteUpdate()
+      );
+  }
+
+    onSuccessUpdate(response){
+    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    //console.log(response);
+  }
+
+    onErrorUpdate(error){
+    this.progress = false;
+    //this.showRegisterForm = false;
+    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    //console.log(error.message);  
+  }
   
-   
+  onCompleteUpdate(){
+    this.showRegisterForm = false;
+    this.progress = false;
+    this.formData = {};
+    this.router.navigate(['/login']);
+    }
+  
+    public getUsers(){
+    this.progress = true;
+    //console.log(this.rols);
+    this.userService.getUsers().subscribe(
+        (response) => this.onSuccessUsers (response),
+        (error) => console.log(error.json()), 
+        //() => this.onCompleteLogin()
+    );
+  }
+
+
+  public onSuccessUsers(response){
+  //console.log(response.json())
+  this.progress = false;
+  this.usersAll = response.json();
+  this.data_sponsor = response.json();
+  this.data_platinum = response.json().filter(i => i.id_position < '4') ;
+  this.formData = response.json().filter(i => i.ita == this.formData.ita)[0] ;
+  
+  //console.log
+  
+  //console.log(row['sponsor']);
+  /*
+  this.formData.sponsor = {
+        "ita": this.formData.ita_sponsor,
+        "name": this.getNameUser(this.formData.ita_sponsor)
+      };
+  this.formData.platinum = {
+        "ita": this.formData.ita_platinum,
+        "name": this.getNameUser(this.formData.ita_platinum)
+      };
+      */
+     
+  }
+
 
     public getQuestions() {
     //this.progress = true;
@@ -233,21 +399,21 @@ export class LoginComponent implements OnInit {
   
   localStorage.setItem('ita', response.user.ita);
   //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
-  console.log(response);
+  //console.log(response);
   
   }
   
   onErrorForget2(error){
   this.progress = false;
   this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
-  console.log(error);  
+  //console.log(error);  
   }
 
   onCompleteForget2(){
   //this.pService.done();
   this.progress = false;
   this.showForgetForm = false;
-  console.log('ok');
+  //console.log('ok');
   //this.app.ngOnInit();
   this.router.navigate(['/change-pass']);
   }

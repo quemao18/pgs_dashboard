@@ -169,8 +169,8 @@ export class UsersAppComponent implements OnInit {
     this.getRols();    
     this.getPositions();
     this.getUsers();
-    this.getUsersAll();
-    this.getUsersPlatinum();
+    //this.getUsersAll();
+    //this.getUsersPlatinum();
     this.myFormSponsor = this.builder.group({
       sponsor : "",
     });
@@ -216,10 +216,27 @@ export class UsersAppComponent implements OnInit {
     return this._sanitizer.bypassSecurityTrustHtml(html);
   }
 
+
+    myCallback($event){
+      console.log($event.name)
+      this.formData.sponsor = {
+      "ita": $event.ita,
+      "name": ($event.name + ' ' + $event.last)
+    }
+    }
+
   public editUser(row){
     this.showEditForm = true;
     this.showCardUser = false;
     this.formData = row;
+    this.formData.sponsor = {
+      "ita": row.ita_sponsor,
+      "name": this.getNameUser(row.ita_sponsor)
+    };
+    this.formData.platinum = {
+      "ita": row.ita_platinum,
+      "name": this.getNameUser(row.ita_platinum)
+    };
   }
 
   public showUser(row){
@@ -367,11 +384,13 @@ export class UsersAppComponent implements OnInit {
   public onSuccessUsers(response){
   this.progress = false;
   this.usersAll = response.json();
+  this.data_sponsor = response.json();
+  this.data_platinum = response.json().filter(i => i.id_position < '6') ;
 
   if(this.userService.isAdmin())
     this.data = response.json();//.filter(i => i.id_rol == '4');
   else
-    this.data = response.json().filter(i => i.id_rol == '4' && i.ita_platinum == localStorage.getItem('ita')); 
+    this.data = response.json().filter(i => /*i.id_rol == '4' &&*/ i.ita_platinum == localStorage.getItem('ita')); 
   
   //this.data = this.data.filter(i => i.id_rol < '4') ;
   }

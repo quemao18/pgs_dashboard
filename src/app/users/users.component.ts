@@ -157,7 +157,7 @@ export class UsersComponent implements OnInit {
     this.showCardUser = this.showEditForm = this.showNewForm = this.progress = false;
     this.getRols();    
     this.getPositions();
-    this.getUsers();
+    this.getUsersBackend();
   }
 
   public filterValues(val){
@@ -341,6 +341,15 @@ export class UsersComponent implements OnInit {
     );
   }
 
+  public getUsersBackend(){
+    this.progress = true;
+    //console.log(this.rols);
+    this.userService.getUsersBackEnd().subscribe(
+        (response) => this.onSuccessUsers (response),
+        (error) => console.log(error.json()), 
+        //() => this.onCompleteLogin()
+    );
+  }
 
   public onSuccessUsers(response){
   this.progress = false;
