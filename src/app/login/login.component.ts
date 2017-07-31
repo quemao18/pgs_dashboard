@@ -77,6 +77,8 @@ export class LoginComponent implements OnInit {
   public myFormSponsor: FormGroup;
   public myFormPlatinum: FormGroup;
   public usersLocal: Array<any> = [];
+  public placeholderSponsor: string;
+  public placeholderPlatinum: string;
 
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     //this.forget = this.router.get('id');
@@ -95,7 +97,8 @@ export class LoginComponent implements OnInit {
 
           this.formDataForget = {
           };
-          
+          this.placeholderSponsor = "Por favor espere...";
+          this.placeholderPlatinum = "Por favor espere...";
           this.getQuestions();
           //this.showCompletForm = true;           
   }
@@ -109,10 +112,24 @@ export class LoginComponent implements OnInit {
         platinum : "",
       });
 
+    this.myFormPlatinum = this.builder.group({
+      platinum: ['', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.myFormSponsor = this.builder.group({
+      sponsor: ['', [Validators.required, Validators.minLength(3)]],
+    });
+  
+    this.myFormPlatinum.disable();
+    this.myFormSponsor.disable();
+    this.placeholderSponsor = "Patrocinador";
+    this.placeholderPlatinum = "Platino directo";
+
     }
 
     public getUserIta(){
     this.progress=true;
+    
     //console.log('Submitting values', this.formData);
      this.userService.getUserIta(this.formData.ita).subscribe(
         (response) => this.onSuccessUserIta(response.json()), 
@@ -123,10 +140,11 @@ export class LoginComponent implements OnInit {
 
     onSuccessUserIta(response){
     //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
-    //console.log(response);
+    console.log(response);
     if(response.email ==null || response.id_question ==null || response.email =='' || response.id_question =='')
       {
         this.showRegisterForm = true;
+        this.formData = response;
       }else{  
         this.showRegisterForm = false;
         this.formData = {};
@@ -152,6 +170,14 @@ export class LoginComponent implements OnInit {
       this.myFormPlatinum = this.builder.group({
         platinum : "",
       });
+    this.myFormPlatinum = this.builder.group({
+      platinum: ['', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.myFormSponsor = this.builder.group({
+      sponsor: ['', [Validators.required, Validators.minLength(3)]],
+    });
+      
       if(this.showRegisterForm)
       this.getUsers();      
 
@@ -166,6 +192,13 @@ export class LoginComponent implements OnInit {
         platinum : "",
       });
       
+    this.myFormPlatinum = this.builder.group({
+      platinum: ['', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.myFormSponsor = this.builder.group({
+      sponsor: ['', [Validators.required, Validators.minLength(3)]],
+    });
       this.getUsers();      
     }
 
@@ -331,7 +364,11 @@ export class LoginComponent implements OnInit {
     }
   
     public getUsers(){
-    this.progress = true;
+    //this.progress = true;
+    this.myFormSponsor.disable();
+    this.myFormPlatinum.disable();
+    this.placeholderSponsor = "Por favor espere...";
+    this.placeholderPlatinum = "Por favor espere...";
     //console.log(this.rols);
     this.userService.getUsers().subscribe(
         (response) => this.onSuccessUsers (response),
@@ -344,10 +381,14 @@ export class LoginComponent implements OnInit {
   public onSuccessUsers(response){
   //console.log(response.json())
   this.progress = false;
+  this.myFormPlatinum.enable();
+  this.myFormSponsor.enable();
+  this.placeholderSponsor = "Nombre del patriconador o ITA...";
+  this.placeholderPlatinum = "Nombre del platino directo o ITA...";
   this.usersAll = response.json();
   this.data_sponsor = response.json();
   this.data_platinum = response.json().filter(i => i.id_position < '4') ;
-  this.formData = response.json().filter(i => i.ita == this.formData.ita)[0] ;
+  //this.formData = response.json().filter(i => i.ita == this.formData.ita)[0] ;
   localStorage.setItem('users', JSON.stringify(response.json()));
   //console.log
   
