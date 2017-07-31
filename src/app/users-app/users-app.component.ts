@@ -205,7 +205,7 @@ export class UsersAppComponent implements OnInit {
     this.showCardUser = false;
     this.formData ={};
     this.formData.id_rol = 4;
-    this.formData.id_position = 4;
+    this.formData.id_position = 6;
     
 
   }

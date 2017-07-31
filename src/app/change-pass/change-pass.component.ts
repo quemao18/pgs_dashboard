@@ -7,7 +7,6 @@ import { UserService } from '../services/user.service';
 import { AuthGuard } from '../services/auth-guard.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
-import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-user',
@@ -66,7 +65,7 @@ export class ChangePassComponent implements OnInit {
   public showChangePassForm :boolean = false;
   @Output() getLoggedInName: EventEmitter<any> = new EventEmitter();
 
-  constructor(public userService: UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
+  constructor(public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     //this.forget = this.router.get('id');
    }
 

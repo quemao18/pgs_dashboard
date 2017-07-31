@@ -112,12 +112,10 @@ export class ProfileComponent implements OnInit {
     this.navbarTitleService.updateTitle('Perfil Usuario');
     
     this.formData = {
+      ita: "",
       sponsor : {},
       platinum: {}
     };
-    this.getQuestions();
-
-    this.getUsers();
     
     this.myFormSponsor = this.builder.group({
       sponsor : {},
@@ -126,8 +124,19 @@ export class ProfileComponent implements OnInit {
       platinum : {},
     });
 
+    this.myFormPlatinum = this.builder.group({
+      platinum: ['', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.myFormSponsor = this.builder.group({
+      sponsor: ['', [Validators.required, Validators.minLength(3)]],
+    });
+
     this.loadUser(JSON.parse(localStorage.getItem('user')));
 
+    this.getQuestions();
+    this.getUsers();
+   
   }
 
 
@@ -162,8 +171,10 @@ export class ProfileComponent implements OnInit {
 
   public getUsers(){
 
-    this.progress = true;
+    //this.progress = true;
     //console.log(this.rols);
+    this.myFormSponsor.disable();
+    this.myFormPlatinum.disable();
     this.userService.getUsers().subscribe(
         (response) => this.onSuccessUsers (response),
         (error) => console.log(error.json()), 
@@ -175,7 +186,9 @@ export class ProfileComponent implements OnInit {
 
 
   public onSuccessUsers(response){
-      this.progress = false;
+      //this.progress = false;
+      this.myFormPlatinum.enable();
+      this.myFormSponsor.enable();
       this.usersAll = response.json();
       this.data_sponsor = response.json();
       this.data_platinum = response.json().filter(i => i.id_position < '6') ;

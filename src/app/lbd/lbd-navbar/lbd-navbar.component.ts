@@ -32,6 +32,10 @@ export class LbdNavbarComponent implements OnInit {
       this.cd.markForCheck();
     });
 
+    this.mobileSidebarToggleService.mobileSidebarVisibilityChanged$.subscribe(visible => {
+      visible ? this.openMobileNav() : this.closeMobileNav();
+    });
+
   }
   
   public get leftNavItems(): NavItem[] {

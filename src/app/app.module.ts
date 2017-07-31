@@ -21,12 +21,13 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { AuthGuard } from './services/auth-guard.service';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
+import { MediaService } from './services/media.service';
 import { LoginComponent, LogoutComponent } from './login/login.component';
 import { UsersComponent } from './users/users.component';
 import { UsersAppComponent } from './users-app/users-app.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 
-import { searchPipe, rowPipe, columnPipe, FilterPipe, UcFirstPipe } from './pipes/pipes';
+import { searchPipe, rowPipe, columnPipe, FilterPipe, UcFirstPipe, SafePipe } from './pipes/pipes';
 
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -87,6 +88,7 @@ const appRoutes: Routes = [
     rowPipe,
     columnPipe,
     FilterPipe,
+    SafePipe,
     //UcFirstPipe,
     ChangePassComponent,
     AudiosComponent,
@@ -112,9 +114,9 @@ const appRoutes: Routes = [
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyAEPDOJl5CPLz6NZcMqJBqZWfVXec3UsJg' }),
     LbdModule, 
     NgPipesModule,
-    NguiAutoCompleteModule
+    NguiAutoCompleteModule,
   ],
-  providers: [AuthGuard, AuthService, UserService],
+  providers: [AuthGuard, AuthService, UserService, MediaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

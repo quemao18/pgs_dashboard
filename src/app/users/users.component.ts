@@ -265,7 +265,7 @@ export class UsersComponent implements OnInit {
   onCompleteUpdate(){
     console.log('ok');
     this.ngOnInit();
-    }
+  }
 
   public changeStatus(row){
     //this.getStatus(row);

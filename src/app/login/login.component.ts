@@ -76,6 +76,7 @@ export class LoginComponent implements OnInit {
   public ita: string;
   public myFormSponsor: FormGroup;
   public myFormPlatinum: FormGroup;
+  public usersLocal: Array<any> = [];
 
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     //this.forget = this.router.get('id');
@@ -94,7 +95,7 @@ export class LoginComponent implements OnInit {
 
           this.formDataForget = {
           };
-
+          
           this.getQuestions();
           //this.showCompletForm = true;           
   }
@@ -109,7 +110,6 @@ export class LoginComponent implements OnInit {
       });
 
     }
-
 
     public getUserIta(){
     this.progress=true;
@@ -236,7 +236,7 @@ export class LoginComponent implements OnInit {
       this.register();
       //this.getUserIta();
       this.formData.ita = response.ita;
-      this.getUsers();
+      //this.getUsers();
 
     }else{
       this.showRegisterForm = false;  
@@ -348,7 +348,7 @@ export class LoginComponent implements OnInit {
   this.data_sponsor = response.json();
   this.data_platinum = response.json().filter(i => i.id_position < '4') ;
   this.formData = response.json().filter(i => i.ita == this.formData.ita)[0] ;
-  
+  localStorage.setItem('users', JSON.stringify(response.json()));
   //console.log
   
   //console.log(row['sponsor']);
