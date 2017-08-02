@@ -42,6 +42,14 @@ export class MediaService {
       .map(res => res);
   }
   
+  public deleteMedia(media){
+      //console.log(pago);
+      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(vars.apiUrl+ "/medias/delete_media/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      .map(res => res);
+  }
+
   public newSubCategory(subcategory){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });

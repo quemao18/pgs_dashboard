@@ -333,6 +333,34 @@ export class UsersAppComponent implements OnInit {
     this.ngOnInit();
     //this.router.navigate(['/users']);
   }
+
+
+  public deleteUser(row){
+
+    this.progress=true;
+    this.userService.deleteUser(row).subscribe(
+        (response) => this.onSuccessDeleteUser(response.json()), 
+        (error) => this.onErrorDeleteUser(error.json()), 
+        () => this.onCompleteDeleteUser()
+      );
+ 
+  }
+
+  onSuccessDeleteUser(response){
+    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    //console.log(response);
+  }
+
+  onErrorDeleteUser(error){
+    this.progress = false;
+    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    //console.log(error.message);   
+  }
+  
+  onCompleteDeleteUser(){
+    this.ngOnInit();
+    //this.router.navigate(['/users']);
+  }
   
   public addUser(){
     this.notify = {show: false, message: ''};

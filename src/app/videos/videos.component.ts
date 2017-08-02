@@ -279,6 +279,8 @@ export class VideosComponent implements OnInit {
     this.getUsers();
   }
 
+
+
   public showMedia(row){
     this.formData = row;
     this.titleModal = row.name;
@@ -381,6 +383,34 @@ export class VideosComponent implements OnInit {
   }
   
   onCompleteStatus(){
+    this.ngOnInit();
+    //this.router.navigate(['/users']);
+  }
+
+
+    public deleteMedia(row){
+
+    this.progress=true;
+    this.mediaService.deleteMedia(row).subscribe(
+        (response) => this.onSuccessDeleteMedia(response.json()), 
+        (error) => this.onErrorDeleteMedia(error.json()), 
+        () => this.onCompleteDeleteMedia()
+      );
+ 
+  }
+
+  onSuccessDeleteMedia(response){
+    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    //console.log(response);
+  }
+
+  onErrorDeleteMedia(error){
+    this.progress = false;
+    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    //console.log(error.message);   
+  }
+  
+  onCompleteDeleteMedia(){
     this.ngOnInit();
     //this.router.navigate(['/users']);
   }

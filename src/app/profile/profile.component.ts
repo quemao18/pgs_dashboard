@@ -160,6 +160,7 @@ export class ProfileComponent implements OnInit {
       "ita": this.formData.ita_platinum,
       "name": this.getNameUser(this.formData.ita_platinum)
     }
+
     
     this.formData.password = '';
 
@@ -202,6 +203,16 @@ export class ProfileComponent implements OnInit {
   public getNameUser(ita){
     let name = '';
     this.usersAll.filter(i => i.ita == ita ).forEach(element => {
+      //console.log(element.name);
+       name = element.name + ' '+ element.last;
+    });
+    return name;
+  }
+
+
+  public getNameUserSponsor(ita){
+    let name = '';
+    this.usersAll.filter(i => i.ita_sponsor == ita ).forEach(element => {
       //console.log(element.name);
        name = element.name + ' '+ element.last;
     });

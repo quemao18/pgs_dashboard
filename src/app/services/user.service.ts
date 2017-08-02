@@ -80,6 +80,14 @@ export class UserService {
       .map(res => res);
   }
 
+    public deleteUser(user){
+      //console.log(pago);
+      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(vars.apiUrl+ "/users/delete_user/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      .map(res => res);
+  }
+
      public newUserApp(user, sponsor, platinum){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
