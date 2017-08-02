@@ -41,6 +41,8 @@ import { NgPipesModule } from 'ngx-pipes';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { ProfileComponent } from './profile/profile.component';
 
+import { CustomFormsModule } from 'ng2-validation'
+
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 
 const appRoutes: Routes = [
@@ -115,6 +117,7 @@ const appRoutes: Routes = [
     LbdModule, 
     NgPipesModule,
     NguiAutoCompleteModule,
+    CustomFormsModule
   ],
   providers: [AuthGuard, AuthService, UserService, MediaService],
   bootstrap: [AppComponent]

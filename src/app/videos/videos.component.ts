@@ -102,6 +102,7 @@ export class VideosComponent implements OnInit {
   public tableData: any;
   public data:Array<any> = [];
   public formData: any;
+  public formDataEdit: any;
   public formCategory: any;
   public formSubCategory: any;
   public showEditForm : boolean = false;
@@ -150,6 +151,7 @@ export class VideosComponent implements OnInit {
 
     this.data = [];
     this.formData = { };
+    this.formDataEdit = { };
     this.formCategory = { };
     this.formSubCategory = { };
     this.myFormCategory = this.builder.group({
@@ -268,6 +270,13 @@ export class VideosComponent implements OnInit {
   public editMedia(row){
     this.showEditForm = true;
     this.formData = row;
+    this.getSubCategories(row.id_category);
+    this.formData.users = {
+      "ita": row.ita_user_create,
+      "name": row.name_user_create + ' ' + row.last_user_create
+    };
+    //console.log(row);
+    this.getUsers();
   }
 
   public showMedia(row){
@@ -288,9 +297,9 @@ export class VideosComponent implements OnInit {
 
   public onSubmitNewMedia(){
     this.progress=true;
-    if(!this.validateYouTubeUrl(this.formData.url))
-         this.showNotification('top', 'center', '<b> Verifica el URL </b>', 'pe-7s-attention', 4);
-    else{
+    //if(!this.validateYouTubeUrl(this.formData.url) || !this.isUrlValid(this.formData.url))
+    //     this.showNotification('top', 'center', '<b> Verifica el URL </b>', 'pe-7s-attention', 4);
+    //else{
       console.log('Submitting values', this.formData);
     //if(this.formData.users.ita==null)
      this.mediaService.newMedia(this.formData).subscribe(
@@ -298,7 +307,7 @@ export class VideosComponent implements OnInit {
         (error) => this.onErrorNewMedia(error.json()), 
         () => this.onCompleteNewMedia()
       );
-    }
+    //}
   }
 
   onSuccessNewMedia(response){
@@ -486,6 +495,14 @@ export class VideosComponent implements OnInit {
                 return false;
             }
         }
+}
+
+isUrlValid(userInput) {
+    var res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    if(res == null)
+        return false;
+    else
+        return true;
 }
 
 }

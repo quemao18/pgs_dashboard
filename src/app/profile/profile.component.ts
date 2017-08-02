@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, trigger, state, style, transition, animate, } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
@@ -104,7 +105,7 @@ export class ProfileComponent implements OnInit {
   public myFormSponsor: FormGroup;
   public myFormPlatinum: FormGroup;
 
-  constructor(public location: Location, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) { }
+  constructor(public authService: AuthService, public location: Location, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) { }
 
 
   ngOnInit() {
@@ -160,6 +161,7 @@ export class ProfileComponent implements OnInit {
       "name": this.getNameUser(this.formData.ita_platinum)
     }
     
+    this.formData.password = '';
 
   }
 
@@ -218,7 +220,8 @@ export class ProfileComponent implements OnInit {
   }
 
     onSuccessUpdate(response){
-    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+      this.showNotification('top', 'center', '<b>Vuelva a iniciar seisión para cargar sus datos...</b>', 'pe-7s-check', 2);
     //console.log(response);
   }
 
@@ -230,9 +233,11 @@ export class ProfileComponent implements OnInit {
   }
   
   onCompleteUpdate(){
+    //localStorage.setItem('user', JSON.stringify(this.formData));
     this.progress = false;
     this.formData = {};
-    this.router.navigate(['/dashboard']);
+    this.authService.logout();
+    //this.router.navigate(['/dashboard']);
     }
 
     public showNotification(from: string, align: string, message: string, icon: string, type: number) {
