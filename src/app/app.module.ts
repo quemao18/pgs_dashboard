@@ -22,6 +22,7 @@ import { AuthGuard } from './services/auth-guard.service';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { MediaService } from './services/media.service';
+import { NewService } from './services/new.service';
 import { LoginComponent, LogoutComponent } from './login/login.component';
 import { UsersComponent } from './users/users.component';
 import { UsersAppComponent } from './users-app/users-app.component';
@@ -42,6 +43,10 @@ import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { ProfileComponent } from './profile/profile.component';
 
 import { CustomFormsModule } from 'ng2-validation'
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
+import { DatePipe } from '@angular/common';
+import { ImageUploadModule } from "angular2-image-upload";
+
 
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 
@@ -97,7 +102,8 @@ const appRoutes: Routes = [
     VideosComponent,
     NewsComponent,
     SchoolComponent,
-    ProfileComponent
+    ProfileComponent, 
+
   ],
   imports: [
     BrowserModule,
@@ -117,9 +123,11 @@ const appRoutes: Routes = [
     LbdModule, 
     NgPipesModule,
     NguiAutoCompleteModule,
-    CustomFormsModule
+    CustomFormsModule,
+    NgxMyDatePickerModule,
+    ImageUploadModule.forRoot()
   ],
-  providers: [AuthGuard, AuthService, UserService, MediaService],
+  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

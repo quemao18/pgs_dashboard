@@ -135,6 +135,7 @@ export class VideosComponent implements OnInit {
   public disabledSubCategory: boolean = false;
   private id: string ;
   public baseUrl:string = 'https://www.youtube.com/embed/';
+  public varUrl:string = '';
   
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
   

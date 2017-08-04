@@ -1,3 +1,240 @@
-<p>
-  news works!
-</p>
+<spinner-component [spinnerShow]="progress"></spinner-component>
+<div *ngIf="!showEditForm && !showCardUser && !showNewForm" class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 card" [@cardtable1]>
+
+  <div class="header">
+    <h4 class="title"><a (click)="newNew()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-news-paper"></i></a></h4>
+    <p class="category">{{ subtitle }} </p>
+    
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 pull-right">
+          <div class="inner-addon left-addon">
+        <i class="glyphicon glyphicon-search"></i>
+        <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter 
+        (keyup)="0">
+        </div>
+        </div>
+      </div>
+  </div>
+
+
+  <div class="content table-responsive table-full-width">
+    <table class="table table-hover table-striped table-responsive">
+      <thead>
+        <tr>
+          <th *ngFor="let header of tableData.headerRow">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data | filterBy: ['name']: searchFilter.value | paginate: { itemsPerPage: pagination, currentPage: page }">
+         <!--<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
+         <td>  {{row.name}} </td> 
+         <td>  {{row.name_event}} </td> 
+         <td>  {{row.date_from | date: 'dd/MM/yy'}} </td> 
+         <td>  {{row.date_finish | date: 'dd/MM/yy'}} </td> 
+ 
+         <td> 
+            <!--  <a (click)="showMedia(row)" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> -->
+              <a (click)="edit(row)" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
+              <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
+              <a (click)="delete(row)" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
+            </td>  
+        </tr>
+
+      </tbody>
+    </table>
+    <div align="center" class="has-text-centered">
+      <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- New  -->
+
+<div *ngIf="showNewForm" class="container-fluid">
+
+
+      <div class="card" [@carduserprofile]>
+        <div class="header">
+          <h4 class="title">Nuevo Video</h4>
+        </div>
+        <div class="content">
+          <form #form="ngForm" (ngSubmit)="onSubmitNew()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="name">Nombre</label><a class="icon" [routerLink]=''></a>
+                  <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre" [(ngModel)]="formData.name">
+                </div>
+              </div>
+
+
+            <div class="col-md-6">
+               <div class="form-group">
+                <label for="description">Evento <a title="Nuevo Evento" (click)="modalNewEvent.open()" class="icon" [routerLink]=''> <i class="pe-7s-plus"></i></a></label>
+                  <select #event class="form-control" required name="event" [(ngModel)]="formData.id_event" > 
+                    <option [selected]="formData.id_event == 0" value="0">--Seleccciona--</option>
+                    <option  [selected]="formData.id_event == event.id_event" *ngFor="let event of dataEvents" [value]="event.id_event">{{event.name}}</option>
+                  </select>
+               </div>
+              </div>
+            
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="description">Desde</label>
+                      <div class="input-group">
+                          <input required class="form-control" style="float:none" placeholder="Fecha de comienzo" ngx-mydatepicker name="dateFrom"
+                                [(ngModel)]="formData.date_from" [options]="myOptions" #dateFrom="ngx-mydatepicker" (dateChanged)="onDateChanged($event)"/>
+
+                          <span class="input-group-btn">
+                              <button type="button" class="btn btn-default" (click)="dateFrom.clearDate()">
+                                  <i class="glyphicon glyphicon-remove"></i>
+                              </button>
+                              <button type="button" class="btn btn-default" (click)="dateFrom.toggleCalendar()">
+                                  <i class="glyphicon glyphicon-calendar"></i>
+                              </button>
+                          </span>
+                      </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="description">Hasta</label>
+                      <div class="input-group">
+                          <input required class="form-control" style="float:none" placeholder="Fecha de fin" ngx-mydatepicker name="dateFinish"
+                                [(ngModel)]="formData.date_finish" [options]="myOptions" #dateFinish="ngx-mydatepicker" (dateChanged)="onDateChanged($event)"/>
+
+                          <span class="input-group-btn">
+                              <button type="button" class="btn btn-default" (click)="dateFinish.clearDate()">
+                                  <i class="glyphicon glyphicon-remove"></i>
+                              </button>
+                              <button type="button" class="btn btn-default" (click)="dateFinish.toggleCalendar()">
+                                  <i class="glyphicon glyphicon-calendar"></i>
+                              </button>
+                          </span>
+                      </div>
+                 </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Banner</label>
+            <image-upload
+            (change)="uploadImage($event)"
+            (onRemove)="imageRemoved($event)"
+            [max]="1" 
+            [extensions]="['jpeg','png', 'jpg']"
+            buttonCaption="Selecciona la foto"
+            dropBoxMessage="O arrastra la foto"
+            >
+            
+            </image-upload>
+                </div>
+            </div>
+            <hr>
+
+            <div class="btn-toolbar">
+            <button [disabled]="event.value==0 || !form.valid || !imageIsUpload" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button (click)="showNewForm=!showNewForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<!-- Edit  -->
+
+<div *ngIf="showEditForm" class="container-fluid">
+
+
+      <div class="card" [@carduserprofile]>
+        <div class="header">
+          <h4 class="title">Editar noticia</h4>
+        </div>
+        <div class="content">
+          <form #formEdit="ngForm" (ngSubmit)="onSubmitEdit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="name">Nombre</label>  <a class="icon" [routerLink]=''></a>
+                  <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre" [(ngModel)]="formData.name">
+                </div>
+              </div>
+
+
+            <div class="col-md-6">
+               <div class="form-group">
+                <label for="description">Evento <a title="Nuevo Evento" (click)="modalNewEvent.open()" class="icon" [routerLink]=''> <i class="pe-7s-plus"></i></a></label>
+                  <select #event class="form-control" required name="event" [(ngModel)]="formData.id_event" > 
+                    <option [selected]="formData.id_event == 0" value="0">--Seleccciona--</option>
+                    <option  [selected]="formData.id_event == event.id_event" *ngFor="let event of dataEvents" [value]="event.id_event">{{event.name}}</option>
+                  </select>
+               </div>
+              </div>
+            
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="description">Desde</label>
+                    <div class='input-group date' id='date_from'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="description">Hasta</label>
+                    <div class='input-group date' id='date_finish'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                 </div>
+              </div>
+            </div>
+            <hr>
+            <div class="btn-toolbar">
+            <button [disabled]="event.value==0  " type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button (click)="showEditForm=!showEditForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+<modal [animation]="true" [keyboard]="true" [backdrop]="true" (onClose)="saveEvent()" (onDismiss)="dismissed()"
+        #modalNewEvent>
+        <form #modalFormEvent="ngForm">
+            <modal-header [show-close]="true">
+                <h4 class="modal-title">Nuevo Evento</h4>
+            </modal-header>
+            <modal-body>
+                <div class="form-group">
+                    <label for="name">Nombre</label>
+                    <input type="text" class="form-control" required [(ngModel)]="formEvent.name" name="event" id="event">
+                </div>
+            </modal-body>
+            <modal-footer>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modalNewEvent.dismiss()">Cancelar</button>
+                <button type="button" class="btn btn-primary" [disabled]="!modalFormEvent.valid" (click)="modalNewEvent.close()">Guardar</button>
+            </modal-footer>
+        </form>
+</modal>
