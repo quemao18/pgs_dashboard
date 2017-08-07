@@ -133,9 +133,11 @@ export class NewsComponent implements OnInit {
   public myFormCategory: FormGroup;
   public myFormSubCategory: FormGroup;
   public myFormUsers: FormGroup;
-  public url_upload : string = "http://localhost:8080/npeht_api/api/news/upload/X-API-KEY/LCiAE8C30IQIuG8s27gtU0b6eZ7hlXzSKBcqFaes" ;
+  public url_upload : string = vars.apiUrl+ "/news/upload/"+vars.nameKeyApi+"/"+vars.keyApi; //"http://localhost:8080/npeht_api/api/news/upload/X-API-KEY/LCiAE8C30IQIuG8s27gtU0b6eZ7hlXzSKBcqFaes" ;
   public imageIsUpload: boolean = false;
   public banner_url: string;
+  public newPic : boolean = false;
+
   constructor(public datePipe:DatePipe, private builder: FormBuilder, private _sanitizer: DomSanitizer, public newService: NewService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
   
    }
@@ -151,12 +153,14 @@ export class NewsComponent implements OnInit {
     this.formData = { };
     this.formEvent = { };
 
-    this.showEditForm = this.showNewForm = this.progress = false;
+    this.showEditForm = this.showNewForm = this.progress = this.imageIsUpload = this.newPic = false;
     this.getNews();
     this.getEvents();
     this.formData.id_event = 0;
     this.formData.banner_url = '';
-    this.url_upload = vars.apiUrl+ "/news/upload/"+vars.nameKeyApi+"/"+vars.keyApi;
+    this.formData.date_from = {jsdate: new Date()};   // initialize today with jsdate property
+    this.formData.date_finish = {jsdate: new Date()};   // initialize today with jsdate property
+
 
   }
 
@@ -167,6 +171,7 @@ export class NewsComponent implements OnInit {
 
     // Initialized to specific date (09.10.2018)
   private model: Object = { date: { year: 2018, month: 10, day: 9 } };
+
 
   onDateChanged(event: IMyDateModel): void {
         // date selected
@@ -215,14 +220,23 @@ export class NewsComponent implements OnInit {
   public newNew(){
     this.showNewForm = true;
     this.showEditForm = false;
-    //this.formData ={};
     this.formData.id_event = 0;
+    this.formData.date_from = {jsdate: new Date()};   // initialize today with jsdate property
+    this.formData.date_finish = {jsdate: new Date()};   // initialize today with jsdate property
+    //this.formData ={};
     }
 
 
   public edit(row){
     this.showEditForm = true;
     this.formData = row;
+    this.imageIsUpload = true;
+    //console.log(this.datePipe.transform(row.date_from, 'dd/MM/yyyy'));
+    this.formData.date_from =  {jsdate: new Date(row.date_from)};
+    this.formData.date_finish = {jsdate: new Date(row.date_finish)};
+    this.formData.banner_url = row.banner_url;
+    //this.formData.date_from = {date: {year: date_from.getFullYear(), month: date_from.getMonth(), day: date_from.getDay()}};   // this example is initialized to specific date
+    //this.formData.date_finish = {date: {year: date_finish.getFullYear(), month: date_finish.getMonth(), day: date_finish.getDay()}};   // this example is initialized to specific date
   }
 
 
@@ -265,6 +279,13 @@ export class NewsComponent implements OnInit {
 
   public onSubmitEdit(){
     this.progress=true;
+    //if(this.formData.date_from.jsdate!='')
+    this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
+    //if(this.formData.date_finish.jsdate!='')
+    this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
+    if(this.newPic)
+    this.formData.banner_url = this.banner_url;
+    
     console.log('Submitting values', this.formData);
      this.newService.updateNew(this.formData).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
@@ -274,6 +295,7 @@ export class NewsComponent implements OnInit {
   }
 
   onSuccessUpdate(response){
+    
     this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
     console.log(response);
   }
@@ -393,6 +415,8 @@ export class NewsComponent implements OnInit {
   }
 
   public uploadImage($event) {
+    this.newPic = true;
+    this.imageIsUpload = false;
     console.log($event);
     this.newService.fileChange($event).subscribe(
         (response) => this.onCompleteUpload(response.json()), 
@@ -410,6 +434,12 @@ export class NewsComponent implements OnInit {
 
   public imageRemoved($event){
     this.imageIsUpload = false;
+  }
+
+  public cancel(){
+    console.log(this.formData);
+    this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
+    this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
   }
 
 }
