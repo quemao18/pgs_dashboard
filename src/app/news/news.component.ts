@@ -104,6 +104,7 @@ export class NewsComponent implements OnInit {
   public data:Array<any> = [];
   public formData: any;
   public formDataEdit: any;
+  public formDataView: any;
   public formEvent: any;
   public formSubCategory: any;
   public showEditForm : boolean = false;
@@ -135,7 +136,7 @@ export class NewsComponent implements OnInit {
   public myFormUsers: FormGroup;
   public url_upload : string = vars.apiUrl+ "/news/upload/"+vars.nameKeyApi+"/"+vars.keyApi; //"http://localhost:8080/npeht_api/api/news/upload/X-API-KEY/LCiAE8C30IQIuG8s27gtU0b6eZ7hlXzSKBcqFaes" ;
   public imageIsUpload: boolean = false;
-  public banner_url: string;
+  public banner_url: string = '';
   public newPic : boolean = false;
 
   constructor(public datePipe:DatePipe, private builder: FormBuilder, private _sanitizer: DomSanitizer, public newService: NewService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
@@ -151,13 +152,16 @@ export class NewsComponent implements OnInit {
 
     this.data = [];
     this.formData = { };
+    this.formDataView = { };
     this.formEvent = { };
+    this.banner_url = '';
 
     this.showEditForm = this.showNewForm = this.progress = this.imageIsUpload = this.newPic = false;
     this.getNews();
     this.getEvents();
     this.formData.id_event = 0;
     this.formData.banner_url = '';
+    
     this.formData.date_from = {jsdate: new Date()};   // initialize today with jsdate property
     this.formData.date_finish = {jsdate: new Date()};   // initialize today with jsdate property
 
@@ -178,6 +182,11 @@ export class NewsComponent implements OnInit {
         console.log(new Date(event.jsdate).toISOString());
     
     }
+
+  public dismissed(){
+    this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
+    this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
+  }
 
     public getEvents(){
     //console.log(this.rols);
@@ -283,7 +292,7 @@ export class NewsComponent implements OnInit {
     this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
     //if(this.formData.date_finish.jsdate!='')
     this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
-    if(this.newPic)
+    if(this.newPic || this.banner_url!='')
     this.formData.banner_url = this.banner_url;
     
     console.log('Submitting values', this.formData);
@@ -441,5 +450,13 @@ export class NewsComponent implements OnInit {
     this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
     this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
   }
+
+    public showNew(row){
+    this.formDataView = row;
+    this.imageIsUpload = true;
+    //console.log(this.datePipe.transform(row.date_from, 'dd/MM/yyyy'));
+    this.modal.open();
+  }
+
 
 }

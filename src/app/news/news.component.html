@@ -36,7 +36,7 @@
          <td>  {{row.date_finish | date: 'dd/MM/yy'}} </td> 
  
          <td> 
-            <!--  <a (click)="showMedia(row)" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> -->
+              <a (click)="showNew(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
               <a (click)="edit(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
               <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
               <a (click)="delete(row)" title="Eliminar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
@@ -276,4 +276,18 @@
                 <button type="button" class="btn btn-primary" [disabled]="!modalFormEvent.valid" (click)="modalNewEvent.close()">Guardar</button>
             </modal-footer>
         </form>
+</modal>
+
+
+<!-- modal view -->
+<modal [animation]="true" #modal >
+   <modal-header [show-close]="true">
+        <h4 class="modal-title">{{formDataView.name}}</h4>
+        <i  class="category">Válido desde {{ formDataView.date_from | date:'dd/MM/yyyy' }} hasta {{ formDataView.date_finish | date:'dd/MM/yyyy' }}</i>
+    </modal-header>
+    <modal-body>
+    <div >
+    <img [src]="formDataView.banner_url" width="560" height="315"   >
+    </div>
+    </modal-body>
 </modal>
