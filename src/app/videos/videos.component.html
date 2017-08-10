@@ -168,7 +168,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="description">Descripción</label>
+                  <label for="description">Descripción (Opcional)</label>
                   <input type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="formData.description">
                 </div>
               </div>
@@ -258,7 +258,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="description">Descripción</label>
+                  <label for="description">Descripción (Opcional)</label>
                   <input type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="formData.description">
                 </div>
               </div>
@@ -278,10 +278,13 @@
 <modal #modal (onDismiss)="dismissed()">
    <modal-header [show-close]="true">
         <h4 class="modal-title">{{titleModal}}</h4>
+        <em *ngIf="formData.description!=''">{{formData.description}}</em>
     </modal-header>
     <modal-body>
-    <div >
-    <iframe width="560" height="315" [src]="url | safe" frameborder="0" allowfullscreen></iframe>
+    <div  >
+   
+    <iframe  id="myFrame" width="560" height="315" [src]="url | safe" frameborder="0" allowfullscreen></iframe>
+
     </div>
     </modal-body>
 </modal>

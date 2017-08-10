@@ -206,6 +206,7 @@ export class UsersAppComponent implements OnInit {
     this.formData ={};
     this.formData.id_rol = 4;
     this.formData.id_position = 6;
+    this.formData.id_question = 1;
     
 
   }

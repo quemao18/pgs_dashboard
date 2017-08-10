@@ -32,8 +32,8 @@
          <!--<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
          <td>  {{row.name}} </td> 
          <td>  {{row.name_event}} </td> 
-         <td>  {{row.date_from | date: 'dd/MM/yy'}} </td> 
-         <td>  {{row.date_finish | date: 'dd/MM/yy'}} </td> 
+         <td>  {{row.date_from | date: 'dd/MM/yyyy'}} </td> 
+         <td>  {{row.date_finish | date: 'dd/MM/yyyy'}} </td> 
  
          <td> 
               <a (click)="showNew(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 

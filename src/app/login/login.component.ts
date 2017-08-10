@@ -155,10 +155,10 @@ export class LoginComponent implements OnInit {
 
     onErrorUserIta(error){
     this.progress = false;
-    this.showRegisterForm = false;
+    /*this.showRegisterForm = false;
     this.formData = {};
     this.showNotification('top', 'center', '<b>'+error.message+' Por favor comuniquese con su platino directo o patrocinante...</b>', 'pe-7s-attention', 4);
-    //this.router.navigate(['/login']);
+    //this.router.navigate(['/login']);*/
     //console.log(error.message);  
   }
   
@@ -178,7 +178,7 @@ export class LoginComponent implements OnInit {
       sponsor: ['', [Validators.required, Validators.minLength(3)]],
     });
       
-      if(this.showRegisterForm)
+      //if(this.showRegisterForm)
       this.getUsers();      
 
     }
@@ -336,7 +336,7 @@ export class LoginComponent implements OnInit {
 
   public onSubmitEditUser(){
     this.progress=true;
-    //console.log('Submitting values', this.formData);
+    console.log('Submitting values', this.formData);
      this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
         (error) => this.onErrorUpdate(error.json()), 

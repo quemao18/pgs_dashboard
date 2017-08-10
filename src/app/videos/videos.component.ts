@@ -179,6 +179,7 @@ export class VideosComponent implements OnInit {
     //this.getSubCategories();
     this.formData.id_category = 0;
     this.formData.id_sub_category = 0;
+    this.formData.description = '';
     
   }
 
@@ -263,6 +264,7 @@ export class VideosComponent implements OnInit {
     this.formData ={};
     this.formData.id_category = 0;
     this.formData.id_sub_category = 0;
+    this.formData.description = '';
     this.disabledSubCategory = true;
     this.getUsers();
   }
@@ -288,6 +290,7 @@ export class VideosComponent implements OnInit {
     this.id = this.YouTubeGetID(row.url);
     //this.url = this._sanitizer.bypassSecurityTrustResourceUrl(this.baseUrl + this.id);    
     this.url = this.baseUrl+this.id;
+
     this.modal.open();
   }
 
