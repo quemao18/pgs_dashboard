@@ -536,7 +536,7 @@ export class LogoutComponent implements OnInit {
     //this.router.navigate(['/']);
     
     this.formData = {
-      username: '',
+      ita: '',
       password: '',
     };
 

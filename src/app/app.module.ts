@@ -47,6 +47,7 @@ import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { DatePipe } from '@angular/common';
 import { ImageUploadModule } from "angular2-image-upload";
 
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 
@@ -127,7 +128,9 @@ const appRoutes: Routes = [
     NgxMyDatePickerModule,
     ImageUploadModule.forRoot()
   ],
-  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe],
+  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe,
+  {provide: LocationStrategy, useClass: HashLocationStrategy}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
