@@ -16,10 +16,21 @@ export class MediaService {
       return this.http.get(vars.apiUrl + '/medias/medias/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
+ public getAudios(){
+      //console.log(pago);
+      return this.http.get(vars.apiUrl + '/medias/audios/' + vars.nameKeyApi + '/' + vars.keyApi)
+  }
+
   public getCategories(){
       //console.log(pago);
       return this.http.get(vars.apiUrl + '/medias/categories/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
+
+  public getModules(){
+      //console.log(pago);
+      return this.http.get(vars.apiUrl + '/medias/modules/' + vars.nameKeyApi + '/' + vars.keyApi)
+  }
+
 
   public getSubCategories(id_category){
       //console.log(pago);
@@ -34,6 +45,14 @@ export class MediaService {
       .map(res => res);
   }
 
+    public newAudio(media){
+      //console.log(pago);
+      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(vars.apiUrl+ "/medias/new_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      .map(res => res);
+  }
+
   public newCategory(category){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
@@ -41,8 +60,24 @@ export class MediaService {
       return this.http.post(vars.apiUrl+ "/medias/new_category/", "category="+JSON.stringify(category)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
       .map(res => res);
   }
+
+    public newModule(_module){
+      //console.log(pago);
+      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(vars.apiUrl+ "/medias/new_module/", "module="+JSON.stringify(_module)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      .map(res => res);
+  }
   
-  public deleteMedia(media){
+  public deleteAudio(media){
+      //console.log(pago);
+      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(vars.apiUrl+ "/medias/delete_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      .map(res => res);
+  }
+
+    public deleteMedia(media){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
@@ -67,9 +102,24 @@ export class MediaService {
   }
 
 
+    public updateAudio(media){
+      //console.log(pago);
+      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(vars.apiUrl+ "/medias/update_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      .map(res => res);
+  }
+
   public getStatus(id_media){
       //console.log(pago);
     return this.http.get(vars.apiUrl + '/medias/media_status/id_media/'+ id_media +'/' + vars.nameKeyApi + '/' + vars.keyApi)
+  }
+
+
+
+  public getStatusAudio(id){
+      //console.log(pago);
+    return this.http.get(vars.apiUrl + '/medias/audio_status/id_audio/'+ id +'/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
 
@@ -78,6 +128,15 @@ export class MediaService {
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(vars.apiUrl+ "/medias/update_status/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+    .map(res => res);
+}
+
+
+  public updateStatusAudio(media){
+  //console.log(pago);
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(vars.apiUrl+ "/medias/update_status_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
     .map(res => res);
 }
 
