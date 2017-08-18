@@ -135,7 +135,7 @@ export class AudiosComponent implements OnInit {
   public disabledSubCategory: boolean = false;
   private id: string ;
   public baseUrl:string = 'https://mx.ivoox.com/es/player_ej_';
-  public compUrl:string = '_4_1.html?c1=ff6600';
+  public compUrl:string = '_4_1.html?c1=ff6600&autoplay=true';
   
   public varUrl:string = '';
   
@@ -147,7 +147,7 @@ export class AudiosComponent implements OnInit {
     this.navbarTitleService.updateTitle('Audios');
     //if(!this.userService.isAdmin() && !this.userService.isAuth() )
     //    this.router.navigate(['/dashboard']);
-
+    this.showNotification('top', 'center', 'Debe permitir <b>ventanas emergentes</b> para reproducir el audio', 'pe-7s-attention', 3);
     this.tableData = {
     headerRow: ['Nombre', 'Módulo', 'Audio/Complemento', 'Creado por' , 'ACCIONES'],
     };
@@ -450,7 +450,7 @@ export class AudiosComponent implements OnInit {
   //https://mx.ivoox.com/es/player_ej_4653723_4_1.html?c1=ff6600
   url = url.split(/(rf_)/);
   url = url[2].split(/(_1)/);
-  console.log(url);
+  //console.log(url);
   return url[0];
   //return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
   }

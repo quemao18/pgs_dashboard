@@ -135,7 +135,7 @@ export class VideosComponent implements OnInit {
   public disabledSubCategory: boolean = false;
   private id: string ;
   public baseUrl:string = 'https://www.youtube.com/embed/';
-  public varUrl:string = '';
+  public compUrl:string = '';
   
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
   
@@ -145,7 +145,7 @@ export class VideosComponent implements OnInit {
     this.navbarTitleService.updateTitle('Videos');
     //if(!this.userService.isAdmin() && !this.userService.isAuth() )
     //    this.router.navigate(['/dashboard']);
-
+    this.showNotification('top', 'center', 'Debe permitir <b>ventanas emergentes</b> para reproducir el video', 'pe-7s-attention', 3);
     this.tableData = {
     headerRow: ['Nombre', 'Categoría', 'Sub Categoría', 'Creado por' , 'ACCIONES'],
     };
@@ -287,9 +287,9 @@ export class VideosComponent implements OnInit {
   public showMedia(row){
     this.formData = row;
     this.titleModal = row.name;
-    this.id = this.YouTubeGetID(row.url);
+    //this.id = this.YouTubeGetID(row.url);
     //this.url = this._sanitizer.bypassSecurityTrustResourceUrl(this.baseUrl + this.id);    
-    this.url = this.baseUrl+this.id;
+    this.url = this.baseUrl+this.YouTubeGetID(row.url)+this.compUrl;
 
     this.modal.open();
   }

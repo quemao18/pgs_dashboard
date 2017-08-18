@@ -119,6 +119,8 @@ export class LoginComponent implements OnInit {
     this.myFormSponsor = this.builder.group({
       sponsor: ['', [Validators.required, Validators.minLength(3)]],
     });
+
+    this.formData = {};
   
     this.myFormPlatinum.disable();
     this.myFormSponsor.disable();
