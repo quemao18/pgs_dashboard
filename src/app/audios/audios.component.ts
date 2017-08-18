@@ -147,7 +147,7 @@ export class AudiosComponent implements OnInit {
     this.navbarTitleService.updateTitle('Audios');
     //if(!this.userService.isAdmin() && !this.userService.isAuth() )
     //    this.router.navigate(['/dashboard']);
-    this.showNotification('top', 'center', 'Debe permitir <b>ventanas emergentes</b> para reproducir el audio', 'pe-7s-attention', 3);
+    //this.showNotification('top', 'center', 'Debe permitir <b>ventanas emergentes</b> para reproducir el audio', 'pe-7s-attention', 3);
     this.tableData = {
     headerRow: ['Nombre', 'Módulo', 'Audio/Complemento', 'Creado por' , 'ACCIONES'],
     };

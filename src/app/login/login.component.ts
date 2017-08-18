@@ -147,6 +147,7 @@ export class LoginComponent implements OnInit {
       {
         this.showRegisterForm = true;
         this.formData = response;
+        this.formData.password = '';
       }else{  
         this.showRegisterForm = false;
         this.formData = {};
@@ -270,7 +271,9 @@ export class LoginComponent implements OnInit {
       //this.formData = response;
       this.register();
       //this.getUserIta();
+      this.showNotification('top', 'center', 'Debe completar los datos del<b> registro </b>para poder entrar', 'pe-7s-attention', 3);
       this.formData.ita = response.ita;
+      this.getUserIta();
       //this.getUsers();
 
     }else{
