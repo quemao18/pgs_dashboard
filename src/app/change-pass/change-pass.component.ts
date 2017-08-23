@@ -73,7 +73,7 @@ export class ChangePassComponent implements OnInit {
 
           //this.isLoggedIn();
           this.navbarTitleService.updateTitle('Cambiar Password');
-         
+          console.log(localStorage);
           this.formDataChange = {
             ita: localStorage.getItem('ita'),
             password: '',
@@ -87,6 +87,7 @@ export class ChangePassComponent implements OnInit {
  public changePass() {
    //if(this.formDataChange.password != this.formDataChange.password_conf )
    //this.showNotification('top', 'center', '<b>Los passwords no son iguales</b>', 'pe-7s-attention', 4);
+    //console.log(this.formDataChange);
     this.progress = true;
     this.userService.changePass(this.formDataChange).subscribe(
         (response) => this.onSuccessChange(response.json()), 
@@ -115,7 +116,7 @@ export class ChangePassComponent implements OnInit {
   this.progress = false;
   this.showForgetForm = false;
   this.authService.logout();
-  this.router.navigate(['/login']);
+  //this.router.navigate(['/login']);
   }
 
   

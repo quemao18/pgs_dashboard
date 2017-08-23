@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit {
   public usersLocal: Array<any> = [];
   public placeholderSponsor: string;
   public placeholderPlatinum: string;
+  public userNotExist:boolean = false;
 
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     //this.forget = this.router.get('id');
@@ -93,6 +94,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/dashboard']);
             
           this.formData = {
+            address:""
           };
 
           this.formDataForget = {
@@ -142,6 +144,7 @@ export class LoginComponent implements OnInit {
 
     onSuccessUserIta(response){
     //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    this.userNotExist = false;
     console.log(response);
     if(response.email ==null || response.id_question ==null || response.email =='' || response.id_question =='')
       {
@@ -151,13 +154,15 @@ export class LoginComponent implements OnInit {
       }else{  
         this.showRegisterForm = false;
         this.formData = {};
-        this.formData.username = this.formData.ita;
+        this.formData.ita = this.formData.ita;
         this.showNotification('top', 'center', '<b>Ya está registrado. Por favor inicie sesión.</b>', 'pe-7s-check', 2);
       }
   }
 
     onErrorUserIta(error){
     this.progress = false;
+    this.userNotExist = true;
+    this.getUsers();    
     /*this.showRegisterForm = false;
     this.formData = {};
     this.showNotification('top', 'center', '<b>'+error.message+' Por favor comuniquese con su platino directo o patrocinante...</b>', 'pe-7s-attention', 4);
@@ -342,26 +347,38 @@ export class LoginComponent implements OnInit {
   public onSubmitEditUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
+    if(!this.userNotExist){
      this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccessUpdate(response.json()), 
-        (error) => this.onErrorUpdate(error.json()), 
-        () => this.onCompleteUpdate()
+        (response) => this.onSuccess(response.json()), 
+        (error) => this.onError(error.json()), 
+        () => this.onComplete()
       );
+    }else{
+      this.formData.id_rol = 4;
+      this.formData.id_position = 6;
+      
+      console.log('Submitting values', this.formData);
+      this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+        (response) => this.onSuccess(response.json()), 
+        (error) => this.onError(error.json()), 
+        () => this.onComplete()
+      );
+    }
   }
 
-    onSuccessUpdate(response){
+    onSuccess(response){
     this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
     //console.log(response);
   }
 
-    onErrorUpdate(error){
+    onError(error){
     this.progress = false;
     //this.showRegisterForm = false;
     this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
     //console.log(error.message);  
   }
   
-  onCompleteUpdate(){
+  onComplete(){
     this.showRegisterForm = false;
     this.progress = false;
     this.formData = {};
