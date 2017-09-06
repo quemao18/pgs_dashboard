@@ -153,7 +153,7 @@
     <div class="col-md-4" [@cardprofile]>
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
-        [avatarImage]="'assets/img/faces/face-0.jpg'"
+        [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
         [username]="formData.ita"
         [email]="formData.email"
@@ -265,7 +265,7 @@
     <div class="col-md-4" [@cardprofile]>
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
-        [avatarImage]="'assets/img/faces/face-0.jpg'"
+        [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
         [username]="formData.ita"
         [email]="formData.email"
@@ -289,7 +289,7 @@
     <div [@cardprofile]>
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
-        [avatarImage]="'assets/img/faces/face-0.jpg'"
+        [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
         [username]="formData.position + ' - ITA: ' + formData.ita"
         [email]="formData.email"

@@ -545,23 +545,29 @@ export class LogoutComponent implements OnInit {
 
   public formData: any;
 
-  constructor(private app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService) { }
+  constructor(private route:ActivatedRoute, private app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService) { 
+    console.log(route.snapshot.url[0].path);
+  }
 
   public ngOnInit() {
     
     //console.log(localStorage.getItem('name'));
-    
+    //if(this.route.snapshot.url[0].path === 'logout'){
     this.authService.logout();
     this.authService.setName('');
     //this.app.ngOnInit();
-    //location.reload();
-    //this.router.navigate(['/']);
     
     this.formData = {
       ita: '',
       password: '',
     };
 
+
+
+  //}
+
   }
+
+
 
 }

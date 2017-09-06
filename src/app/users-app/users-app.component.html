@@ -72,8 +72,8 @@
               </div>
               <div class="col-md-8">
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
+                  <label for="email">Email (opcional)</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
                 </div>
               </div>
             </div>
@@ -96,7 +96,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="address">Dirección</label>
+                  <label for="address">Dirección (opcional)</label>
                   <input type="text" class="form-control" id="address" name="address" placeholder="Dirección" [(ngModel)]="formData.address">
                 </div>
               </div>
@@ -143,7 +143,7 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label for="phone">Teléfono</label>
+                  <label for="phone">Teléfono (opcional)</label>
                   <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono" [(ngModel)]="formData.phone">
               </div>
               </div>
@@ -186,11 +186,18 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" required class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="formData.password">
+                  <label for="password">Password (opcional)</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="formData.password">
                 </div>
               </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <input type="checkbox" name="status" [checked]="formData.status == 1 ? true : formData.status == 0 ? false : null" [ngModel]="formData.status == 1 ? true : formData.status == 0 ? false : null" (ngModelChange)="formData.status = $event ? 1 : 0"> Activo
+                  </div>
+                </div>
+              </div>
             <hr>
             <div class="btn-toolbar">
             <button [disabled]="!form.valid || !formData.sponsor || !formData.platinum"  type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
@@ -205,7 +212,7 @@
     <div class="col-md-4" [@cardprofile]>
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
-        [avatarImage]="'assets/img/faces/face-0.jpg'"
+        [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
         [username]="formData.ita"
         [email]="formData.email"
@@ -240,8 +247,8 @@
               </div>
               <div class="col-md-8">
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
+                  <label for="email">Email (opcional)</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
                 </div>
               </div>
             </div>
@@ -262,8 +269,8 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="address">Dirección</label>
-                  <input type="text" required class="form-control" id="address" name="address" placeholder="Dirección" [(ngModel)]="formData.address">
+                  <label for="address">Dirección (opcional)</label>
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Dirección" [(ngModel)]="formData.address">
                 </div>
               </div>
             </div>
@@ -308,8 +315,8 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
-                  <label for="phone">Teléfono</label>
-                  <input type="text" required class="form-control" id="phone" name="phone" placeholder="Teléfono" [(ngModel)]="formData.phone">
+                  <label for="phone">Teléfono (opcional)</label>
+                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono" [(ngModel)]="formData.phone">
               </div>
               </div>
               <div class="col-md-4">
@@ -336,8 +343,15 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="password">Password</label>
+                  <label for="password">Password (opcional)</label>
                   <input type="password" class="form-control" id="password" name="password" placeholder="Deje en blanco para no cambiar" [(ngModel)]="formData.password">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="checkbox" name="status" [checked]="formData.status == 1 ? true : formData.status == 0 ? false : null" [ngModel]="formData.status == 1 ? true : formData.status == 0 ? false : null" (ngModelChange)="formData.status = $event ? 1 : 0"> Activo
                 </div>
               </div>
             </div>
@@ -355,7 +369,7 @@
     <div class="col-md-4" [@cardprofile]>
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
-        [avatarImage]="'assets/img/faces/face-0.jpg'"
+        [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
         [username]="formData.ita"
         [email]="formData.email"
@@ -379,7 +393,7 @@
     <div [@cardprofile]>
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
-        [avatarImage]="'assets/img/faces/face-0.jpg'"
+        [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
         [username]="formData.position + ' - ITA: ' + formData.ita"
         [email]="formData.email"

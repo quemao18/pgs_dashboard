@@ -69,7 +69,10 @@ export class AuthService {
     this.userService.setIsAuth(false);
     this.userService.setIsPublish(false);
     this.userService.setIsUser(false);
+    //this.router.navigate(['/login']);
+    //location.reload();
     this.router.navigate(['/login']);
+    //location.reload();
    
   }
 

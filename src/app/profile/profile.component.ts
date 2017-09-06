@@ -105,6 +105,11 @@ export class ProfileComponent implements OnInit {
   public myFormSponsor: FormGroup;
   public myFormPlatinum: FormGroup;
 
+  public imageIsUpload: boolean = false;
+  public avatar_url: string = '';
+  public newPic : boolean = false;
+  public _event : Event;
+
   constructor(public authService: AuthService, public location: Location, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) { }
 
 
@@ -114,6 +119,7 @@ export class ProfileComponent implements OnInit {
     
     this.formData = {
       ita: "",
+      photo:"",
       sponsor : {},
       platinum: {}
     };
@@ -133,6 +139,8 @@ export class ProfileComponent implements OnInit {
       sponsor: ['', [Validators.required, Validators.minLength(3)]],
     });
 
+    this.avatar_url = '';
+    this.imageIsUpload = true;
     this.loadUser(JSON.parse(localStorage.getItem('user')));
 
     this.getQuestions();
@@ -163,6 +171,7 @@ export class ProfileComponent implements OnInit {
 
     
     this.formData.password = '';
+    //this.avatar_url = user.photo;
 
   }
 
@@ -222,6 +231,10 @@ export class ProfileComponent implements OnInit {
 
     public onSubmitEditUser(){
     this.progress=true;
+   
+    if(this.newPic || this.avatar_url!='')
+      this.formData.avatar_url = this.avatar_url;
+
     //console.log('Submitting values', this.formData);
      this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
@@ -231,8 +244,9 @@ export class ProfileComponent implements OnInit {
   }
 
     onSuccessUpdate(response){
+
     //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
-      this.showNotification('top', 'center', '<b>Vuelva a iniciar seisión para cargar sus datos...</b>', 'pe-7s-check', 2);
+     // this.showNotification('top', 'center', '<b>Vuelva a iniciar seisión para cargar sus datos...</b>', 'pe-7s-check', 2);
     //console.log(response);
   }
 
@@ -247,7 +261,9 @@ export class ProfileComponent implements OnInit {
     //localStorage.setItem('user', JSON.stringify(this.formData));
     this.progress = false;
     this.formData = {};
-    this.authService.logout();
+    //this.authService.logout();
+    this.router.navigate(['/login']);
+    setTimeout(   location.reload(), 4000 );
     //this.router.navigate(['/dashboard']);
     }
 
@@ -261,6 +277,49 @@ export class ProfileComponent implements OnInit {
       from: from,
       align: align
     }));
+  }
+
+  public image($event){
+    this.newPic = true;
+    this.imageIsUpload = false;
+  }
+
+  public uploadImage($event) {
+    this.newPic = true;
+    this.imageIsUpload = false;
+    //console.log($event);
+    this.userService.fileChange($event).subscribe(
+        (response) => this.onSuccessUpload(response.json()), 
+        (error) => console.log(error.json()), 
+        () => this.onCompleteUpload()
+    )
+  }
+
+  onSuccessUpload(response){
+    console.log(response);
+    if(!response.status)
+      {
+        this.imageIsUpload = false;
+        this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-attention', 4);
+      }else{
+        this.imageIsUpload = true;
+        this.formData.photo = response.avatar_url;
+        this.avatar_url = response.avatar_url;
+      }
+    
+  }
+
+  onCompleteUpload(){
+    this.progress = false;
+    console.log('ok');
+
+    //this.formData.id_event = 0;
+
+   }
+
+  public imageRemoved($event){
+    this.imageIsUpload = false;
+    this.avatar_url = '';
   }
 
 
