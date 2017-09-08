@@ -119,7 +119,6 @@ export class ProfileComponent implements OnInit {
     
     this.formData = {
       ita: "",
-      photo:"",
       sponsor : {},
       platinum: {}
     };
@@ -171,7 +170,7 @@ export class ProfileComponent implements OnInit {
 
     
     this.formData.password = '';
-    //this.avatar_url = user.photo;
+    this.avatar_url = user.photo;
 
   }
 

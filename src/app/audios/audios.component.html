@@ -64,18 +64,20 @@
         <div class="content">
           <form #form="ngForm" (ngSubmit)="onSubmitNewAudio()">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label for="name">Nombre</label>
                   <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre del audio" [(ngModel)]="formData.name">
                 </div>
               </div>
+              <!--
               <div class="col-md-8">
                 <div class="form-group">
                   <label for="url">URL</label>
                   <input type="text" required class="form-control" id="url" name="url" placeholder="url" [(ngModel)]="formData.url">
                 </div>
               </div>
+            -->
             </div>
 
             <div class="row">
@@ -129,9 +131,36 @@
                 </div>
               </div>
             </div>
+
+            <div  class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Audio </label>
+                  <audio style='width:100%;'  controls>
+                      <source [src]="formData.url | safe" type="audio/mpeg">
+                      Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="description">Subir Audio  <span *ngIf="formData.fileName"> - {{formData.fileName}} </span> </label>
+          <image-upload
+          (change)="uploadAudio($event)"
+          (onRemove)="audioRemoved($event)"
+          [max]="1" 
+          [extensions]="['mp3', 'wma', 'wav']"
+          buttonCaption="Selecciona el audio"
+          dropBoxMessage="O arrastra el audio"
+          >
+
+          </image-upload>
+             </div>
+          </div>
+
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="module.value==0 || !form.valid || !myFormUsers.valid || formData.users.ita==''" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]=" !audioIsUpload || module.value==0 || !form.valid || !myFormUsers.valid || formData.users.ita==''" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
             <button (click)="showNewForm=!showNewForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -152,20 +181,22 @@
         <div class="content">
           <form #formEdit="ngForm" (ngSubmit)="onSubmitEditAudio()">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label for="name">Nombre</label>
                   <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre del audio" [(ngModel)]="formData.name">
                 </div>
               </div>
+              <!--
               <div class="col-md-8">
                 <div class="form-group">
                   <label for="url">URL </label> <span class="text-danger" *ngIf="url?.errors?.url">Error</span>
-                  <input #url="ngModel"
-                  type="text" required class="form-control" id="url" name="url" placeholder="url" [(ngModel)]="formData.url" url>
+                  <input #url="ngModel" disabled
+                  type="text" required class="form-control" id="url" name="url" placeholder="url" [(ngModel)]="formData.url" >
                  
                 </div>
               </div>
+            -->
             </div>
 
             <div class="row">
@@ -217,9 +248,34 @@
                 </div>
               </div>
             </div>
+            <div  class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Audio  </label>
+                  <audio style='width:100%;'  controls>
+                      <source [src]="formData.url | safe" type="audio/mpeg">
+                      Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="description">Subir Audio  <span *ngIf="formData.file_name"> - {{formData.file_name}} </span> </label>
+          <image-upload
+          (change)="uploadAudio($event)"
+          (onRemove)="audioRemoved($event)"
+          [max]="1" 
+          [extensions]="['mp3', 'wma', 'wav']"
+          buttonCaption="Selecciona el audio"
+          dropBoxMessage="O arrastra el audio"
+          >
+
+          </image-upload>
+             </div>
+          </div>
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="!url.valid || module.value==0 || !myFormUsers.valid " type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]=" module.value==0 || !myFormUsers.valid || !audioIsUpload " type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
             <button (click)="showEditForm=!showEditForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -236,10 +292,16 @@
     </modal-header>
     <modal-body>
     <div  >
+      <!-- frame para ivoox
    <iframe id='audio_4653723' frameborder='0' allowfullscreen='' scrolling='no' height='200' 
    style='border:1px solid #EEE; box-sizing:border-box; width:100%;' 
     [src]="url | safe">
    </iframe>
+  -->
+  <iframe id='audio_4653723' frameborder='0' allowfullscreen='' scrolling='no'  
+  style='width:100%;' 
+   [src]="url | safe">
+  </iframe>
     <!--
     <iframe id='audio_4653723' frameborder='0' allowfullscreen='' scrolling='no' height='200' style='border:1px solid #EEE; box-sizing:border-box; width:100%;' 
     src="https://mx.ivoox.com/es/player_ej_4653723_4_1.html?c1=ff6600">

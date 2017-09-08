@@ -140,5 +140,25 @@ export class MediaService {
     .map(res => res);
 }
 
+public fileChange(event) {
+    let fileList: FileList = event.target.files;
+    if(fileList.length > 0) {
+        let file: File = fileList[0];
+        let formDataUpload:FormData = new FormData();
+        formDataUpload.append('audio', file, file.name);
+        let headers = new Headers();
+        //console.log(file);
+        /** No need to include Content-Type in Angular 4 */
+        //headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(vars.apiUrl+ "/medias/upload/"+vars.nameKeyApi+"/"+vars.keyApi, formDataUpload, options)
+        //    .map(res => res);
+        //return this.http.post(vars.apiUrl+ "/news/upload/", +formDataUpload+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+        .map(res => res);    
+            
+    }
+}
+
 
 }

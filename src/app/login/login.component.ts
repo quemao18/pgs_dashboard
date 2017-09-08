@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit() {
           //this.authService.setName('');
-          this.authService.logout();
+          //this.authService.logout();
           //this.isLoggedIn();
           this.navbarTitleService.updateTitle('Login');
           if(this.authService.authenticated())
@@ -552,7 +552,7 @@ export class LogoutComponent implements OnInit {
   public ngOnInit() {
     
     //console.log(localStorage.getItem('name'));
-    //if(this.route.snapshot.url[0].path === 'logout'){
+    if(this.route.snapshot.url[0].path === 'logout'){
     this.authService.logout();
     this.authService.setName('');
     //this.app.ngOnInit();
@@ -564,7 +564,7 @@ export class LogoutComponent implements OnInit {
 
 
 
-  //}
+  }
 
   }
 

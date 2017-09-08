@@ -138,6 +138,10 @@ export class AudiosComponent implements OnInit {
   public compUrl:string = '_4_1.html?c1=ff6600&autoplay=true';
   
   public varUrl:string = '';
+
+  public audioIsUpload: boolean = true;
+  public audio_url: string = '';
+  public _newAudio : boolean = false;
   
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
   
@@ -235,6 +239,7 @@ export class AudiosComponent implements OnInit {
 
   public newAudio(){
     this.showNewForm = true;
+    this.audioIsUpload = false;
     this.showEditForm = false;
     this.formData ={};
     this.formData.id_module = 0;
@@ -261,7 +266,8 @@ export class AudiosComponent implements OnInit {
   public showAudio(row){
     this.formData = row;
     this.titleModal = row.name;
-    this.url = this.baseUrl + this.IvooxGetID(row.url) + this.compUrl;
+    //this.url = this.baseUrl + this.IvooxGetID(row.url) + this.compUrl;
+    this.url = row.url;
     this.modal.open();
   }
 
@@ -270,6 +276,8 @@ export class AudiosComponent implements OnInit {
     //if(!this.validateYouTubeUrl(this.formData.url) || !this.isUrlValid(this.formData.url))
     //     this.showNotification('top', 'center', '<b> Verifica el URL </b>', 'pe-7s-attention', 4);
     //else{
+      if(this._newAudio || this.audio_url!='')
+        this.formData.audio_url = this.audio_url;
       console.log('Submitting values', this.formData);
     //if(this.formData.users.ita==null)
      this.mediaService.newAudio(this.formData).subscribe(
@@ -302,6 +310,9 @@ export class AudiosComponent implements OnInit {
 
   public onSubmitEditAudio(){
     this.progress=true;
+    if(this._newAudio || this.audio_url!='')
+      this.formData.audio_url = this.audio_url;
+
     console.log('Submitting values', this.formData);
      this.mediaService.updateAudio(this.formData).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
@@ -481,6 +492,50 @@ isUrlValid(userInput) {
         return false;
     else
         return true;
+}
+
+public audio($event){
+  this._newAudio = true;
+  this.audioIsUpload = false;
+}
+
+public uploadAudio($event) {
+  this._newAudio = true;
+  this.audioIsUpload = false;
+  //console.log($event);
+  this.mediaService.fileChange($event).subscribe(
+      (response) => this.onSuccessUpload(response.json()), 
+      (error) => console.log(error.json()), 
+      () => this.onCompleteUpload()
+  )
+}
+
+onSuccessUpload(response){
+  console.log(response);
+  if(!response.status)
+    {
+      this.audioIsUpload = false;
+      this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-attention', 4);
+    }else{
+      this.audioIsUpload = true;
+      this.formData.url = response.audio_url;
+      this.audio_url = response.audio_url;
+      this.formData.file_name = response.filename;
+    }
+  
+}
+
+onCompleteUpload(){
+  this.progress = false;
+  console.log('ok');
+
+  //this.formData.id_event = 0;
+
+ }
+
+public audioRemoved($event){
+  this.audioIsUpload = true;
+  this.audio_url = '';
 }
 
 }
