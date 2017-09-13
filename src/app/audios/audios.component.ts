@@ -13,6 +13,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
+
 @Component({
   selector: 'app-audios',
   templateUrl: './audios.component.html',
@@ -141,6 +142,7 @@ export class AudiosComponent implements OnInit {
 
   public audioIsUpload: boolean = true;
   public audio_url: string = '';
+  public duration: string = '';
   public _newAudio : boolean = false;
   
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
@@ -177,6 +179,8 @@ export class AudiosComponent implements OnInit {
 
     this.formData.id_module = 0;
     this.formData.description = '';
+    this.formData.file_name = '';
+    this.formData.duration = 0;
     
   }
 
@@ -502,6 +506,8 @@ public audio($event){
 public uploadAudio($event) {
   this._newAudio = true;
   this.audioIsUpload = false;
+  //this.showNotification('top', 'center', '<b>Cargando archivo, por favor espere...</b>', 'pe-7s-attention', 3);
+
   //console.log($event);
   this.mediaService.fileChange($event).subscribe(
       (response) => this.onSuccessUpload(response.json()), 
@@ -517,10 +523,14 @@ onSuccessUpload(response){
       this.audioIsUpload = false;
       this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-attention', 4);
     }else{
+
       this.audioIsUpload = true;
+      this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
       this.formData.url = response.audio_url;
       this.audio_url = response.audio_url;
+      this.duration = response.duration;
       this.formData.file_name = response.filename;
+      this.formData.duration = response.duration;
     }
   
 }
@@ -537,5 +547,7 @@ public audioRemoved($event){
   this.audioIsUpload = true;
   this.audio_url = '';
 }
+
+
 
 }

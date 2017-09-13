@@ -124,8 +124,8 @@
               </div>
               <div class="col-md-8">
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
+                  <label for="email">Email</label> <span class="text-danger" *ngIf="email?.errors?.email"> - Email Incorrecto</span>
+                  <input email #email="ngModel" type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
                 </div>
               </div>
             </div>
@@ -223,9 +223,17 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="password_conf">Repite el Password</label>
+                  <input type="password" class="form-control" id="password_conf" name="password_conf" required placeholder="Repite el Password" [(ngModel)]="formData.password_conf">
+                </div>
+              </div>
+            </div>
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="!form.valid || !formData.sponsor || !formData.platinum" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]="!form.valid || !formData.sponsor || !formData.platinum || (formData.password!=formData.password_conf)" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
             <button (click)="showRegisterForm=!showRegisterForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             

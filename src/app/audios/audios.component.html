@@ -1,4 +1,6 @@
 <spinner-component [spinnerShow]="progress"></spinner-component>
+
+
 <div *ngIf="!showEditForm && !showNewForm" class="container-fluid">
   <div class="row">
     <div class="card" [@cardtable1]>
@@ -30,7 +32,7 @@
       <tbody>
         <tr *ngFor="let row of data | filterBy: ['name']: searchFilter.value | paginate: { itemsPerPage: pagination, currentPage: page }">
          <!--<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
-         <td>  {{row.name}} </td> 
+         <td>  {{row.name}} - {{row.duration | minuteSeconds }} </td> 
          <td>  {{row.name_module}} </td> 
          <td>  {{row.is_audio == 1 ? 'Audio': 'Complemento'}} </td> 
          <td>  {{row.name_user_create}} {{row.last_user_create}}</td> <!-- Creado por -->
@@ -144,23 +146,31 @@
 
             <div class="col-md-12">
               <div class="form-group">
-                <label for="description">Subir Audio  <span *ngIf="formData.fileName"> - {{formData.fileName}} </span> </label>
+                <label for="description">Subir Audio <strong *ngIf="formData.file_name"> - {{formData.file_name}} - {{formData.duration | minuteSeconds }} </strong> </label>
           <image-upload
           (change)="uploadAudio($event)"
           (onRemove)="audioRemoved($event)"
           [max]="1" 
           [extensions]="['mp3', 'wma', 'wav']"
           buttonCaption="Selecciona el audio"
-          dropBoxMessage="O arrastra el audio"
+          dropBoxMessage=""
           >
 
           </image-upload>
              </div>
-          </div>
 
+             <div *ngIf="!audioIsUpload" class="progress">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
+                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                  Cargando archivo, por favor espere que cargue para guardar el audio...
+                </div>
+              </div>
+              
+          </div>
+          
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]=" !audioIsUpload || module.value==0 || !form.valid || !myFormUsers.valid || formData.users.ita==''" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]=" !audioIsUpload || module.value==0 || !form.valid || !myFormUsers.valid || formData.users.ita==''" type="submit" class="btn btn-success btn-fill pull-right">{{!audioIsUpload ? 'Cargando...':'Guardar'}}</button> 
             <button (click)="showNewForm=!showNewForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -260,22 +270,30 @@
 
             <div class="col-md-12">
               <div class="form-group">
-                <label for="description">Subir Audio  <span *ngIf="formData.file_name"> - {{formData.file_name}} </span> </label>
+                <label for="description">Subir Audio  <strong *ngIf="formData.file_name"> - {{formData.file_name}} - {{formData.duration | minuteSeconds}} </strong> </label>
           <image-upload
           (change)="uploadAudio($event)"
           (onRemove)="audioRemoved($event)"
           [max]="1" 
           [extensions]="['mp3', 'wma', 'wav']"
           buttonCaption="Selecciona el audio"
-          dropBoxMessage="O arrastra el audio"
+          dropBoxMessage=""
           >
 
           </image-upload>
              </div>
+
+              <div *ngIf="!audioIsUpload" class="progress">
+                  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
+                  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    Cargando archivo, por favor espere que cargue para guardar el audio...
+                  </div>
+                </div>
           </div>
+          
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]=" module.value==0 || !myFormUsers.valid || !audioIsUpload " type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]=" module.value==0 || !myFormUsers.valid || !audioIsUpload " type="submit" class="btn btn-success btn-fill pull-right">{{!audioIsUpload ? 'Cargando...':'Guardar'}}</button> 
             <button (click)="showEditForm=!showEditForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -298,7 +316,7 @@
     [src]="url | safe">
    </iframe>
   -->
-  <iframe id='audio_4653723' frameborder='0' allowfullscreen='' scrolling='no'  
+  <iframe frameborder='0' allowfullscreen='' scrolling='no'  
   style='width:100%;' 
    [src]="url | safe">
   </iframe>

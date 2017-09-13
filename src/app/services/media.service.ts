@@ -115,12 +115,15 @@ export class MediaService {
     return this.http.get(vars.apiUrl + '/medias/media_status/id_media/'+ id_media +'/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
-
-
   public getStatusAudio(id){
       //console.log(pago);
     return this.http.get(vars.apiUrl + '/medias/audio_status/id_audio/'+ id +'/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
+
+  public getDuration(url){
+    //console.log(pago);
+  return this.http.get(vars.apiUrl + '/medias/youtube_duration?url='+ url +'&' + vars.nameKeyApi + '=' + vars.keyApi)
+}
 
 
   public updateStatus(media){

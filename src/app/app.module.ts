@@ -28,7 +28,7 @@ import { UsersComponent } from './users/users.component';
 import { UsersAppComponent } from './users-app/users-app.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 
-import { searchPipe, rowPipe, columnPipe, FilterPipe, UcFirstPipe, SafePipe } from './pipes/pipes';
+import { searchPipe, rowPipe, columnPipe, FilterPipe, UcFirstPipe, SafePipe, MinuteSecondsPipe } from './pipes/pipes';
 
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -48,6 +48,7 @@ import { DatePipe } from '@angular/common';
 import { ImageUploadModule } from "angular2-image-upload";
 
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+
 
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 
@@ -104,6 +105,7 @@ const appRoutes: Routes = [
     NewsComponent,
     SchoolComponent,
     ProfileComponent, 
+    MinuteSecondsPipe
 
   ],
   imports: [

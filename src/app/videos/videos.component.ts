@@ -136,6 +136,8 @@ export class VideosComponent implements OnInit {
   private id: string ;
   public baseUrl:string = 'https://www.youtube.com/embed/';
   public compUrl:string = '?rel=0&autoplay=1';
+  public duration: number = 0;
+  public busy: boolean = false;
   
   constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
   
@@ -180,6 +182,7 @@ export class VideosComponent implements OnInit {
     this.formData.id_category = 0;
     this.formData.id_sub_category = 0;
     this.formData.description = '';
+    this.formData.duration = '';
     
   }
 
@@ -306,6 +309,7 @@ export class VideosComponent implements OnInit {
     //if(!this.validateYouTubeUrl(this.formData.url) || !this.isUrlValid(this.formData.url))
     //     this.showNotification('top', 'center', '<b> Verifica el URL </b>', 'pe-7s-attention', 4);
     //else{
+      this.formData.duration = this.duration;
       console.log('Submitting values', this.formData);
     //if(this.formData.users.ita==null)
      this.mediaService.newMedia(this.formData).subscribe(
@@ -338,6 +342,8 @@ export class VideosComponent implements OnInit {
 
   public onSubmitEditMedia(){
     this.progress=true;
+    
+    this.formData.duration = this.duration;
     console.log('Submitting values', this.formData);
      this.mediaService.updateMedia(this.formData).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
@@ -433,6 +439,18 @@ export class VideosComponent implements OnInit {
 
   isAdmin(){
     return this.userService.isAdmin();
+  }
+
+  getDuration(){
+    //this.progress = true;
+    this.busy = true;
+    //console.log(this.formSubCategory);
+    this.mediaService.getDuration(this.formData.url).subscribe(
+        (response) =>{ this.duration = (response.json()) }, 
+        (error) =>console.log(error.json()), 
+        () => {console.log('Done'), this.busy = false;}
+      );
+
   }
 
   saveSubCategory(){

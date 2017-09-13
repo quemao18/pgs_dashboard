@@ -348,15 +348,16 @@ export class LoginComponent implements OnInit {
     this.progress=true;
     console.log('Submitting values', this.formData);
     if(!this.userNotExist){
+      //actualiza usuario
      this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccess(response.json()), 
         (error) => this.onError(error.json()), 
         () => this.onComplete()
       );
     }else{
-      this.formData.id_rol = 4;
-      this.formData.id_position = 6;
-      
+      //nuevo usuario
+      //this.formData.id_rol = 4;
+      //this.formData.id_position = 6;
       console.log('Submitting values', this.formData);
       this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccess(response.json()), 

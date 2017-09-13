@@ -1,6 +1,18 @@
 import {PipeTransform, Pipe, Injectable} from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 
+@Pipe({
+  name: 'minuteSeconds'
+})
+export class MinuteSecondsPipe implements PipeTransform {
+
+    transform(value: number): string {
+       const minutes: number = Math.floor(value / 60);
+       return ("0" + minutes).slice(-2) + ':' + ("0" +(value - minutes * 60)).slice(-2);
+    }
+
+}
+
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}

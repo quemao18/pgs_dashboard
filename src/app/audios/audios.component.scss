@@ -26,3 +26,21 @@
  .holds-the-iframe {
   background:url(../../assets/img/angular2-logo-white.png) center center no-repeat;
  }
+
+
+ .spinningCircle {
+    height: 30px;
+    width: 30px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0);
+    border-top: 3px solid white;
+    border-right: 3px solid white;
+    -webkit-animation: spinner 2s infinite cubic-bezier(0.085, 0.625, 0.855, 0.360);
+    animation: spinner 2s infinite cubic-bezier(0.085, 0.625, 0.855, 0.360);
+  }
