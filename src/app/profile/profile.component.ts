@@ -8,6 +8,11 @@ import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import { Router } from '@angular/router';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 
+import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteData } from 'ng2-completer';
+import { Observable } from "rxjs/Observable";
+import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
+import { CustomData } from "../services/custom-data";
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -98,6 +103,9 @@ export class ProfileComponent implements OnInit {
 
   public usersAll:Array<any> = [];
   public formData: any;
+  public sponsor: any;
+  public platinum: any;
+
   public questions: any;
   public data_sponsor: FormControl;
   public data_platinum: FormControl;
@@ -110,7 +118,16 @@ export class ProfileComponent implements OnInit {
   public newPic : boolean = false;
   public _event : Event;
 
-  constructor(public authService: AuthService, public location: Location, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) { }
+  public customData: CustomData;
+  @ViewChild("remoteDataSponsor") private remoteDataSponsor: CompleterCmp;
+  @ViewChild("remoteDataPlatinum") private remoteDataPlatinum: CompleterCmp;
+  public name: string;
+  public placeholderSponsor: string;
+  public placeholderPlatinum: string;
+
+  constructor(private http: Http, private completerService: CompleterService, public authService: AuthService, public location: Location, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
+    this.customData = new CustomData(userService, http); 
+   }
 
 
   ngOnInit() {
@@ -143,7 +160,8 @@ export class ProfileComponent implements OnInit {
     this.loadUser(JSON.parse(localStorage.getItem('user')));
 
     this.getQuestions();
-    this.getUsers();
+    this.placeholderSponsor = "Nombre del patriconador o ITA...";
+    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
    
   }
 
@@ -161,12 +179,15 @@ export class ProfileComponent implements OnInit {
     this.formData = user;
     this.formData.sponsor = {
       "ita": this.formData.ita_sponsor,
-      "name": this.getNameUser(this.formData.ita_sponsor)
+      "name": ''
     }
     this.formData.platinum = {
       "ita": this.formData.ita_platinum,
-      "name": this.getNameUser(this.formData.ita_platinum)
+      "name": ''
     }
+    console.log(user);
+    this.sponsor = user.name_sponsor;
+    this.platinum = user.name_platinum;    
 
     
     this.formData.password = '';
@@ -179,20 +200,48 @@ export class ProfileComponent implements OnInit {
     return this._sanitizer.bypassSecurityTrustHtml(html);
   }
 
+  public onSponsorSelected(selected: CompleterItem) {
+    if (selected) {
+      //console.log(selected.originalObject);
+        this.formData.sponsor = {
+          "ita": selected.originalObject.ita,
+          "name": selected.originalObject.name + ' ' + selected.originalObject.last
+        };
+        this.remoteDataSponsor.blur();
+        this.remoteDataPlatinum.focus();
+    } else {
+        this.formData.sponsor = {};
+    }
+    //console.log(this.formData);
+  }
 
-  public getUsers(){
+  public onPlatinumSelected(selected: CompleterItem) {
+    if (selected) {
+      //console.log(selected.originalObject);
+        this.formData.platinum = {
+          "ita": selected.originalObject.ita,
+          "name": selected.originalObject.name + ' ' + selected.originalObject.last
+        };
+        this.remoteDataPlatinum.blur();
+    } else {
+        this.formData.platinum = {};
+    }
+    //console.log(this.formData);
+  }
 
-    //this.progress = true;
+
+  public getUsers(q){
+    this.progress = true;
     //console.log(this.rols);
-    this.myFormSponsor.disable();
-    this.myFormPlatinum.disable();
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(q).subscribe(
         (response) => this.onSuccessUsers (response),
-        (error) => console.log(error.json()), 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          console.log(error.json()); 
+          this.progress=false; 
+        }, 
         //() => this.onCompleteLogin()
     );
-
-
   }
 
 
@@ -261,8 +310,8 @@ export class ProfileComponent implements OnInit {
     this.progress = false;
     this.formData = {};
     //this.authService.logout();
-    this.router.navigate(['/login']);
-    setTimeout(   location.reload(), 4000 );
+    this.router.navigate(['/logout']);
+    setTimeout( ()=> { location.reload() }, 1000 );
     //this.router.navigate(['/dashboard']);
     }
 

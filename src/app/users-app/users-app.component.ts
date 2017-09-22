@@ -8,7 +8,11 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { UserService } from '../services/user.service';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
-//import { CompleterService, CompleterData } from 'ng2-completer';
+
+import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteData } from 'ng2-completer';
+import { Observable } from "rxjs/Observable";
+import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
+import { CustomData } from "../services/custom-data";
 
 @Component({
   selector: 'app-user',
@@ -102,6 +106,8 @@ export class UsersAppComponent implements OnInit {
   public usersArray = new Array();
   public allUsers = new Array();
   public formData: any;
+  public sponsor: any;
+  public platinum: any;
   public positions: any;
   public row: any;
   public notify: any;
@@ -136,9 +142,16 @@ export class UsersAppComponent implements OnInit {
   modalEdit: ModalComponent;
   @ViewChild('modal')
   modal: ModalComponent;
+  public customData: CustomData;
+  @ViewChild("remoteDataSponsor") private remoteDataSponsor: CompleterCmp;
+  @ViewChild("remoteDataPlatinum") private remoteDataPlatinum: CompleterCmp;
+  public name: string;
+  public placeholderSponsor: string;
+  public placeholderPlatinum: string;
 
-  constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
-   }
+  constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
+    this.customData = new CustomData(userService, http); 
+  }
 
   public ngOnInit() {
   
@@ -168,7 +181,7 @@ export class UsersAppComponent implements OnInit {
     this.showCardUser = this.showEditForm = this.showNewForm = this.progress = false;
     this.getRols();    
     this.getPositions();
-    this.getUsers();
+    this.getUsers('');
     //this.getUsersAll();
     //this.getUsersPlatinum();
     this.myFormSponsor = this.builder.group({
@@ -177,6 +190,8 @@ export class UsersAppComponent implements OnInit {
     this.myFormPlatinum = this.builder.group({
       platinum : "",
     });
+    this.placeholderSponsor = "Nombre del patriconador o ITA...";
+    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
     
   }
 
@@ -189,12 +204,43 @@ export class UsersAppComponent implements OnInit {
     return name;
   }
 
+
+
   public filterValues(val){
       console.log(val);
       this.args = {
         name: val
       }
       
+  }
+
+  public onSponsorSelected(selected: CompleterItem) {
+    if (selected) {
+      //console.log(selected.originalObject);
+        this.formData.sponsor = {
+          "ita": selected.originalObject.ita,
+          "name": selected.originalObject.name + ' ' + selected.originalObject.last
+        };
+        this.remoteDataSponsor.blur();
+        this.remoteDataPlatinum.focus();
+    } else {
+        this.formData.sponsor = {};
+    }
+    //console.log(this.formData);
+  }
+
+  public onPlatinumSelected(selected: CompleterItem) {
+    if (selected) {
+      //console.log(selected.originalObject);
+        this.formData.platinum = {
+          "ita": selected.originalObject.ita,
+          "name": selected.originalObject.name + ' ' + selected.originalObject.last
+        };
+        this.remoteDataPlatinum.blur();
+    } else {
+        this.formData.platinum = {};
+    }
+    //console.log(this.formData);
   }
 
     public newUser(){
@@ -232,14 +278,9 @@ export class UsersAppComponent implements OnInit {
     this.showEditForm = true;
     this.showCardUser = false;
     this.formData = row;
-    this.formData.sponsor = {
-      "ita": row.ita_sponsor,
-      "name": this.getNameUser(row.ita_sponsor)
-    };
-    this.formData.platinum = {
-      "ita": row.ita_platinum,
-      "name": this.getNameUser(row.ita_platinum)
-    };
+    this.sponsor = row.name_sponsor;
+    this.platinum = row.name_platinum;
+    
   }
 
   public showUser(row){
@@ -401,12 +442,17 @@ export class UsersAppComponent implements OnInit {
         //() => this.onCompleteLogin()
     );
   }
-  public getUsers(){
+  public getUsers(q){
     this.progress = true;
     //console.log(this.rols);
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(q).subscribe(
         (response) => this.onSuccessUsers (response),
-        (error) => console.log(error.json()), 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          console.log(error.json()); 
+          this.progress=false; 
+          this.data = [];
+        }, 
         //() => this.onCompleteLogin()
     );
   }
@@ -415,8 +461,8 @@ export class UsersAppComponent implements OnInit {
   public onSuccessUsers(response){
   this.progress = false;
   this.usersAll = response.json();
-  this.data_sponsor = response.json();
-  this.data_platinum = response.json().filter(i => i.id_position < '6') ;
+  //this.data_sponsor = response.json();
+  //this.data_platinum = response.json().filter(i => i.id_position < '6') ;
 
   if(this.userService.isAdmin())
     this.data = response.json();//.filter(i => i.id_rol == '4');
@@ -426,10 +472,10 @@ export class UsersAppComponent implements OnInit {
   //this.data = this.data.filter(i => i.id_rol < '4') ;
   }
 
-public getUsersAll(){
+public getUsersAll(q){
     this.progress = true;
     //console.log(this.rols);
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(q).subscribe(
         (response) => this.onSuccessUsersAll (response),
         (error) => console.log(error.json()), 
         //() => this.onCompleteLogin()
@@ -439,17 +485,17 @@ public getUsersAll(){
 
   public onSuccessUsersAll(response){
   this.progress = false;
-  this.data_sponsor = response.json();
+  //this.data_sponsor = response.json();
   
   //this.dataService = this.completerService.local(this.data_patro, 'name.ita', 'name');
   //this.data = response.json().filter(i => i.id_rol == '4' && i.ita_master == localStorage.getItem('ita')); 
   //this.data = this.data.filter(i => i.id_rol < '4') ;
   }
 
-  public getUsersPlatinum(){
+  public getUsersPlatinum(q){
     this.progress = true;
     //console.log(this.rols);
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(q).subscribe(
         (response) => this.onSuccessUsersPlatinum (response),
         (error) => console.log(error.json()), 
         //() => this.onCompleteLogin()

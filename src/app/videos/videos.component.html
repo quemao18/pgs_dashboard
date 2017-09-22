@@ -13,7 +13,7 @@
           <div class="inner-addon left-addon">
         <i class="glyphicon glyphicon-search"></i>
         <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter 
-        (keyup)="0">
+        (keyup)="0" (keyup.enter)="getMedias($event.target.value)">
         </div>
         </div>
       </div>
@@ -28,8 +28,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data | filterBy: ['name']: searchFilter.value | paginate: { itemsPerPage: pagination, currentPage: page }">
-         <!--<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
+        <tr *ngFor="let row of data | paginate: { itemsPerPage: pagination, currentPage: page }">
+         <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
          <td>  {{row.name}} - {{row.duration | minuteSeconds }} </td> 
          <td>  {{row.name_category}} </td> 
          <td>  {{row.name_sub_category}} </td> 
@@ -143,26 +143,26 @@
                   </div>
                 </div>
 
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div [formGroup]="myFormUsers" class="form-group">
-                  <label for="users">Usuario creador<a  class="icon" [routerLink]=''> </a></label>
-                  <input required auto-complete
-                   [(ngModel)]="formData.users"
-                   formControlName="users"
-                   [source]="dataUsers"
-                   [list-formatter]="autocompleListFormatterUsers"
-                   value-property-name="ita"
-                   display-property-name="name" 
-                   max-num-list ="10"
-                   min-chars = "3"
-                   placeholder="Creador"
-                   loading-text = "Buscando..."
-                   no-match-found-text = "Nada encontrado"
-                   class="form-control"> 
+                <div class="col-md-4">
+                  <div class="form-group">
+                    
+                    <label for="users">Usuario creador<a  class="icon" [routerLink]=''> </a></label>
+                     <ng2-completer #remoteDataCreator required
+                     [(ngModel)]="creator"
+                      class="completer-limit"
+                      name = "creator"
+                     [datasource]="customData"
+                     [minSearchLength]="3"
+                     [placeholder]="placeholderCreator"
+                     [inputClass]="'form-control'"
+                     [textSearching]="'Buscando...'"
+                     (selected)="onCreatorSelected($event)"
+                     [textNoResults]="'Nada encontrado'">
+                     </ng2-completer>
+                    
                   </div>
                 </div>
-              </div>
+
             </div>
             
 
@@ -176,7 +176,7 @@
             </div>
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="busy || !url.valid || subCategory.value==0 || category.value==0 || !form.valid || !myFormUsers.valid || formData.users.ita==''" type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+            <button [disabled]="busy || !url.valid || subCategory.value==0 || category.value==0 || !form.valid " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
             <button (click)="showNewForm=!showNewForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -232,26 +232,26 @@
                   </div>
                 </div>
 
-              <div class="col-md-4">
-                <div class="form-group">
-                  <div [formGroup]="myFormUsers" class="form-group">
-                  <label for="users">Usuario creador<a  class="icon" [routerLink]=''> </a></label>
-                  <input required auto-complete
-                   [(ngModel)]="formData.users"
-                   formControlName="users"
-                   [source]="dataUsers"
-                   [list-formatter]="autocompleListFormatterUsers"
-                   value-property-name="ita"
-                   display-property-name="name" 
-                   max-num-list ="10"
-                   min-chars = "3"
-                   placeholder="Creador"
-                   loading-text = "Buscando..."
-                   no-match-found-text = "Nada encontrado"
-                   class="form-control"> 
+                <div class="col-md-4">
+                  <div class="form-group">
+                    
+                    <label for="users">Usuario creador<a  class="icon" [routerLink]=''> </a></label>
+                     <ng2-completer #remoteDataCreator required
+                     [(ngModel)]="creator"
+                      class="completer-limit"
+                      name = "creator"
+                     [datasource]="customData"
+                     [minSearchLength]="3"
+                     [placeholder]="placeholderCreator"
+                     [inputClass]="'form-control'"
+                     [textSearching]="'Buscando...'"
+                     (selected)="onCreatorSelected($event)"
+                     [textNoResults]="'Nada encontrado'">
+                     </ng2-completer>
+                    
                   </div>
                 </div>
-              </div>
+
             </div>
             
 
@@ -265,7 +265,7 @@
             </div>
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="busy || !url.valid || subCategory.value==0 || category.value==0 || !myFormUsers.valid " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+            <button [disabled]="busy || !url.valid || subCategory.value==0 || category.value==0 " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
             <button (click)="showEditForm=!showEditForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>

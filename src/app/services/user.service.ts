@@ -42,19 +42,19 @@ export class UserService {
       return this.http.get(vars.apiUrl + '/users/users_questions/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
-     public getUsers(){
+     public getUsers(q){
       //console.log(pago);
-      return this.http.get(vars.apiUrl + '/users/users/' + vars.nameKeyApi + '/' + vars.keyApi)
+      return this.http.get(vars.apiUrl + '/users/users/' + vars.nameKeyApi + '/' + vars.keyApi + '/q/' + q)
   }
 
-    public getUsersApp(){
+    public getUsersApp(q){
       //console.log(pago);
-      return this.http.get(vars.apiUrl + '/users/users_app/' + vars.nameKeyApi + '/' + vars.keyApi)
+      return this.http.get(vars.apiUrl + '/users/users_app/' + vars.nameKeyApi + '/' + vars.keyApi + '/q/' + q)
   }
 
-    public getUsersBackEnd(){
+    public getUsersBackEnd(q){
       //console.log(pago);
-      return this.http.get(vars.apiUrl + '/users/users_backend/' + vars.nameKeyApi + '/' + vars.keyApi)
+      return this.http.get(vars.apiUrl + '/users/users_backend/' + vars.nameKeyApi + '/' + vars.keyApi + '/q/' + q)
   }
 
     public updateUser(user){

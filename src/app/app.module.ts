@@ -49,7 +49,7 @@ import { ImageUploadModule } from "angular2-image-upload";
 
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
-
+import { Ng2CompleterModule } from "ng2-completer";
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 
 const appRoutes: Routes = [
@@ -128,7 +128,8 @@ const appRoutes: Routes = [
     NguiAutoCompleteModule,
     CustomFormsModule,
     NgxMyDatePickerModule,
-    ImageUploadModule.forRoot()
+    ImageUploadModule.forRoot(),
+    Ng2CompleterModule
   ],
   providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe,
   {provide: LocationStrategy, useClass: HashLocationStrategy}

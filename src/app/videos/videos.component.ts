@@ -13,6 +13,10 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
+import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteData } from 'ng2-completer';
+import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
+import { CustomData } from "../services/custom-data";
+
 @Component({
   selector: 'app-videos',
   templateUrl: './videos.component.html',
@@ -138,9 +142,15 @@ export class VideosComponent implements OnInit {
   public compUrl:string = '?rel=0&autoplay=1';
   public duration: number = 0;
   public busy: boolean = false;
+  public creator: any;
+  public q : string = '';
+  @ViewChild("remoteDataCreator") private remoteDataCreator: CompleterCmp;
+  public name: string;
+  public placeholderCreator: string;
+  public customData: CustomData;
   
-  constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
-  
+  constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
+    this.customData = new CustomData(userService, http); 
    }
 
   ngOnInit() {
@@ -175,14 +185,15 @@ export class VideosComponent implements OnInit {
 
     //this.formData.categories.id_category = 1;
     this.showEditForm = this.showNewForm = this.progress = false;
-    this.getMedias();
+    this.getMedias('');
     this.getCategories();
     //this.getSubCategoriesAll();
     //this.getSubCategories();
     this.formData.id_category = 0;
     this.formData.id_sub_category = 0;
     this.formData.description = '';
-    this.formData.duration = '';
+    this.formData.duration = 0;
+    this.placeholderCreator = 'Nombre del creador o ITA';
     
   }
 
@@ -216,10 +227,25 @@ export class VideosComponent implements OnInit {
   }
 
 
-    public getUsers(){
+  public onCreatorSelected(selected: CompleterItem) {
+    if (selected) {
+      //console.log(selected.originalObject);
+        this.formData.users = {
+          "ita": selected.originalObject.ita,
+          "name": selected.originalObject.name + ' ' + selected.originalObject.last
+        };
+        this.remoteDataCreator.blur();
+    } else {
+        this.formData.users = {};
+    }
+    //console.log(this.formData);
+  }
+
+
+    public getUsers(q){
     this.myFormUsers.disable();
     //console.log(this.rols);
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(q).subscribe(
         (response) => { 
             this.myFormUsers.enable();
             this.dataUsers = response.json(); 
@@ -232,12 +258,17 @@ export class VideosComponent implements OnInit {
 
 
 
-  public getMedias(){
+  public getMedias(q){
     this.progress = true;
     //console.log(this.rols);
-    this.mediaService.getMedias().subscribe(
+    this.mediaService.getMedias(q).subscribe(
         (response) => this.onSuccessMedias (response),
-        (error) => console.log(error.json()), 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          this.data = []; 
+          console.log(error.json()); 
+          this.progress=false; 
+        }, 
         //() => this.onCompleteLogin()
     );
   }
@@ -269,7 +300,8 @@ export class VideosComponent implements OnInit {
     this.formData.id_sub_category = 0;
     this.formData.description = '';
     this.disabledSubCategory = true;
-    this.getUsers();
+    this.placeholderCreator = 'Nombre del creador o ITA';
+    this.creator = '';
   }
 
 
@@ -281,8 +313,7 @@ export class VideosComponent implements OnInit {
       "ita": row.ita_user_create,
       "name": row.name_user_create + ' ' + row.last_user_create
     };
-    //console.log(row);
-    this.getUsers();
+    this.creator = row.name_user_create + ' ' + row.last_user_create;
   }
 
 

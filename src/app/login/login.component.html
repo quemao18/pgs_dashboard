@@ -151,43 +151,42 @@
                 </div>
               </div>
             </div>
+
             <div class="row">
               <div class="col-md-6">
-                <div [formGroup]="myFormSponsor" class="form-group">
+               
                   <label for="sponsor">Patrocinador</label>
-                 <input  ngui-auto-complete
-                   [(ngModel)]="formData.sponsor"
-                   formControlName="sponsor"
-                   [source]="data_sponsor"
-                   [list-formatter]="autocompleListFormatter"
-                   value-property-name="ita"
-                   display-property-name = "name"
-                   max-num-list ="10"
-                   min-chars = "3"
-                   [placeholder]="placeholderSponsor"
-                   loading-text = "Buscando..."
-                   no-match-found-text = "Nada encontrado"
-                   class="form-control">
-                </div> 
-                </div>
+                  <ng2-completer #remoteDataSponsor required
+                  [(ngModel)]="sponsor"
+                   class="completer-limit"
+                   name = "sponsor"
+                  [datasource]="customData"
+                  [minSearchLength]="3"
+                  [placeholder]="placeholderSponsor"
+                  [inputClass]="'form-control'"
+                  [textSearching]="'Buscando...'"
+                  (selected)="onSponsorSelected($event)"
+                  [textNoResults]="'Nada encontrado'">
+                  </ng2-completer>
+        
+              </div>
               <div class="col-md-6">
-                <div [formGroup]="myFormPlatinum" class="form-group">
+                
                   <label for="platinum">Platino directo</label>
-                 <input  ngui-auto-complete
-                   [(ngModel)]="formData.platinum"
-                   formControlName="platinum"
-                   [source]="data_platinum"
-                   [list-formatter]="autocompleListFormatter"
-                   value-property-name="ita"
-                   display-property-name="name" 
-                   max-num-list ="10"
-                   min-chars = "3"
-                   [placeholder]="placeholderPlatinum"
-                   loading-text = "Buscando..."
-                   no-match-found-text = "Nada encontrado"
-                   class="form-control">
-                </div> 
-                </div>
+                  <ng2-completer #remoteDataPlatinum required
+                  [(ngModel)]="platinum"
+                   class="completer-limit"
+                   name = "platinum"
+                  [datasource]="customData"
+                  [minSearchLength]="3"
+                  [placeholder]="placeholderPlatinum"
+                  [inputClass]="'form-control'"
+                  [textSearching]="'Buscando...'"
+                  (selected)="onPlatinumSelected($event)"
+                  [textNoResults]="'Nada encontrado'">
+                  </ng2-completer>
+           
+              </div>
             </div>
             <div class="row">
               <div class="col-md-4">
@@ -216,15 +215,14 @@
             </div>
             
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="password">Password</label>
                   <input type="password" required class="form-control" id="password" name="password" placeholder="Password" [(ngModel)]="formData.password">
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
+            
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="password_conf">Repite el Password</label>
                   <input type="password" class="form-control" id="password_conf" name="password_conf" required placeholder="Repite el Password" [(ngModel)]="formData.password_conf">
@@ -233,7 +231,7 @@
             </div>
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="!form.valid || !formData.sponsor || !formData.platinum || (formData.password!=formData.password_conf)" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]="!form.valid || (formData.password!=formData.password_conf)" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
             <button (click)="showRegisterForm=!showRegisterForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             

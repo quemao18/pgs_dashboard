@@ -1,4 +1,4 @@
-import { Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter, ViewChildren, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import {  Router, ActivatedRoute, Params } from '@angular/router';
@@ -10,6 +10,10 @@ import * as vars from '../config';
 import { AppComponent } from '../app.component';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteData } from 'ng2-completer';
+import { Observable } from "rxjs/Observable";
+import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
+import { CustomData } from "../services/custom-data";
 
 @Component({
   selector: 'app-login',
@@ -80,9 +84,14 @@ export class LoginComponent implements OnInit {
   public placeholderSponsor: string;
   public placeholderPlatinum: string;
   public userNotExist:boolean = false;
+  public customData: CustomData;
+  @ViewChild("remoteDataSponsor") private remoteDataSponsor: CompleterCmp;
+  @ViewChild("remoteDataPlatinum") private remoteDataPlatinum: CompleterCmp;
 
-  constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
+  constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     //this.forget = this.router.get('id');
+    this.customData = new CustomData(userService, http);
+    
    }
 
   public ngOnInit() {
@@ -101,11 +110,14 @@ export class LoginComponent implements OnInit {
           };
           this.placeholderSponsor = "Por favor espere...";
           this.placeholderPlatinum = "Por favor espere...";
+          this.placeholderSponsor = "Nombre del patriconador o ITA...";
+          this.placeholderPlatinum = "Nombre del platino directo o ITA...";
           this.getQuestions();
           //this.showCompletForm = true;           
   }
 
     public register(){
+      
       this.showRegisterForm = true;
       this.myFormSponsor = this.builder.group({
         sponsor : "",
@@ -124,10 +136,13 @@ export class LoginComponent implements OnInit {
 
     this.formData = {};
   
-    this.myFormPlatinum.disable();
-    this.myFormSponsor.disable();
+    //this.myFormPlatinum.disable();
+    //this.myFormSponsor.disable();
     this.placeholderSponsor = "Patrocinador";
     this.placeholderPlatinum = "Platino directo";
+    this.placeholderSponsor = "Nombre del patriconador o ITA...";
+    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
+    this.formData.id_question = 1;
 
     }
 
@@ -162,7 +177,7 @@ export class LoginComponent implements OnInit {
     onErrorUserIta(error){
     this.progress = false;
     this.userNotExist = true;
-    this.getUsers();    
+    //this.getUsers('');    
     /*this.showRegisterForm = false;
     this.formData = {};
     this.showNotification('top', 'center', '<b>'+error.message+' Por favor comuniquese con su platino directo o patrocinante...</b>', 'pe-7s-attention', 4);
@@ -187,7 +202,7 @@ export class LoginComponent implements OnInit {
     });
       
       //if(this.showRegisterForm)
-      this.getUsers();      
+      this.getUsers('');      
 
     }
 
@@ -207,7 +222,7 @@ export class LoginComponent implements OnInit {
     this.myFormSponsor = this.builder.group({
       sponsor: ['', [Validators.required, Validators.minLength(3)]],
     });
-      this.getUsers();      
+      //this.getUsers('');      
     }
 
     public getNameUser(ita){
@@ -385,16 +400,47 @@ export class LoginComponent implements OnInit {
     this.formData = {};
     this.router.navigate(['/login']);
     }
-  
-    public getUsers(){
+
+    public onSponsorSelected(selected: CompleterItem) {
+      if (selected) {
+        //console.log(selected.originalObject);
+          this.formData.sponsor = {
+            "ita": selected.originalObject.ita,
+            "name": selected.originalObject.name + ' ' + selected.originalObject.last
+          };
+          this.remoteDataSponsor.blur();
+          this.remoteDataPlatinum.focus();
+      } else {
+          this.formData.sponsor = {};
+      }
+      //console.log(this.formData);
+    }
+
+    public onPlatinumSelected(selected: CompleterItem) {
+      if (selected) {
+        //console.log(selected.originalObject);
+          this.formData.platinum = {
+            "ita": selected.originalObject.ita,
+            "name": selected.originalObject.name + ' ' + selected.originalObject.last
+          };
+          this.remoteDataPlatinum.blur();
+      } else {
+          this.formData.platinum = {};
+      }
+      //console.log(this.formData);
+    }
+
+    public getUsers(element){
     //this.progress = true;
-    this.myFormSponsor.disable();
-    this.myFormPlatinum.disable();
+    //this.myFormSponsor.disable();
+    //this.myFormPlatinum.disable();
     this.placeholderSponsor = "Por favor espere...";
     this.placeholderPlatinum = "Por favor espere...";
+    
     //console.log(this.rols);
-    this.userService.getUsers().subscribe(
-        (response) => this.onSuccessUsers (response),
+    
+    this.userService.getUsers(element.value).subscribe(
+        (response) => { this.onSuccessUsers (response) },
         (error) => console.log(error.json()), 
         //() => this.onCompleteLogin()
     );
@@ -404,10 +450,10 @@ export class LoginComponent implements OnInit {
   public onSuccessUsers(response){
   //console.log(response.json())
   this.progress = false;
-  this.myFormPlatinum.enable();
-  this.myFormSponsor.enable();
-  this.placeholderSponsor = "Nombre del patriconador o ITA...";
-  this.placeholderPlatinum = "Nombre del platino directo o ITA...";
+  //this.myFormPlatinum.enable();
+  //this.myFormSponsor.enable();
+  //this.placeholderSponsor = "Nombre del patriconador o ITA...";
+  //this.placeholderPlatinum = "Nombre del platino directo o ITA...";
   this.usersAll = response.json();
   this.data_sponsor = response.json();
   this.data_platinum = response.json().filter(i => i.id_position < '4') ;

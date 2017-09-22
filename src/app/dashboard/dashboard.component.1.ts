@@ -1,14 +1,9 @@
 import {Component, OnInit, trigger, state, style, transition, animate} from '@angular/core';
 import { LegendItem, ChartType } from '../lbd/lbd-chart/lbd-chart.component';
 import { Task } from '../lbd/lbd-task-list/lbd-task-list.component';
+import {NotificationService, NotificationOptions} from '../lbd/services/notification.service';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
-import { MediaService } from '../services/media.service';
-import { AuthGuard } from '../services/auth-guard.service';
-import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
-import * as vars from '../config';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 @Component({
   selector: 'app-dashboard',
@@ -111,19 +106,17 @@ export class DashboardComponent implements OnInit {
 
   public tasks: Task[];
 
-  constructor(public userService: UserService, private authService: AuthService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService) { }
+  constructor(private authService: AuthService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService) { }
 
   public ngOnInit() {
     
     this.navbarTitleService.updateTitle('Dashboard');
-    var name = localStorage.getItem('name') + ' ' + localStorage.getItem('last');
     
-    setTimeout(()=>{
     this.notificationService.notify(new NotificationOptions({
-      message: 'Hola <b>' + name  + '</b>. Bienvenido al <b>Dashboard de ' + vars.app + '</b>.',
+      message: 'Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer.',
       icon: 'pe-7s-gift', 
       align: 'center'
-    }))}, 1500);
+    }));
 
     this.emailChartType = ChartType.Pie;
     this.emailChartData = {

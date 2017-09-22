@@ -13,7 +13,7 @@
           <div class="inner-addon left-addon">
         <i class="glyphicon glyphicon-search"></i>
         <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter 
-        (keyup)="0">
+        (keyup)="0" (keyup.enter)="getUsersBackend($event.target.value)">
         </div>
         </div>
       </div>
@@ -28,8 +28,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data | filterBy: ['ita', 'name', 'last']: searchFilter.value | paginate: { itemsPerPage: pagination, currentPage: page }">
-         <!--<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
+        <tr *ngFor="let row of data | paginate: { itemsPerPage: pagination, currentPage: page }">
+         <!-- | filterBy: ['ita', 'name', 'last']: searchFilter.value<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
          <td> {{row.ita}} </td>
          <td> {{row.name}} </td>
          <td> {{row.last}} </td>

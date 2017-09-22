@@ -157,7 +157,7 @@ export class UsersComponent implements OnInit {
     this.showCardUser = this.showEditForm = this.showNewForm = this.progress = false;
     this.getRols();    
     this.getPositions();
-    this.getUsersBackend();
+    this.getUsersBackend('');
   }
 
   public filterValues(val){
@@ -331,22 +331,31 @@ export class UsersComponent implements OnInit {
         //() => this.onCompleteLogin()
     );
   }
-  public getUsers(){
+  public getUsers(q){
     this.progress = true;
     //console.log(this.rols);
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(q).subscribe(
         (response) => this.onSuccessUsers (response),
-        (error) => console.log(error.json()), 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          console.log(error.json()); 
+          this.progress=false; 
+        }, 
         //() => this.onCompleteLogin()
     );
   }
 
-  public getUsersBackend(){
+  public getUsersBackend(q){
     this.progress = true;
     //console.log(this.rols);
-    this.userService.getUsersBackEnd().subscribe(
+    this.userService.getUsersBackEnd(q).subscribe(
         (response) => this.onSuccessUsers (response),
-        (error) => console.log(error.json()), 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          console.log(error.json()); 
+          this.progress=false; 
+          this.data = [];
+        }, 
         //() => this.onCompleteLogin()
     );
   }

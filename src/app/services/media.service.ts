@@ -11,14 +11,14 @@ export class MediaService {
   
   }
 
-  public getMedias(){
+  public getMedias(q){
       //console.log(pago);
-      return this.http.get(vars.apiUrl + '/medias/medias/' + vars.nameKeyApi + '/' + vars.keyApi)
+      return this.http.get(vars.apiUrl + '/medias/medias/' + vars.nameKeyApi + '/' + vars.keyApi + '/q/' + q)
   }
 
- public getAudios(){
+ public getAudios(q){
       //console.log(pago);
-      return this.http.get(vars.apiUrl + '/medias/audios/' + vars.nameKeyApi + '/' + vars.keyApi)
+      return this.http.get(vars.apiUrl + '/medias/audios/' + vars.nameKeyApi + '/' + vars.keyApi + '/q/' + q )
   }
 
   public getCategories(){

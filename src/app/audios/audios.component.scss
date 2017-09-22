@@ -44,3 +44,61 @@
     -webkit-animation: spinner 2s infinite cubic-bezier(0.085, 0.625, 0.855, 0.360);
     animation: spinner 2s infinite cubic-bezier(0.085, 0.625, 0.855, 0.360);
   }
+
+  h1 {
+    margin: 1em 0 .5em;
+  
+  }
+  
+  h3 {
+    color: #444;
+    border-bottom: 1px solid #efefef;
+    margin: 3em 0 1em;
+  }
+  
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+  
+  .card-block {
+    background-color: #f7f5f2;
+  }
+  
+  :host {
+    padding: 5em 0;
+  }
+  
+  :host /deep/ .match {
+    color: darkred;
+  }
+  
+  .completer-limit /deep/ .completer-dropdown {
+    overflow-y: auto;
+    max-height: 20rem;
+  }
+  
+  .chevron {
+    padding-top: 40%;
+  }
+  
+  .chevron-holder {
+    position: absolute;
+    height: 100%;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top-color: rgba(0, 0, 0, 0.14902);
+    background-color: white;
+    border-radius: 25%;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-left: 0;
+  }
+  
+  .chevron-holder.dropdown-open {
+    border-color: #5cb3fd;
+  }
+  
+  .with-chevron /deep/ .completer-input {
+    border-right: 0;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }

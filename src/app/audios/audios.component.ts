@@ -13,6 +13,10 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
+import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteData } from 'ng2-completer';
+import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
+import { CustomData } from "../services/custom-data";
+
 
 @Component({
   selector: 'app-audios',
@@ -144,9 +148,15 @@ export class AudiosComponent implements OnInit {
   public audio_url: string = '';
   public duration: string = '';
   public _newAudio : boolean = false;
+  public creator: any;
+  public q : string = '';
+  @ViewChild("remoteDataCreator") private remoteDataCreator: CompleterCmp;
+  public name: string;
+  public placeholderCreator: string;
+  public customData: CustomData;
   
-  constructor(private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
-  
+  constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
+    this.customData = new CustomData(userService, http); 
    }
 
   ngOnInit() {
@@ -161,6 +171,7 @@ export class AudiosComponent implements OnInit {
     //this.IvooxGetID("http://mx.ivoox.com/es/audio-2-crea-tu-lista-audios-mp3_rf_4653879_1.html");
     this.data = [];
     this.formData = { };
+    this.creator = { };
     this.formDataEdit = { };
     this.formModule = { };
     this.formSubCategory = { };
@@ -174,13 +185,15 @@ export class AudiosComponent implements OnInit {
 
     //this.formData.categories.id_category = 1;
     this.showEditForm = this.showNewForm = this.progress = false;
-    this.getAudios();
+    this.getAudios('');
     this.getModules();
 
     this.formData.id_module = 0;
     this.formData.description = '';
     this.formData.file_name = '';
     this.formData.duration = 0;
+    this.placeholderCreator = 'Nombre del creador o ITA';
+    //this.creator = 'Por favor espere...';
     
   }
 
@@ -194,17 +207,35 @@ export class AudiosComponent implements OnInit {
     );
   }
 
+  public onCreatorSelected(selected: CompleterItem) {
+    if (selected) {
+      //console.log(selected.originalObject);
+        this.formData.users = {
+          "ita": selected.originalObject.ita,
+          "name": selected.originalObject.name + ' ' + selected.originalObject.last
+        };
+        this.remoteDataCreator.blur();
+    } else {
+        this.formData.users = {};
+    }
+    //console.log(this.formData);
+  }
 
-
-    public getUsers(){
+    public getUsers(q){
     this.myFormUsers.disable();
+    this.creator = 'Espere por favor...';
     //console.log(this.rols);
-    this.userService.getUsers().subscribe(
+    this.userService.getUsers(q).subscribe(
         (response) => { 
             this.myFormUsers.enable();
+            this.creator = 'Nombre del creador o ITA';
             this.dataUsers = response.json(); 
         }, 
-        (error) => { console.log(error.json()); this.progress=false; }, 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          console.log(error.json()); 
+          this.progress=false; 
+        }, 
         //() => this.onCompleteLogin()
     );
     
@@ -212,12 +243,17 @@ export class AudiosComponent implements OnInit {
 
 
 
-  public getAudios(){
+  public getAudios(q){
     this.progress = true;
     //console.log(this.rols);
-    this.mediaService.getAudios().subscribe(
+    this.mediaService.getAudios(q).subscribe(
         (response) => this.onSuccessAudios (response),
-        (error) => console.log(error.json()), 
+        (error) => { 
+        this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+        this.data = []; 
+        console.log(error.json()); 
+        this.progress=false; 
+      }, 
         //() => this.onCompleteLogin()
     );
   }
@@ -243,13 +279,16 @@ export class AudiosComponent implements OnInit {
 
   public newAudio(){
     this.showNewForm = true;
-    this.audioIsUpload = false;
+    this.audioIsUpload = true;
     this.showEditForm = false;
     this.formData ={};
     this.formData.id_module = 0;
     this.formData.description = '';
     this.formData.is_audio = 1;
-    this.getUsers();
+    this.placeholderCreator = 'Nombre del creador o ITA';
+    this.creator = '';
+    //this.getUsers('');
+    
   }
 
 
@@ -257,12 +296,13 @@ export class AudiosComponent implements OnInit {
     this.showEditForm = true;
     this.formData = row;
     this.formData.is_audio = row.is_audio;
+    //console.log(row);
+    //this.getUsers('');
     this.formData.users = {
       "ita": row.ita_user_create,
       "name": row.name_user_create + ' ' + row.last_user_create
     };
-    //console.log(row);
-    this.getUsers();
+    this.creator = row.name_user_create + ' ' + row.last_user_create;
   }
 
 
