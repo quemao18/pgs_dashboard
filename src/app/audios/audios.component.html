@@ -14,7 +14,7 @@
         <div class="col-xs-12 col-sm-12 col-md-4 pull-right">
           <div class="inner-addon left-addon">
         <i class="glyphicon glyphicon-search"></i>
-        <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter 
+        <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter [(ngModel)]="search"
         (keyup)="0" (keyup.enter)="getAudios($event.target.value)">
         </div>
         </div>

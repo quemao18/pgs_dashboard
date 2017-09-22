@@ -12,9 +12,9 @@ export class NewService {
   
   }
 
-  public getNews(){
+  public getNews(q){
       //console.log(pago);
-      return this.http.get(vars.apiUrl + '/news/news/' + vars.nameKeyApi + '/' + vars.keyApi)
+      return this.http.get(vars.apiUrl + '/news/news/' + vars.nameKeyApi + '/' + vars.keyApi + '/q/' + q )
   }
 
   public getEvents(){

@@ -139,6 +139,8 @@ export class NewsComponent implements OnInit {
   public banner_url: string = '';
   public newPic : boolean = false;
 
+  public search:string ='';
+
   constructor(public datePipe:DatePipe, private builder: FormBuilder, private _sanitizer: DomSanitizer, public newService: NewService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
   
    }
@@ -157,7 +159,7 @@ export class NewsComponent implements OnInit {
     this.banner_url = '';
 
     this.showEditForm = this.showNewForm = this.progress = this.imageIsUpload = this.newPic = false;
-    this.getNews();
+    this.getNews(this.search);
     this.getEvents();
     this.formData.id_event = 0;
     this.formData.banner_url = '';
@@ -198,16 +200,21 @@ export class NewsComponent implements OnInit {
     );
   }
 
-
-    public getNews(){
+  public getNews(q){
     this.progress = true;
     //console.log(this.rols);
-    this.newService.getNews().subscribe(
+    this.newService.getNews(q).subscribe(
         (response) => this.onSuccessNews (response),
-        (error) => console.log(error.json()), 
+        (error) => { 
+        this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+        this.data = []; 
+        console.log(error.json()); 
+        this.progress=false; 
+      }, 
         //() => this.onCompleteLogin()
     );
   }
+
 
   public onSuccessNews(response){
     this.progress = false;

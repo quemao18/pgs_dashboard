@@ -155,6 +155,8 @@ export class AudiosComponent implements OnInit {
   public placeholderCreator: string;
   public customData: CustomData;
   
+  public search:string ='';
+
   constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public mediaService: MediaService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     this.customData = new CustomData(userService, http); 
    }
@@ -185,7 +187,7 @@ export class AudiosComponent implements OnInit {
 
     //this.formData.categories.id_category = 1;
     this.showEditForm = this.showNewForm = this.progress = false;
-    this.getAudios('');
+    this.getAudios(this.search);
     this.getModules();
 
     this.formData.id_module = 0;

@@ -149,6 +149,8 @@ export class UsersAppComponent implements OnInit {
   public placeholderSponsor: string;
   public placeholderPlatinum: string;
 
+  public search:string ='';
+
   constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
     this.customData = new CustomData(userService, http); 
   }
@@ -181,7 +183,7 @@ export class UsersAppComponent implements OnInit {
     this.showCardUser = this.showEditForm = this.showNewForm = this.progress = false;
     this.getRols();    
     this.getPositions();
-    this.getUsers('');
+    this.getUsers(this.search);
     //this.getUsersAll();
     //this.getUsersPlatinum();
     this.myFormSponsor = this.builder.group({

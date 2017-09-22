@@ -127,7 +127,7 @@ const appRoutes: Routes = [
     NgPipesModule,
     NguiAutoCompleteModule,
     CustomFormsModule,
-    NgxMyDatePickerModule,
+    NgxMyDatePickerModule.forRoot(),
     ImageUploadModule.forRoot(),
     Ng2CompleterModule
   ],

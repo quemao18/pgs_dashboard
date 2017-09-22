@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, OnInit, ViewChild, trigger, state, style, transition, animate, Input } from '@angular/core';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import { TableData } from '../lbd/lbd-table/lbd-table.component';
 import { Router } from '@angular/router';
@@ -127,6 +127,9 @@ export class UsersComponent implements OnInit {
   @ViewChild('modal')
   modal: ModalComponent;
 
+  public search:string ='';
+  
+
   constructor(private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
 
    }
@@ -157,7 +160,7 @@ export class UsersComponent implements OnInit {
     this.showCardUser = this.showEditForm = this.showNewForm = this.progress = false;
     this.getRols();    
     this.getPositions();
-    this.getUsersBackend('');
+    this.getUsersBackend(this.search);
   }
 
   public filterValues(val){
