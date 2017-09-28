@@ -22,6 +22,7 @@ import { AuthGuard } from './services/auth-guard.service';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { MediaService } from './services/media.service';
+import { SchoolService } from './services/school.service';
 import { NewService } from './services/new.service';
 import { LoginComponent, LogoutComponent } from './login/login.component';
 import { UsersComponent } from './users/users.component';
@@ -37,7 +38,7 @@ import { Ng2TableModule } from 'ng2-table/ng2-table';
 import { AudiosComponent } from './audios/audios.component';
 import { VideosComponent } from './videos/videos.component';
 import { NewsComponent } from './news/news.component';
-import { SchoolComponent } from './school/school.component';
+import { SchoolsComponent } from './schools/schools.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { ProfileComponent } from './profile/profile.component';
@@ -63,7 +64,7 @@ const appRoutes: Routes = [
       { path: 'users-app', component: UsersAppComponent, canActivate: [AuthGuard] },
       { path: 'audios', component: AudiosComponent, canActivate: [AuthGuard] },
       { path: 'videos', component: VideosComponent, canActivate: [AuthGuard] },
-      { path: 'school', component: SchoolComponent, canActivate: [AuthGuard] },
+      { path: 'schools', component: SchoolsComponent, canActivate: [AuthGuard] },
       { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent,  },
       { path: 'change-pass', component: ChangePassComponent, },
@@ -103,7 +104,7 @@ const appRoutes: Routes = [
     AudiosComponent,
     VideosComponent,
     NewsComponent,
-    SchoolComponent,
+    SchoolsComponent,
     ProfileComponent, 
     MinuteSecondsPipe
 
@@ -131,7 +132,7 @@ const appRoutes: Routes = [
     ImageUploadModule.forRoot(),
     Ng2CompleterModule
   ],
-  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe,
+  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService,
   {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
       { type: NavItemType.Sidebar, title: 'Usuarios App', routerLink: 'users-app', iconClass: 'pe-7s-phone', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:false, isUserIn:false },
       { type: NavItemType.Sidebar, title: 'Audios', routerLink: 'audios', iconClass: 'pe-7s-headphones', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
       { type: NavItemType.Sidebar, title: 'Videos', routerLink: 'videos', iconClass: 'pe-7s-video', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
-      { type: NavItemType.Sidebar, title: 'Escuela de negocios', routerLink: 'school', iconClass: 'pe-7s-portfolio', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
+      { type: NavItemType.Sidebar, title: 'Escuela de negocios', routerLink: 'schools', iconClass: 'pe-7s-portfolio', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
       { type: NavItemType.Sidebar, title: 'Noticias', routerLink: 'news', iconClass: 'pe-7s-news-paper', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
       //{ type: NavItemType.Sidebar, title: 'Salir', routerLink: 'logout', iconClass: 'pe-7s-close',  isLoggedIn: true },
       //{ type: NavItemType.NavbarRight, title: this.auth.getNameUser(), iconClass: 'pe-7s-user',  isLoggedIn: true },

@@ -145,7 +145,6 @@ export class UserService {
         let formDataUpload:FormData = new FormData();
         formDataUpload.append('image', file, localStorage.getItem('ita')+ '.' +file.name.split('.').pop());
         let headers = new Headers();
-        console.log(file.name.split('.').pop());
         /** No need to include Content-Type in Angular 4 */
         //headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
