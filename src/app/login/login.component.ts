@@ -341,8 +341,10 @@ export class LoginComponent implements OnInit {
     //this.pService.done();
     this.progress = false;
     this.authService.setLoggedIn(false);
-    //console.log(error);
+    if(error.message)
     this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    else
+    this.showNotification('top', 'center', '<b>Error al comunicar con el servidor</b>', 'pe-7s-attention', 4);
     //this.authService.logout();
   }
   
@@ -364,7 +366,7 @@ export class LoginComponent implements OnInit {
     console.log('Submitting values', this.formData);
     if(!this.userNotExist){
       //actualiza usuario
-     this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+     this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccess(response.json()), 
         (error) => this.onError(error.json()), 
         () => this.onComplete()
@@ -436,12 +438,18 @@ export class LoginComponent implements OnInit {
     //this.myFormPlatinum.disable();
     this.placeholderSponsor = "Por favor espere...";
     this.placeholderPlatinum = "Por favor espere...";
+    this.placeholderSponsor = "Nombre del patriconador o ITA...";
+    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
     
     //console.log(this.rols);
     
     this.userService.getUsers(element.value).subscribe(
         (response) => { this.onSuccessUsers (response) },
-        (error) => console.log(error.json()), 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          console.log(error.json()); 
+          this.progress=false; 
+        }, 
         //() => this.onCompleteLogin()
     );
   }
@@ -480,7 +488,12 @@ export class LoginComponent implements OnInit {
     //this.progress = true;
     this.userService.getQuestions().subscribe(
         (response) => this.questions = (response.json()), 
-        (error) => console.log(error.json())
+        (error) => { 
+          if(error.message)
+          this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+          else
+          this.showNotification('top', 'center', '<b>Error al comunicar con el servidor</b>', 'pe-7s-attention', 4);
+         }
        //() => this.onCompleteForget()
       );
    

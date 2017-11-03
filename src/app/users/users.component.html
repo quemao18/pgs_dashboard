@@ -36,8 +36,8 @@
          <td> {{row.position}} </td>
          <td> {{row.rol}} </td>
           <td> 
-              <a (click)="showUser(row)" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
-              <a (click)="editUser(row)" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
+              <a (click)="showUser(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
+              <a (click)="editUser(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
               <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i (onCreate)="getStatusUser(row.ita)" [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
           </td>  
         </tr>

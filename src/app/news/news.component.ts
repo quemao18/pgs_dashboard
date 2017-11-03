@@ -146,7 +146,7 @@ export class NewsComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.navbarTitleService.updateTitle('Videos');
+    this.navbarTitleService.updateTitle('Noticias');
 
     this.tableData = {
     headerRow: ['Nombre', 'Evento', 'Desde', 'Hasta' , 'ACCIONES'],
@@ -195,7 +195,11 @@ export class NewsComponent implements OnInit {
     //this.myFormSubCategory.disable();
     this.newService.getEvents().subscribe(
         (response) => this.dataEvents = response.json(), 
-        (error) => console.log(error.json()), 
+        (error) => { 
+          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          console.log(error.json()); 
+          this.progress=false; 
+        }, 
         //() => this.onCompleteLogin()
     );
   }

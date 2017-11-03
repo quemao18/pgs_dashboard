@@ -284,7 +284,7 @@ export class ProfileComponent implements OnInit {
       this.formData.avatar_url = this.avatar_url;
 
     //console.log('Submitting values', this.formData);
-     this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+     this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
         (error) => this.onErrorUpdate(error.json()), 
         () => this.onCompleteUpdate()

@@ -35,10 +35,10 @@
          <td>  {{row.name_sub_category}} </td> 
          <td>  {{row.name_user_create}} {{row.last_user_create}}</td> <!-- Creado por -->
           <td> 
-              <a (click)="showMedia(row)" class="icon" [routerLink]=""><i class="pe-7s-film"></i></a> 
-              <a (click)="editMedia(row)" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
+              <a (click)="showMedia(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-film"></i></a> 
+              <a (click)="editMedia(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
               <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i (onCreate)="getStatusMedia(row.ita)" [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
-              <a (click)="deleteMedia(row)" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
+              <a (click)="deleteMedia(row)" title="Eliminar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
             </td>  
         </tr>
 

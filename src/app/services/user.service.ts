@@ -72,6 +72,14 @@ export class UserService {
       return this.http.post(vars.apiUrl+ "/users/update_user_app/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
       .map(res => res);
   }
+
+  public updateUserAppBack(user, sponsor, platinum){
+    //console.log(pago);
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(vars.apiUrl+ "/users/update_user_app_back/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+    .map(res => res);
+}
     public newUser(user){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });

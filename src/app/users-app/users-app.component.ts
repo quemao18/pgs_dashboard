@@ -282,7 +282,15 @@ export class UsersAppComponent implements OnInit {
     this.formData = row;
     this.sponsor = row.name_sponsor;
     this.platinum = row.name_platinum;
-    
+    this.formData.sponsor = {
+      "ita": row.ita_sponsor,
+      "name": row.name_sponsor
+    }
+    this.formData.platinum = {
+      "ita": row.ita_platinum,
+      "name": row.name_platinum
+    }
+   //console.log(this.formData);
   }
 
   public showUser(row){
@@ -326,7 +334,7 @@ export class UsersAppComponent implements OnInit {
   public onSubmitEditUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
-     this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+     this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
         (error) => this.onErrorUpdate(error.json()), 
         () => this.onCompleteUpdate()
