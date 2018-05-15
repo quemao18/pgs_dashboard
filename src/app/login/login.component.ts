@@ -355,10 +355,19 @@ export class LoginComponent implements OnInit {
       //this.getUsers();
       this.showRegisterForm = true;
     }
-    else
+    else{
     //console.log('ok');
     //this.app.ngOnInit();
-    this.router.navigate(['/dashboard']);
+      var name = localStorage.getItem('name') + ' ' + localStorage.getItem('last');
+      setTimeout(()=>{
+      this.notificationService.notify(new NotificationOptions({
+      message: 'Hola <b>' + name  + '</b>. Bienvenido al <b>Dashboard de ' + vars.app + '</b>.',
+      icon: 'pe-7s-gift', 
+      align: 'center'
+      }))}, 1500);
+
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   public onSubmitEditUser(){

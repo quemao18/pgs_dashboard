@@ -118,13 +118,14 @@ export class DashboardComponent implements OnInit {
     this.navbarTitleService.updateTitle('Dashboard');
     var name = localStorage.getItem('name') + ' ' + localStorage.getItem('last');
     
+    /*
     setTimeout(()=>{
     this.notificationService.notify(new NotificationOptions({
       message: 'Hola <b>' + name  + '</b>. Bienvenido al <b>Dashboard de ' + vars.app + '</b>.',
       icon: 'pe-7s-gift', 
       align: 'center'
     }))}, 1500);
-
+*/
     this.emailChartType = ChartType.Pie;
     this.emailChartData = {
       labels: ['62%', '32%', '6%'],
