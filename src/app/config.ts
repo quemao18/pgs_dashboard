@@ -13,6 +13,6 @@ export var limit = 60; //limite consulta api
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
     apiUrl='http://localhost:8080/npeht_api/api';
 else
-    apiUrl='http://144.217.255.53/npeht_api/api';
+    apiUrl='http://api.npeht.com/api';
 
 export var apiUrl;
