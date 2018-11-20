@@ -194,7 +194,7 @@ export class AudiosComponent implements OnInit {
     this.formData.description = '';
     this.formData.file_name = '';
     this.formData.duration = 0;
-    this.placeholderCreator = 'Nombre del creador o ITA';
+    this.placeholderCreator = 'Nombre del creador';
     //this.creator = 'Por favor espere...';
     
   }
@@ -213,7 +213,7 @@ export class AudiosComponent implements OnInit {
     if (selected) {
       //console.log(selected.originalObject);
         this.formData.users = {
-          "ita": selected.originalObject.ita,
+          "id_user": selected.originalObject.id_user,
           "name": selected.originalObject.name + ' ' + selected.originalObject.last
         };
         this.remoteDataCreator.blur();
@@ -230,7 +230,7 @@ export class AudiosComponent implements OnInit {
     this.userService.getUsers(q).subscribe(
         (response) => { 
             this.myFormUsers.enable();
-            this.creator = 'Nombre del creador o ITA';
+            this.creator = 'Nombre del creador';
             this.dataUsers = response.json(); 
         }, 
         (error) => { 
@@ -287,7 +287,7 @@ export class AudiosComponent implements OnInit {
     this.formData.id_module = 0;
     this.formData.description = '';
     this.formData.is_audio = 1;
-    this.placeholderCreator = 'Nombre del creador o ITA';
+    this.placeholderCreator = 'Nombre del creador';
     this.creator = '';
     //this.getUsers('');
     
@@ -301,7 +301,7 @@ export class AudiosComponent implements OnInit {
     //console.log(row);
     //this.getUsers('');
     this.formData.users = {
-      "ita": row.ita_user_create,
+      "id_user": row.id_user_create,
       "name": row.name_user_create + ' ' + row.last_user_create
     };
     this.creator = row.name_user_create + ' ' + row.last_user_create;

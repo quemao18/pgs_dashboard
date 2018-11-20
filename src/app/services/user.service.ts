@@ -32,6 +32,16 @@ export class UserService {
       return this.http.get(vars.apiUrl + '/users/users_rols/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
+  public getCompanies(){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + '/users/companies/' + vars.nameKeyApi + '/' + vars.keyApi)
+}
+
+public getSubCompanies(id_company){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + '/users/sub_companies/id_company/' + id_company + '/' + vars.nameKeyApi + '/' + vars.keyApi)
+}
+
   public getPositions(){
       //console.log(pago);
       return this.http.get(vars.apiUrl + '/users/users_positions/' + vars.nameKeyApi + '/' + vars.keyApi)
@@ -117,9 +127,9 @@ export class UserService {
       return this.http.get(vars.apiUrl + '/users/user_status/ita/'+ ita +'/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
-  public getUserIta(ita){
+  public getUserEmail(email){
       //console.log(pago);
-      return this.http.get(vars.apiUrl + '/users/user_ita/ita/'+ ita +'/' + vars.nameKeyApi + '/' + vars.keyApi)
+      return this.http.get(vars.apiUrl + '/users/user_email/email/'+ email +'/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
    forgetPass(user){
@@ -151,7 +161,7 @@ export class UserService {
     if(fileList.length > 0) {
         let file: File = fileList[0];
         let formDataUpload:FormData = new FormData();
-        formDataUpload.append('image', file, localStorage.getItem('ita')+ '.' +file.name.split('.').pop());
+        formDataUpload.append('image', file, localStorage.getItem('id_user')+ '.' +file.name.split('.').pop());
         let headers = new Headers();
         /** No need to include Content-Type in Angular 4 */
         //headers.append('Content-Type', 'multipart/form-data');

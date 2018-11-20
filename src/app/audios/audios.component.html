@@ -39,7 +39,7 @@
           <td> 
               <a (click)="showAudio(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-play"></i></a> 
               <a (click)="editAudio(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
-              <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i (onCreate)="getStatusMedia(row.ita)" [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
+              <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i (onCreate)="getStatusMedia(row.id_user)" [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
               <a (click)="deleteAudio(row)" title="Elimiar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
             </td>  
         </tr>

@@ -195,7 +195,7 @@ export class VideosComponent implements OnInit {
     this.formData.id_sub_category = 0;
     this.formData.description = '';
     this.formData.duration = 0;
-    this.placeholderCreator = 'Nombre del creador o ITA';
+    this.placeholderCreator = 'Nombre del creador';
     
   }
 
@@ -233,7 +233,7 @@ export class VideosComponent implements OnInit {
     if (selected) {
       //console.log(selected.originalObject);
         this.formData.users = {
-          "ita": selected.originalObject.ita,
+          "id_user": selected.originalObject.id_user,
           "name": selected.originalObject.name + ' ' + selected.originalObject.last
         };
         this.remoteDataCreator.blur();
@@ -302,7 +302,7 @@ export class VideosComponent implements OnInit {
     this.formData.id_sub_category = 0;
     this.formData.description = '';
     this.disabledSubCategory = true;
-    this.placeholderCreator = 'Nombre del creador o ITA';
+    this.placeholderCreator = 'Nombre del creador';
     this.creator = '';
   }
 
@@ -312,7 +312,7 @@ export class VideosComponent implements OnInit {
     this.formData = row;
     this.getSubCategories(row.id_category);
     this.formData.users = {
-      "ita": row.ita_user_create,
+      "id_user": row.id_user_create,
       "name": row.name_user_create + ' ' + row.last_user_create
     };
     this.creator = row.name_user_create + ' ' + row.last_user_create;
@@ -336,12 +336,16 @@ export class VideosComponent implements OnInit {
   return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
   }
 
+  public fixUrl(){
+    this.formData.url = this.formData.url.substring(0, this.formData.url.indexOf('&'));
+  }
 
   public onSubmitNewMedia(){
     this.progress=true;
     //if(!this.validateYouTubeUrl(this.formData.url) || !this.isUrlValid(this.formData.url))
     //     this.showNotification('top', 'center', '<b> Verifica el URL </b>', 'pe-7s-attention', 4);
     //else{
+      //this.formData.url = this.formData.url.substring(0, this.formData.url.indexOf('?'));
       this.formData.duration = this.duration;
       console.log('Submitting values', this.formData);
     //if(this.formData.users.ita==null)
@@ -588,6 +592,21 @@ isUrlValid(userInput) {
         return false;
     else
         return true;
+}
+
+ValidURL(str) {
+  var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
+    '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+ // domain name
+    '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
+    '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
+    '(\?[;&a-z\d%_.~+=-]*)?'+ // query string
+    '(\#[-a-z\d_]*)?$','i'); // fragment locater
+  if(!pattern.test(str)) {
+    alert("Please enter a valid URL.");
+    return false;
+  } else {
+    return true;
+  }
 }
 
 }

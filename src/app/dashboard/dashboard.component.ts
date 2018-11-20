@@ -117,7 +117,6 @@ export class DashboardComponent implements OnInit {
     
     this.navbarTitleService.updateTitle('Dashboard');
     var name = localStorage.getItem('name') + ' ' + localStorage.getItem('last');
-    
     /*
     setTimeout(()=>{
     this.notificationService.notify(new NotificationOptions({
@@ -217,4 +216,18 @@ export class DashboardComponent implements OnInit {
       { title: 'Unfollow 5 enemies from twitter', checked: false },
     ];
   }
+
+  isUser(){
+    return this.userService.isUser();
+  }
+
+  isAdmin(){
+    return this.userService.isAdmin();
+  }
+
+  
+  isAuth(){
+    return this.userService.isAuth();
+  }
+  
 }

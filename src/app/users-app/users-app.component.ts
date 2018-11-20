@@ -151,6 +151,14 @@ export class UsersAppComponent implements OnInit {
 
   public search:string ='';
 
+  public formCompany: any;
+  public formSubCompany: any;
+  public myFormCompany: FormGroup;
+  public myFormSubCompany: FormGroup;
+  public disabledSubCompany: boolean = false;
+  public dataCompany: FormControl;
+  public dataSubCompany: FormControl;
+
   constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
     this.customData = new CustomData(userService, http); 
   }
@@ -163,7 +171,7 @@ export class UsersAppComponent implements OnInit {
 
     //this.notify = {show: false, message: ''};
     this.tableData = {
-    headerRow: ['ITA', 'Nombre', 'Apellido', 'Patrocinador' , 'ACCIONES'],
+    headerRow: ['Nombre', 'Apellido', 'Email' , 'Empresa', 'Organización', 'ACCIONES'],
   };
 
     this.data = [];
@@ -194,8 +202,50 @@ export class UsersAppComponent implements OnInit {
     });
     this.placeholderSponsor = "Nombre del patriconador o ITA...";
     this.placeholderPlatinum = "Nombre del platino directo o ITA...";
+
+    this.formCompany = { };
+    this.formSubCompany= { };
+    this.myFormCompany = this.builder.group({
+      company : ['0', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.myFormSubCompany = this.builder.group({
+      sub_company :  ['0', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.getCompanies();
+
+    this.formData.id_company = 0;
+    this.formData.id_sub_company = 0;
     
   }
+
+  public getCompanies() {
+    //this.progress = true;
+    this.userService.getCompanies().subscribe(
+      (response) => this.dataCompany = response.json(), 
+      (error) => console.log(error.json()), 
+      //() => this.onCompleteLogin()
+  );
+    //console.log (val);
+    //this.authService.login_2(this.formData);
+  }
+
+
+  public getSubCompanies(id_company){
+    //console.log(id_category);
+     this.disabledSubCompany = true;
+      this.formCompany.id_sub_company=1;
+      this.userService.getSubCompanies(0).subscribe(
+       (response) => {
+         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         this.formCompany.id_sub_company=0;
+         this.disabledSubCompany = false;
+       }, 
+       (error) => console.log(error.json()), 
+       //() => this.onCompleteLogin()
+   );
+ }
 
   public getNameUser(ita){
     let name = '';
@@ -251,14 +301,25 @@ export class UsersAppComponent implements OnInit {
     this.showNewForm = true;
     this.showEditForm = false;
     this.showCardUser = false;
-    this.formData ={};
-    this.formData.id_rol = 4;
-    this.formData.id_position = 6;
-    this.formData.id_question = 1;
-    this.formData.status = 1;
     
-    
+    this.formData = {
+      ita: '',
+      email: '',
+      name: '',
+      last: '',
+      address: '',
+      id_position: '',
+      phone:'',
+      id_rol: 4,
+      status:1,
+      password:'',
+      id_company:0,
+      id_sub_company:0,
+      photo:'',
+      id_question:1,
 
+    };
+    
   }
 
 
@@ -282,6 +343,8 @@ export class UsersAppComponent implements OnInit {
     this.formData = row;
     this.sponsor = row.name_sponsor;
     this.platinum = row.name_platinum;
+    this.getSubCompanies(row.id_company);
+    this.formData.id_sub_company = row.id_sub_company;
     this.formData.sponsor = {
       "ita": row.ita_sponsor,
       "name": row.name_sponsor
@@ -295,7 +358,7 @@ export class UsersAppComponent implements OnInit {
 
   public showUser(row){
     this.formData = row;
-    console.log();
+    //console.log();
     this.modal.open();
   }
 

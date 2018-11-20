@@ -75,7 +75,9 @@ export class ChangePassComponent implements OnInit {
           this.navbarTitleService.updateTitle('Cambiar Password');
           console.log(localStorage);
           this.formDataChange = {
-            ita: localStorage.getItem('ita'),
+            //ita: localStorage.getItem('ita'),
+            id_user: localStorage.getItem('id_user'),
+            email: localStorage.getItem('email'),
             password: '',
             password_conf: '',
           };

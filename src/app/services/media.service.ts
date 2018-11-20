@@ -38,7 +38,7 @@ export class MediaService {
   }
 
   public newMedia(media){
-      //console.log(pago);
+      //console.log(JSON.stringify(media));
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/new_media/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
@@ -46,7 +46,7 @@ export class MediaService {
   }
 
     public newAudio(media){
-      //console.log(pago);
+      //console.log(JSON.stringify(media));
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/new_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)

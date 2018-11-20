@@ -30,10 +30,12 @@
       <tbody>
         <tr *ngFor="let row of data | paginate: { itemsPerPage: pagination, currentPage: page }">
          <!-- | filterBy: ['ita', 'name', 'last']: searchFilter.value<td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
-         <td> {{row.ita}} </td>
+         <!-- <td> {{row.ita}} </td> -->
          <td> {{row.name}} </td>
          <td> {{row.last}} </td>
-         <td> {{row.position}} </td>
+         <td> {{row.email}} </td>
+         <td> {{row.company_name}} </td>
+         <td> {{row.sub_company_name}} </td>
          <td> {{row.rol}} </td>
           <td> 
               <a (click)="showUser(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
@@ -63,29 +65,29 @@
         </div>
         <div class="content">
           <form #form="ngForm" (ngSubmit)="onSubmitNewUser()">
-            <div class="row">
+          <!--  <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="ita">ITA</label>
                   <input type="text" class="form-control" id="ita" name="ita" required placeholder="ITA" [(ngModel)]="formData.ita">
                 </div>
               </div>
-              <div class="col-md-8">
+            </div>-->
+
+            <div class="row">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
                 </div>
               </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="firstName">Nombre</label>
                   <input type="text" required class="form-control" id="name" name="name" placeholder="Nombre" [(ngModel)]="formData.name">
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="lastName">Apellido</label>
                   <input type="text" required class="form-control" id="last" name="last" placeholder="Apellido" [(ngModel)]="formData.last">
@@ -93,23 +95,23 @@
               </div>
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
                   <label for="address">Dirección</label>
                   <input type="text" required class="form-control" id="address" name="address" placeholder="Dirección" [(ngModel)]="formData.address">
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="row">
-              <div class="col-md-4">
+              <!-- <div class="col-md-6">
                 <div class="form-group">
                   <label for="phone">Teléfono</label>
                   <input type="text" required class="form-control" id="phone" name="phone" placeholder="Teléfono" [(ngModel)]="formData.phone">
               </div>
-              </div>
-              <div class="col-md-4">
+              </div> -->
+              <!--<div class="col-md-4">
                 <div class="form-group">
                 <label for="position">Posición</label> 
                 <select name="positions" id="positions"  [(ngModel)]="formData.id_position" class="form-control" id="inlineFormCustomSelect">
@@ -118,17 +120,36 @@
                   </option>
                 </select>
                 </div>
-              </div>
+              </div>-->
               <div class="col-md-4">
                 <div class="form-group">
-                <label for="rol">Rol</label>
-                <select name="rols" id="rols" [(ngModel)]="formData.id_rol" class="form-control" id="inlineFormCustomSelect">
-                  <option *ngFor="let rol of rols " [value]="rol.id_rol" [selected]="formData.id_rol == rol.id_rol" >
-                    {{ rol.rol }}
-                  </option>
-                </select>
+                 <label for="description">Empresa </label>
+                   <select #category class="form-control" required name="company" [(ngModel)]="formData.id_company" (change)="getSubCompanies($event.target.value)"> 
+                     <option [selected]="formData.id_company == 0" value="0">--Seleccciona--</option>
+                     <option  [selected]="formData.id_company == company.id_company" *ngFor="let company of dataCompany" [value]="company.id_company">{{company.name}}</option>
+                   </select>
                 </div>
-              </div>
+               </div>
+                 <div class="col-md-4">
+                   <div class="form-group">
+                   <label for="description">Organización </label>
+                   <select [disabled]="disabledSubCompany" #subCompany class="form-control" required name="subCompany" [(ngModel)]="formData.id_sub_company" >
+                     <option [selected]="formData.id_sub_company == 0" value="0">--Selecciona--</option>
+                     <option  [selected]="formData.id_sub_company == subCompany.id_sub_company" *ngFor="let subCompany of dataSubCompany" [value]="subCompany.id_sub_company">{{subCompany.name}}</option>
+                   </select>
+                   </div>
+                 </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                  <label for="rol">Rol</label>
+                  <select name="rols" id="rols" [(ngModel)]="formData.id_rol" class="form-control" id="inlineFormCustomSelect">
+                    <option [selected]="formData.id_rol == 0" value="0">--Seleccciona--</option>
+                    <option *ngFor="let rol of rols; let idx = index " [value]="rol.id_rol"  >
+                      {{rol.rol }}
+                    </option>
+                  </select>
+                  </div>
+                </div>
             </div>
 
             <div class="row">
@@ -141,7 +162,7 @@
             </div>
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="!form.valid || !formData.id_position || !formData.id_rol" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]="!form.valid || !formData.id_position || !formData.id_rol || (formData.id_sub_company == 0 || formData.id_company == 0)" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
             <button (click)="showNewForm=!showNewForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -155,7 +176,6 @@
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
         [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
-        [username]="formData.ita"
         [email]="formData.email"
         [phone]="formData.phone"
         [address]="formData.address"
@@ -179,50 +199,50 @@
         </div>
         <div class="content">
           <form #form="ngForm" (ngSubmit)="onSubmitEditUser()">
-            <div class="row">
+           <!--<div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="ita">ITA</label>
                   <input type="text" class="form-control" disabled id="ita" name="ita" required placeholder="ITA" [(ngModel)]="formData.ita">
                 </div>
               </div>
-              <div class="col-md-8">
+            </div> -->
+            <div class="row">
+            <div class="col-md-4">
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="firstName">Nombre</label>
                   <input type="text" required class="form-control" id="name" name="name" placeholder="Nombre" [(ngModel)]="formData.name">
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="lastName">Apellido</label>
                   <input type="text" required class="form-control" id="last" name="last" placeholder="Apellido" [(ngModel)]="formData.last">
                 </div>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
                   <label for="address">Dirección</label>
                   <input type="text" required class="form-control" id="address" name="address" placeholder="Dirección" [(ngModel)]="formData.address">
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="row">
-              <div class="col-md-4">
+              <!-- <div class="col-md-6">
                 <div class="form-group">
                   <label for="phone">Teléfono</label>
                   <input type="text" required class="form-control" id="phone" name="phone" placeholder="Teléfono" [(ngModel)]="formData.phone">
               </div>
-              </div>
-              <div class="col-md-4">
+              </div> -->
+             <!-- <div class="col-md-4">
                 <div class="form-group">
                 <label for="position">Posición</label> 
                 <select name="positions" id="positions"  [(ngModel)]="formData.id_position" class="form-control" id="inlineFormCustomSelect">
@@ -231,17 +251,36 @@
                   </option>
                 </select>
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-4">
                 <div class="form-group">
-                <label for="rol">Rol</label>
-                <select name="rols" id="rols" [(ngModel)]="formData.id_rol" class="form-control" id="inlineFormCustomSelect">
-                  <option *ngFor="let rol of rols " [value]="rol.id_rol" [selected]="formData.id_rol == rol.id_rol" >
-                    {{rol.rol }}
-                  </option>
-                </select>
+                 <label for="description">Empresa </label>
+                   <select #category class="form-control" required name="company" [(ngModel)]="formData.id_company" (change)="getSubCompanies($event.target.value)"> 
+                     <option [selected]="formData.id_company == 0" value="0">--Seleccciona--</option>
+                     <option  [selected]="formData.id_company == company.id_company" *ngFor="let company of dataCompany" [value]="company.id_company">{{company.name}}</option>
+                   </select>
                 </div>
-              </div>
+               </div>
+                 <div class="col-md-4">
+                   <div class="form-group">
+                   <label for="description">Organización </label>
+                   <select [disabled]="disabledSubCompany" #subCompany class="form-control" required name="subCompany" [(ngModel)]="formData.id_sub_company" >
+                     <option [selected]="formData.id_sub_company == 0" value="0">--Selecciona--</option>
+                     <option  [selected]="formData.id_sub_company == subCompany.id_sub_company" *ngFor="let subCompany of dataSubCompany" [value]="subCompany.id_sub_company">{{subCompany.name}}</option>
+                   </select>
+                   </div>
+                 </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                  <label for="rol">Rol</label>
+                  <select name="rols" id="rols" [(ngModel)]="formData.id_rol" class="form-control" id="inlineFormCustomSelect">
+                    <option [selected]="formData.id_rol == 0" value="0">--Seleccciona--</option>
+                    <option *ngFor="let rol of rols; let idx = index " [value]="rol.id_rol"  >
+                      {{rol.rol }}
+                    </option>
+                  </select>
+                  </div>
+                </div>
             </div>
             <div class="row">
               <div class="col-md-12">
@@ -253,7 +292,7 @@
             </div>
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="!form.valid" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
+            <button [disabled]="!form.valid || (formData.id_sub_company == 0 || formData.id_company == 0)" type="submit" class="btn btn-success btn-fill pull-right">Guardar</button> 
             <button (click)="showEditForm=!showEditForm" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -267,10 +306,7 @@
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
         [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
         [name]="formData.name+' '+formData.last"
-        [username]="formData.ita"
         [email]="formData.email"
-        [phone]="formData.phone"
-        [address]="formData.address"
         >
       </lbd-user-profile>
     </div>
@@ -290,11 +326,8 @@
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
         [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
-        [name]="formData.name+' '+formData.last"
-        [username]="formData.position + ' - ITA: ' + formData.ita"
+        [name]="formData.name+' '+formData.last"  
         [email]="formData.email"
-        [phone]="'Teléfono: '+ formData.phone"
-        [address]="formData.address"
         >
       </lbd-user-profile>
     </div>

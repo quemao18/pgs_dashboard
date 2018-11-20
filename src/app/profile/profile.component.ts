@@ -125,6 +125,12 @@ export class ProfileComponent implements OnInit {
   public placeholderSponsor: string;
   public placeholderPlatinum: string;
 
+  public formCompany: any;
+  public formSubCompany: any;
+  public disabledSubCompany: boolean = false;
+  public dataCompany: FormControl;
+  public dataSubCompany: FormControl;
+
   constructor(private http: Http, private completerService: CompleterService, public authService: AuthService, public location: Location, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
     this.customData = new CustomData(userService, http); 
    }
@@ -162,9 +168,40 @@ export class ProfileComponent implements OnInit {
     this.getQuestions();
     this.placeholderSponsor = "Nombre del patriconador o ITA...";
     this.placeholderPlatinum = "Nombre del platino directo o ITA...";
+
+    this.formCompany = { };
+    this.formSubCompany= { };
+    this.getCompanies();
+
    
   }
 
+  public getCompanies() {
+    //this.progress = true;
+    this.userService.getCompanies().subscribe(
+      (response) => this.dataCompany = response.json(), 
+      (error) => console.log(error.json()), 
+      //() => this.onCompleteLogin()
+  );
+    //console.log (val);
+    //this.authService.login_2(this.formData);
+  }
+
+
+  public getSubCompanies(id_company){
+    //console.log(id_category);
+     this.disabledSubCompany = true;
+      //this.formData.id_sub_company=1;
+      this.userService.getSubCompanies(id_company).subscribe(
+       (response) => {
+         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         //this.formData.id_sub_company=0;
+         this.disabledSubCompany = false;
+       }, 
+       (error) => console.log(error.json()), 
+       //() => this.onCompleteLogin()
+   );
+ }
 
     public getQuestions() {
     //this.progress = true;
@@ -192,6 +229,11 @@ export class ProfileComponent implements OnInit {
     
     this.formData.password = '';
     this.avatar_url = user.photo;
+
+    this.getSubCompanies(user.id_company);
+    this.formData.id_company = user.id_company;
+    //this.formData.id_sub_company = user.id_sub_company;
+    
 
   }
 

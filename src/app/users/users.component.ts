@@ -6,6 +6,7 @@ import { NotificationService, NotificationType, NotificationOptions } from '../l
 import * as vars from '../config';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { UserService } from '../services/user.service';
+import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user',
@@ -128,6 +129,14 @@ export class UsersComponent implements OnInit {
   modal: ModalComponent;
 
   public search:string ='';
+
+  public formCompany: any;
+  public formSubCompany: any;
+  public myFormCompany: FormGroup;
+  public myFormSubCompany: FormGroup;
+  public disabledSubCompany: boolean = false;
+  public dataCompany: FormControl;
+  public dataSubCompany: FormControl;
   
 
   constructor(private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
@@ -142,7 +151,7 @@ export class UsersComponent implements OnInit {
 
     //this.notify = {show: false, message: ''};
     this.tableData = {
-    headerRow: ['ITA', 'Nombre', 'Apellido', 'Posición Ejecutíva', 'ROL' , 'ACCIONES'],
+    headerRow: ['Nombre', 'Apellido', 'Email', 'Empresa', 'Organización', 'ROL' , 'ACCIONES'],
   };
 
     this.data = [];
@@ -153,7 +162,9 @@ export class UsersComponent implements OnInit {
       last: '',
       address: '',
       id_position: '',
-      id_rol: '',
+      id_rol: 0,
+      id_company:0,
+      id_sub_company:0,
       status:''
     };
 
@@ -161,7 +172,44 @@ export class UsersComponent implements OnInit {
     this.getRols();    
     this.getPositions();
     this.getUsersBackend(this.search);
+
+    this.formCompany = { };
+    this.formSubCompany= { };
+
+
+    this.getCompanies();
+
+    this.formData.id_company = 0;
+    this.formData.id_sub_company = 0;
+
   }
+
+
+  public getCompanies() {
+    //this.progress = true;
+    this.userService.getCompanies().subscribe(
+      (response) => this.dataCompany = response.json(), 
+      (error) => console.log(error.json()), 
+      //() => this.onCompleteLogin()
+  );
+    //console.log (val);
+    //this.authService.login_2(this.formData);
+  }
+
+  public getSubCompanies(id_company){
+    //console.log(id_category);
+     this.disabledSubCompany = true;
+      this.formCompany.id_sub_company=1;
+      this.userService.getSubCompanies(0).subscribe(
+       (response) => {
+         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         this.formCompany.id_sub_company=0;
+         this.disabledSubCompany = false;
+       }, 
+       (error) => console.log(error.json()), 
+       //() => this.onCompleteLogin()
+   );
+ }
 
   public filterValues(val){
       console.log(val);
@@ -182,7 +230,6 @@ export class UsersComponent implements OnInit {
     this.showEditForm = false;
     this.showCardUser = false;
 
-    this.formData ={};
     this.formData = {
       ita: '',
       email: '',
@@ -191,9 +238,14 @@ export class UsersComponent implements OnInit {
       address: '',
       id_position: '',
       phone:'',
-      id_rol: '',
-      status:'',
-      password:''
+      id_rol: 4,
+      status:1,
+      password:'',
+      id_company:0,
+      id_sub_company:0,
+      photo:'',
+      id_question:1,
+
     };
 
   }
@@ -203,6 +255,7 @@ export class UsersComponent implements OnInit {
     this.showEditForm = true;
     this.showCardUser = false;
     this.formData = row;
+    this.getSubCompanies(row.id_sub_company);
   }
 
   public showUser(row){

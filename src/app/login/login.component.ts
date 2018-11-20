@@ -65,6 +65,12 @@ import { CustomData } from "../services/custom-data";
 export class LoginComponent implements OnInit {
   public formData: any;
   public questions: any;
+  public companies: any;
+  public subCompanies: any;
+  public formCompany: any;
+  public formSubCompany: any;
+  public myFormCompany: FormGroup;
+  public myFormSubCompany: FormGroup;
   public pass: any;
   public formDataForget: any;
   public progress: boolean = false;
@@ -87,6 +93,9 @@ export class LoginComponent implements OnInit {
   public customData: CustomData;
   @ViewChild("remoteDataSponsor") private remoteDataSponsor: CompleterCmp;
   @ViewChild("remoteDataPlatinum") private remoteDataPlatinum: CompleterCmp;
+  public disabledSubCompany: boolean = false;
+  public dataCompany: FormControl;
+  public dataSubCompany: FormControl;
 
   constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     //this.forget = this.router.get('id');
@@ -112,7 +121,11 @@ export class LoginComponent implements OnInit {
           this.placeholderPlatinum = "Por favor espere...";
           this.placeholderSponsor = "Nombre del patriconador o ITA...";
           this.placeholderPlatinum = "Nombre del platino directo o ITA...";
+          this.disabledSubCompany = true;
+          
           this.getQuestions();
+
+
           //this.showCompletForm = true;           
   }
 
@@ -144,20 +157,35 @@ export class LoginComponent implements OnInit {
     this.placeholderPlatinum = "Nombre del platino directo o ITA...";
     this.formData.id_question = 1;
 
+    this.formCompany = { };
+    this.formSubCompany= { };
+    this.myFormCompany = this.builder.group({
+      company : ['0', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.myFormSubCompany = this.builder.group({
+      sub_company :  ['0', [Validators.required, Validators.minLength(3)]],
+    });
+
+    this.getCompanies();
+
+    this.formData.id_company = 0;
+    this.formData.id_sub_company = 0;
+
     }
 
-    public getUserIta(){
+    public getUserEmail(){
     this.progress=true;
     
     //console.log('Submitting values', this.formData);
-     this.userService.getUserIta(this.formData.ita).subscribe(
-        (response) => this.onSuccessUserIta(response.json()), 
-        (error) => this.onErrorUserIta(error.json()), 
-        () => this.onCompleteUserIta()
+     this.userService.getUserEmail(this.formData.email).subscribe(
+        (response) => this.onSuccessUserEmail(response.json()), 
+        (error) => this.onErrorUserEmail(error.json()), 
+        () => this.onCompleteUserEmail()
       );
   }
 
-    onSuccessUserIta(response){
+    onSuccessUserEmail(response){
     //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
     this.userNotExist = false;
     console.log(response);
@@ -169,12 +197,12 @@ export class LoginComponent implements OnInit {
       }else{  
         this.showRegisterForm = false;
         this.formData = {};
-        this.formData.ita = this.formData.ita;
+        this.formData.email = this.formData.email;
         this.showNotification('top', 'center', '<b>Ya está registrado. Por favor inicie sesión.</b>', 'pe-7s-check', 2);
       }
   }
 
-    onErrorUserIta(error){
+    onErrorUserEmail(error){
     this.progress = false;
     this.userNotExist = true;
     //this.getUsers('');    
@@ -185,7 +213,7 @@ export class LoginComponent implements OnInit {
     //console.log(error.message);  
   }
   
-  onCompleteUserIta(){
+  onCompleteUserEmail(){
     this.progress = false;
     this.myFormSponsor = this.builder.group({
         sponsor : "",
@@ -202,7 +230,7 @@ export class LoginComponent implements OnInit {
     });
       
       //if(this.showRegisterForm)
-      this.getUsers('');      
+      //this.getUsers('');      
 
     }
 
@@ -293,16 +321,18 @@ export class LoginComponent implements OnInit {
       //this.getUserIta();
       this.showNotification('top', 'center', 'Debe completar los datos del<b> registro </b>para poder entrar', 'pe-7s-attention', 3);
       this.formData.ita = response.ita;
-      this.getUserIta();
+      this.getUserEmail();
       //this.getUsers();
 
     }else{
       this.showRegisterForm = false;  
-      localStorage.setItem('ita', response.ita);
+      //localStorage.setItem('ita', response.ita);
+      localStorage.setItem('id_user', response.id_user);
+      localStorage.setItem('email', response.email);
       localStorage.setItem('name', response.name);
       localStorage.setItem('last', response.last);
       localStorage.setItem('id_rol', response.id_rol);
-      localStorage.setItem('id_position', response.id_position);
+      //localStorage.setItem('id_position', response.id_position);
       localStorage.setItem('user', JSON.stringify(response));
       this.authService.setLoggedIn(true);
 
@@ -323,8 +353,8 @@ export class LoginComponent implements OnInit {
 
     if(response.id_rol == '4') {
       this.userService.setIsUser(true);
-      this.showNotification('top', 'center', '<b>Usted no tiene acceso al dashboard</b>', 'pe-7s-attention', 4);
-      this.authService.logout();
+      //this.showNotification('top', 'center', '<b>Usted no tiene acceso al dashboard</b>', 'pe-7s-attention', 4);
+      //this.authService.logout();
     }else{ 
         this.userService.setIsUser(false) 
     }
@@ -506,6 +536,35 @@ export class LoginComponent implements OnInit {
     //console.log (val);
     //this.authService.login_2(this.formData);
   }
+
+
+  public getCompanies() {
+    //this.progress = true;
+    this.userService.getCompanies().subscribe(
+      (response) => this.dataCompany = response.json(), 
+      (error) => console.log(error.json()), 
+      //() => this.onCompleteLogin()
+  );
+    //console.log (val);
+    //this.authService.login_2(this.formData);
+  }
+
+
+  public getSubCompanies(id_company){
+    //console.log(id_category);
+     this.disabledSubCompany = true;
+      this.formCompany.id_sub_company=1;
+      this.userService.getSubCompanies(0).subscribe(
+       (response) => {
+         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         this.formCompany.id_sub_company=0;
+         this.disabledSubCompany = false;
+       }, 
+       (error) => console.log(error.json()), 
+       //() => this.onCompleteLogin()
+   );
+ }
+
     //if(!val)
      // this.showNotification('top', 'center', vars.apiError, 'pe-7s-attention', 3);
     //window.location.hash = '';
@@ -526,7 +585,7 @@ export class LoginComponent implements OnInit {
   
   onSuccessForget2(response){
   
-  localStorage.setItem('ita', response.user.ita);
+  localStorage.setItem('email', response.user.email);
   //this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
   //console.log(response);
   

@@ -228,7 +228,7 @@ export class SchoolsComponent implements OnInit {
     if (selected) {
       //console.log(selected.originalObject);
         this.formData.users = {
-          "ita": selected.originalObject.ita,
+          "id_user": selected.originalObject.id_user,
           "name": selected.originalObject.name + ' ' + selected.originalObject.last
         };
         this.remoteDataCreator.blur();
@@ -297,7 +297,7 @@ export class SchoolsComponent implements OnInit {
     this.formData.id_sub_category = 0;
     this.formData.description = '';
     this.disabledSubCategory = true;
-    this.placeholderCreator = 'Nombre del creador o ITA';
+    this.placeholderCreator = 'Nombre del creador';
     this.creator = '';
     this.formData.date_from = {jsdate: new Date()};   // initialize today with jsdate property
     //this.formData.date_finish = {jsdate: new Date()};   // initialize today with jsdate property
@@ -309,7 +309,7 @@ export class SchoolsComponent implements OnInit {
     this.formData = row;
     
     this.formData.users = {
-      "ita": row.ita_user_create,
+      "id_user": row.id_user_create,
       "name": row.name_user_create + ' ' + row.last_user_create
     };
     this.creator = row.name_user_create + ' ' + row.last_user_create;
@@ -380,7 +380,7 @@ export class SchoolsComponent implements OnInit {
 
   public onSubmitEditSchool(){
     this.progress=true;
-    this.formData.ita_login = localStorage.getItem('ita');
+    this.formData.ita_login = localStorage.getItem('id_user');
     this.formData.duration = this.duration;
     this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
