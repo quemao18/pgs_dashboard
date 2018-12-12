@@ -41,7 +41,7 @@ export class MediaService {
       //console.log(JSON.stringify(media));
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/medias/new_media/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/medias/new_media/", "media="+encodeURIComponent(JSON.stringify(media))+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
       .map(res => res);
   }
 
