@@ -397,7 +397,7 @@ export class UsersAppComponent implements OnInit {
   public onSubmitEditUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
-     this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+     this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
         (response) => this.onSuccessUpdate(response.json()), 
         (error) => this.onErrorUpdate(error.json()), 
         () => this.onCompleteUpdate()
