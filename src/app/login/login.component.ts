@@ -318,9 +318,10 @@ export class LoginComponent implements OnInit {
       this.showRegisterForm = true;  
       //this.formData = response;
       this.register();
+      this.getSubCompanies(response.id_sub_company);
       //this.getUserIta();
       this.showNotification('top', 'center', 'Debe completar los datos del<b> registro </b>para poder entrar', 'pe-7s-attention', 3);
-      this.formData.ita = response.ita;
+      this.formData.email = response.email;
       this.getUserEmail();
       //this.getUsers();
 
