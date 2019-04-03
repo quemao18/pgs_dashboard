@@ -13,6 +13,7 @@ export class FooterLayoutComponent implements OnInit {
 
   public ngOnInit() {
     this.footerItems = [
+      {title:'Política de privacidad', routerLink: '/policity'},
       /*
       { title: 'Inicio', routerLink: '/dashboard' },
       { title: 'Usuarios', routerLink: '/users' },
@@ -23,6 +24,7 @@ export class FooterLayoutComponent implements OnInit {
       { title: 'Noticias', routerLink: '/news' },
       */
    ];
+   
     this.copyright = '&copy; <a href="http://www.npeht.com">NPEHT</a>';
   }
 }

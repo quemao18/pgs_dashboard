@@ -17,6 +17,7 @@ import { TypographyComponent } from './typography/typography.component';
 import { IconsComponent } from './icons/icons.component';
 import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { PolicityComponent } from './policity/policity.component';
 
 import { AuthGuard } from './services/auth-guard.service';
 import { UserService } from './services/user.service';
@@ -55,6 +56,7 @@ import { Ng2CompleterModule } from "ng2-completer";
 
 const appRoutes: Routes = [
   { path: 'maps', component: MapsComponent },
+  { path: 'policity', component: PolicityComponent, },
   {
     path: '', component: FooterLayoutComponent, children:
     [
@@ -74,6 +76,7 @@ const appRoutes: Routes = [
       { path: 'typography', component: TypographyComponent },
       { path: 'icons', component: IconsComponent },
       { path: 'notifications', component: NotificationsComponent },
+      // { path: 'policity', component: PolicityComponent, },
       { path: '**', redirectTo: '/dashboard' }
     ], 
   }
@@ -106,7 +109,8 @@ const appRoutes: Routes = [
     NewsComponent,
     SchoolsComponent,
     ProfileComponent, 
-    MinuteSecondsPipe
+    MinuteSecondsPipe, 
+    PolicityComponent,
 
   ],
   imports: [
