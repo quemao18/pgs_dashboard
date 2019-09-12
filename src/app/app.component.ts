@@ -1,6 +1,34 @@
 import {Component, OnInit} from '@angular/core';
-import { NavItem, NavItemType } from './lbd/lbd.module';
+// import { NavItem, NavItemType } from './lbd/lbd.module';
 import { AuthService } from './services/auth.service';
+
+export interface DropdownLink {
+  title: string;
+  routerLink?: string;
+}
+
+export enum NavItemType {
+  Sidebar = 1, // Only ever shown on sidebar
+  NavbarLeft = 2, // Left-aligned icon-only link on navbar in desktop mode, shown above sidebar items on collapsed sidebar in mobile mode
+  NavbarRight = 3, // Right-aligned link on navbar in desktop mode, shown above sidebar items on collapsed sidebar in mobile mode
+  //Login = 4
+}
+
+export interface NavItem {
+  type: NavItemType;
+  type2?: NavItemType;
+  title: string;
+  routerLink?: string;
+  iconClass?: string;
+  numNotifications?: number;
+  dropdownItems?: (DropdownLink | 'separator')[];
+  isLoggedIn?: boolean;
+  isAdminIn?: boolean;
+  isAuthIn?: boolean;
+  isPublishIn?: boolean;
+  isUserIn?: boolean;
+  userName?: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -26,11 +54,11 @@ export class AppComponent implements OnInit {
       
       { type: NavItemType.Sidebar, title: 'Login', routerLink: 'login', iconClass: 'pe-7s-lock',  isLoggedIn: false, isAdminIn:false, isAuthIn:false, isPublishIn:false, isUserIn:false },
       { type: NavItemType.Sidebar, title: 'Usuarios', routerLink: 'users', iconClass: 'pe-7s-users', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:false, isUserIn:false },
-      { type: NavItemType.Sidebar, title: 'Usuarios App', routerLink: 'users-app', iconClass: 'pe-7s-phone', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:false, isUserIn:false },
-      { type: NavItemType.Sidebar, title: 'Audios', routerLink: 'audios', iconClass: 'pe-7s-headphones', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
-      { type: NavItemType.Sidebar, title: 'Videos', routerLink: 'videos', iconClass: 'pe-7s-video', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
-      { type: NavItemType.Sidebar, title: 'Escuela de negocios', routerLink: 'schools', iconClass: 'pe-7s-portfolio', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
-      { type: NavItemType.Sidebar, title: 'Noticias', routerLink: 'news', iconClass: 'pe-7s-news-paper', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
+      { type: NavItemType.Sidebar, title: 'Usuarios App', routerLink: 'users-app', iconClass: 'pe-7s-phone', isLoggedIn: true, isAdminIn:true, isPublishIn:false, isUserIn:false },
+      { type: NavItemType.Sidebar, title: 'Aseguradoras', routerLink: 'audios', iconClass: 'pe-7s-note2', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
+      //{ type: NavItemType.Sidebar, title: 'Planes Seguros', routerLink: 'videos', iconClass: 'pe-7s-video', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
+      //{ type: NavItemType.Sidebar, title: 'Escuela de negocios', routerLink: 'schools', iconClass: 'pe-7s-portfolio', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
+      //{ type: NavItemType.Sidebar, title: 'Noticias', routerLink: 'news', iconClass: 'pe-7s-news-paper', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
       //{ type: NavItemType.Sidebar, title: 'Salir', routerLink: 'logout', iconClass: 'pe-7s-close',  isLoggedIn: true },
       //{ type: NavItemType.NavbarRight, title: this.auth.getNameUser(), iconClass: 'pe-7s-user',  isLoggedIn: true },
       {

@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { NavItem } from '../lbd.module';
+
 import { AuthService } from '../../services/auth.service';
+import { NavItem } from '../../app.component';
 
 
 @Component({

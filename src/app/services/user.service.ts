@@ -5,6 +5,7 @@ import * as vars from '../config';
 import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
 //import { AUTH_CONFIG } from './auth0-variables';
 //import { tokenNotExpired } from 'angular2-jwt';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
@@ -21,21 +22,70 @@ export class UserService {
   userIn$ = new BehaviorSubject<boolean>(this.userIn);
   error: string;
   error$ = new BehaviorSubject<string>(this.error);
-  nameUser :string = 'Rigoberto Rodriguez';
+  nameUser :string = '';
+  public sessionData: string;
+  private isUserLoggedIn: boolean;
+  public userLogged: any;
 
-  constructor(private router: Router, private http: Http) {
+
+  constructor(private router: Router, private http: HttpClient) {
   
   }
+
+  generateHeaders() {
+    const headers = new HttpHeaders( {'Authorization': 'JWT '+ this.getAccessToken() } );
+    return headers;
+  }
+
+
+  login(data: any) {
+    return this.http.post(vars.apiUrl + 'v1/auth', data, {
+        headers: this.generateHeaders(),
+    });
+  }
+
+  getUser() {
+    return this.http.get(vars.apiUrl + 'v1/account', {
+        headers: this.generateHeaders(),
+    });
+  }
+
+  getUsers(q){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + 'v1/account/accounts/'+q, 
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+
+  getCompanies(){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + 'v1/company/companies', 
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  putPass(user_id, pass){
+    //console.log(user_id);
+    return this.http.put(vars.apiUrl + 'v1/account/'+ user_id + '/password', {password:pass},
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  deleteUser(user_id){
+    //console.log(user_id);
+    return this.http.delete(vars.apiUrl + 'v1/account/'+ user_id,
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
 
   public getRols(){
       //console.log(pago);
       return this.http.get(vars.apiUrl + '/users/users_rols/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
-  public getCompanies(){
-    //console.log(pago);
-    return this.http.get(vars.apiUrl + '/users/companies/' + vars.nameKeyApi + '/' + vars.keyApi)
-}
+
 
 public getSubCompanies(id_company){
     //console.log(pago);
@@ -52,10 +102,7 @@ public getSubCompanies(id_company){
       return this.http.get(vars.apiUrl + '/users/users_questions/' + vars.nameKeyApi + '/' + vars.keyApi)
   }
 
-     public getUsers(q){
-      //console.log(pago);
-      return this.http.get(vars.apiUrl + '/users/users/' + vars.nameKeyApi + '/' + vars.keyApi + '/q/' + q)
-  }
+
 
     public getUsersApp(q){
       //console.log(pago);
@@ -71,7 +118,9 @@ public getSubCompanies(id_company){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/update_user/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/users/update_user/", "user="+JSON.stringify(user), 
+       
+      )
       .map(res => res);
   }
 
@@ -79,7 +128,7 @@ public getSubCompanies(id_company){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/update_user_app/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/users/update_user_app/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, {headers: this.generateHeaders(),responseType: 'json'})
       .map(res => res);
   }
 
@@ -87,30 +136,39 @@ public getSubCompanies(id_company){
     //console.log(pago);
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(vars.apiUrl+ "/users/update_user_app_back/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+    return this.http.post(vars.apiUrl+ "/users/update_user_app_back/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, {headers: this.generateHeaders(),responseType: 'json'})
     .map(res => res);
 }
     public newUser(user){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/new_user/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/users/new_user/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, {
+        headers: this.generateHeaders(),
+        responseType: 'json'
+      })
       .map(res => res);
   }
 
-    public deleteUser(user){
-      //console.log(pago);
-      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-      let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/delete_user/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
-  }
+  //   public deleteUser(user){
+  //     //console.log(pago);
+  //     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+  //     let options = new RequestOptions({ headers: headers });
+  //     return this.http.post(vars.apiUrl+ "/users/delete_user/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, {
+  //       headers: this.generateHeaders(),
+  //       responseType: 'json'
+  //     })
+  //     .map(res => res);
+  // }
 
      public newUserApp(user, sponsor, platinum){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/new_user_app/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/users/new_user_app/", "user="+JSON.stringify(user)+"&sponsor="+JSON.stringify(sponsor)+"&platinum="+JSON.stringify(platinum)+"&"+vars.nameKeyApi+"="+vars.keyApi, {
+        headers: this.generateHeaders(),
+        responseType: 'json'
+      })
       .map(res => res);
   }
 
@@ -118,7 +176,10 @@ public getSubCompanies(id_company){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/update_status/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/users/update_status/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, {
+        headers: this.generateHeaders(),
+        responseType: 'json'
+      })
       .map(res => res);
   }
 
@@ -136,7 +197,10 @@ public getSubCompanies(id_company){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/forget/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/users/forget/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, {
+        headers: this.generateHeaders(),
+        responseType: 'json'
+      })
       .map(res => res);
   }
    
@@ -144,7 +208,10 @@ public getSubCompanies(id_company){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/forget_2/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.post(vars.apiUrl+ "/users/forget_2/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, {
+        headers: this.generateHeaders(),
+        responseType: 'json'
+      })
       .map(res => res);
   }
 
@@ -152,7 +219,10 @@ public getSubCompanies(id_company){
       //console.log(pago);
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/change_password/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
+      return this.http.put(vars.apiUrl+ "v1/account/change_password/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, {
+        headers: this.generateHeaders(),
+        responseType: 'json'
+      })
       .map(res => res);
   }
 
@@ -167,7 +237,10 @@ public getSubCompanies(id_company){
         //headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
         let options = new RequestOptions({ headers: headers });
-        return this.http.post(vars.apiUrl+ "/users/upload_avatar/"+vars.nameKeyApi+"/"+vars.keyApi, formDataUpload, options)
+        return this.http.post(vars.apiUrl+ "/users/upload_avatar/"+vars.nameKeyApi+"/"+vars.keyApi, formDataUpload, {
+          headers: this.generateHeaders(),
+          responseType: 'json'
+        })
         //    .map(res => res);
         //return this.http.post(vars.apiUrl+ "/news/upload/", +formDataUpload+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
         .map(res => res);    
@@ -194,6 +267,36 @@ public getSubCompanies(id_company){
     setIsUser(value: boolean) {
     this.userIn$.next(value);
     this.userIn = value;
+  }
+
+  setUserLoggedIn(user: any) {
+    //this.isUserLoggedIn = true;
+    this.userLogged = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  getIsUserLoggedIn() {
+    return this.isUserLoggedIn; 
+  }
+
+  getAccessToken() {
+    return (localStorage.getItem('access_token'));
+  }
+
+  setIsUserLoggedIn(token) {
+    this.isUserLoggedIn = true;
+    localStorage.setItem('access_token', token);
+  }
+
+  getUserLoggedIn() {
+    return JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  logout(){
+    this.isUserLoggedIn = false;
+    this.userLogged = [];
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('access_token')
   }
 
   isAdmin(){

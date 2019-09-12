@@ -1,5 +1,7 @@
-import {Component, OnInit, trigger, state, transition, style, animate} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
+import { trigger, state, transition, style, animate } from '@angular/animations';
+
 
 @Component({
   selector: 'app-maps',

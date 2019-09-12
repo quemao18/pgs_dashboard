@@ -19,19 +19,19 @@
               </div>
             </div>  -->
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" required class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email">
                 </div>
               </div>
-              <div class="col-md-4">
+               <div class="col-md-6">
                 <div class="form-group">
                   <label for="firstName">Nombre</label>
                   <input type="text" required class="form-control" id="name" name="name" placeholder="Nombre" [(ngModel)]="formData.name">
                 </div>
               </div>
-              <div class="col-md-4">
+             <!--<div class="col-md-4">
                 <div class="form-group">
                   <label for="lastName">Apellido</label>
                   <input type="text" required class="form-control" id="last" name="last" placeholder="Apellido" [(ngModel)]="formData.last">
@@ -56,7 +56,7 @@
                    <option  [selected]="formData.id_sub_company == subCompany.id_sub_company" *ngFor="let subCompany of dataSubCompany" [value]="subCompany.id_sub_company">{{subCompany.name}}</option>
                  </select>
                  </div>
-               </div>
+               </div> -->
             </div>
             <!-- <div class="row">
               <div class="col-md-12">

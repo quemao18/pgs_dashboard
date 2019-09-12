@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, trigger, state, style, transition, animate, } from '@angular/core';
+import { Component, OnInit, ViewChild, } from '@angular/core';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import { TableData } from '../lbd/lbd-table/lbd-table.component';
 import { Router } from '@angular/router';
@@ -13,6 +13,9 @@ import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteDat
 import { Observable } from "rxjs/Observable";
 import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
 import { CustomData } from "../services/custom-data";
+import { trigger, state, transition, style, animate } from '@angular/animations';
+import { PlanService } from '../services/plan.service';
+import { CompanyService } from '../services/company.service';
 
 @Component({
   selector: 'app-user',
@@ -21,18 +24,10 @@ import { CustomData } from "../services/custom-data";
   animations: [
     trigger('cardtable1', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out')
@@ -40,18 +35,10 @@ import { CustomData } from "../services/custom-data";
     ]),
     trigger('cardtable2', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -59,19 +46,11 @@ import { CustomData } from "../services/custom-data";
     ]),
    trigger('carduserprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1
       })),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out'),
@@ -79,18 +58,10 @@ import { CustomData } from "../services/custom-data";
     ]),
     trigger('cardprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -105,7 +76,7 @@ export class UsersAppComponent implements OnInit {
   public usersAll:Array<any> = [];
   public usersArray = new Array();
   public allUsers = new Array();
-  public formData: any;
+  public formData: any = {};
   public sponsor: any;
   public platinum: any;
   public positions: any;
@@ -138,13 +109,13 @@ export class UsersAppComponent implements OnInit {
   public myFormSponsor: FormGroup;
   public myFormPlatinum: FormGroup;
 
-  @ViewChild('modalEdit')
+  @ViewChild('modalEdit', {static:true})
   modalEdit: ModalComponent;
-  @ViewChild('modal')
+  @ViewChild('modal', {static:true})
   modal: ModalComponent;
   public customData: CustomData;
-  @ViewChild("remoteDataSponsor") private remoteDataSponsor: CompleterCmp;
-  @ViewChild("remoteDataPlatinum") private remoteDataPlatinum: CompleterCmp;
+  @ViewChild("remoteDataSponsor", {static:true}) private remoteDataSponsor: CompleterCmp;
+  @ViewChild("remoteDataPlatinum", {static:true}) private remoteDataPlatinum: CompleterCmp;
   public name: string;
   public placeholderSponsor: string;
   public placeholderPlatinum: string;
@@ -156,41 +127,31 @@ export class UsersAppComponent implements OnInit {
   public myFormCompany: FormGroup;
   public myFormSubCompany: FormGroup;
   public disabledSubCompany: boolean = false;
-  public dataCompany: FormControl;
+  public dataCompany: any;
   public dataSubCompany: FormControl;
+  company_name: any;
+  progress_modal: boolean = false;
 
-  constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
+  constructor(private planService: PlanService, private companyService:CompanyService, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
     this.customData = new CustomData(userService, http); 
   }
 
   public ngOnInit() {
   
     this.navbarTitleService.updateTitle('Usuarios APP');
-    if(!this.userService.isAdmin() && !this.userService.isAuth() )
-        this.router.navigate(['/dashboard']);
+    // if(!this.userService.isAdmin() && !this.userService.isAuth() )
+    //     this.router.navigate(['/dashboard']);
 
     //this.notify = {show: false, message: ''};
     this.tableData = {
-    headerRow: ['Nombre', 'Apellido', 'Email' , 'Empresa', 'Organización', 'ACCIONES'],
+    headerRow: ['Nombre', 'Email', 'Género' , 'Fumador', 'Edad', 'ACCIONES'],
   };
 
     this.data = [];
-    //this.data_patro = [];
-    
     this.formData = {
-     /* ita: '',
-      email: '',
-      name: '',
-      last: '',
-      address: '',
-      id_position: '',
-      id_rol: '',
-      status:''*/
     };
 
     this.showCardUser = this.showEditForm = this.showNewForm = this.progress = false;
-    this.getRols();    
-    this.getPositions();
     this.getUsers(this.search);
     //this.getUsersAll();
     //this.getUsersPlatinum();
@@ -200,8 +161,7 @@ export class UsersAppComponent implements OnInit {
     this.myFormPlatinum = this.builder.group({
       platinum : "",
     });
-    this.placeholderSponsor = "Nombre del patriconador o ITA...";
-    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
+
 
     this.formCompany = { };
     this.formSubCompany= { };
@@ -213,17 +173,25 @@ export class UsersAppComponent implements OnInit {
       sub_company :  ['0', [Validators.required, Validators.minLength(3)]],
     });
 
-    this.getCompanies();
+    //this.getCompanies();
 
     this.formData.id_company = 0;
-    this.formData.id_sub_company = 0;
+    //this.formData.id_sub_company = 0;
     
+  }
+
+  age(dateStr:any) {
+    //return new Date(dateStr).toDateString();
+    var timeDiff = Math.abs(Date.now() - new Date(dateStr).getTime());
+    if(timeDiff)
+    return Math.floor(timeDiff / (1000 * 3600 * 24) / 365.25);
+    return 0;
   }
 
   public getCompanies() {
     //this.progress = true;
     this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response.json(), 
+      (response) => this.dataCompany = response, 
       (error) => console.log(error.json()), 
       //() => this.onCompleteLogin()
   );
@@ -238,7 +206,7 @@ export class UsersAppComponent implements OnInit {
       this.formCompany.id_sub_company=1;
       this.userService.getSubCompanies(0).subscribe(
        (response) => {
-         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         //this.dataSubCompany = response.filter(i => i.id_company == id_company); 
          this.formCompany.id_sub_company=0;
          this.disabledSubCompany = false;
        }, 
@@ -357,7 +325,25 @@ export class UsersAppComponent implements OnInit {
   }
 
   public showUser(row){
+    this.progress_modal=true;
     this.formData = row;
+    if(row.plan_id){
+      this.planService.getPlan(row.plan_id).subscribe(
+        data=>{
+          
+          this.formData.plan_name = data['name'];
+          this.companyService.getCompany(data['company_id']).subscribe(
+            data=>{
+              this.formData.company_name = data['name'];
+              this.formData.company_logo = data['logo'];
+              this.progress_modal = false;
+            }
+          );
+        }
+      )
+    }
+    else
+    this.progress_modal = false
     //console.log();
     this.modal.open();
   }
@@ -367,8 +353,8 @@ export class UsersAppComponent implements OnInit {
     console.log('Submitting values', this.formData);
     
     this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccessNewUser(response.json()), 
-        (error) => this.onErrorNewUser(error.json()), 
+        (response) => this.onSuccessNewUser(response), 
+        (error) => this.onErrorNewUser(error), 
         () => this.onCompleteNewUser()
       );
       
@@ -398,7 +384,7 @@ export class UsersAppComponent implements OnInit {
     this.progress=true;
     console.log('Submitting values', this.formData);
      this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccessUpdate(response.json()), 
+        (response) => this.onSuccessUpdate(response), 
         (error) => this.onErrorUpdate(error.json()), 
         () => this.onCompleteUpdate()
       );
@@ -428,7 +414,7 @@ export class UsersAppComponent implements OnInit {
     //this.formData = this.allUsers.find(ele => ele.ita == row.ita)
     this.progress=true;
     this.userService.updateStatus(row).subscribe(
-        (response) => this.onSuccessStatus(response.json()), 
+        (response) => this.onSuccessStatus(response), 
         (error) => this.onErrorStatus(error.json()), 
         () => this.onCompleteStatus()
       );
@@ -455,8 +441,8 @@ export class UsersAppComponent implements OnInit {
   public deleteUser(row){
 
     this.progress=true;
-    this.userService.deleteUser(row).subscribe(
-        (response) => this.onSuccessDeleteUser(response.json()), 
+    this.userService.deleteUser(row.user_id).subscribe(
+        (response) => this.onSuccessDeleteUser(response), 
         (error) => this.onErrorDeleteUser(error.json()), 
         () => this.onCompleteDeleteUser()
       );
@@ -464,13 +450,13 @@ export class UsersAppComponent implements OnInit {
   }
 
   onSuccessDeleteUser(response){
-    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    this.showNotification('top', 'center', '<b>Usuario eliminado correctamente</b>', 'pe-7s-check', 2);
     //console.log(response);
   }
 
   onErrorDeleteUser(error){
     this.progress = false;
-    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4);
     //console.log(error.message);   
   }
   
@@ -491,26 +477,16 @@ export class UsersAppComponent implements OnInit {
   public getRols(){
     //console.log(this.rols);
     this.userService.getRols().subscribe(
-        (response) => this.rols = response.json(), 
+        (response) => this.rols = response, 
         (error) => console.log(error.json()), 
         //() => this.onCompleteLogin()
     );
-  }
-
-  public getStatusUser(ita): void{
-    //console.log(this.rols);
-    this.userService.getStatus(ita).subscribe(
-        (response) => this.status = response.json().status, 
-        (error) => console.log(error.json()), 
-        //() => this.onCompleteLogin()
-    );
-    //return this.status;
   }
 
   public getPositions(){
     //console.log(this.rols);
     this.userService.getPositions().subscribe(
-        (response) => this.positions = response.json(), 
+        (response) => this.positions = response, 
         (error) => console.log(error.json()), 
         //() => this.onCompleteLogin()
     );
@@ -521,8 +497,8 @@ export class UsersAppComponent implements OnInit {
     this.userService.getUsers(q).subscribe(
         (response) => this.onSuccessUsers (response),
         (error) => { 
-          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
-          console.log(error.json()); 
+          this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
+          console.log(error); 
           this.progress=false; 
           this.data = [];
         }, 
@@ -532,16 +508,12 @@ export class UsersAppComponent implements OnInit {
 
 
   public onSuccessUsers(response){
+  console.log(response)
   this.progress = false;
-  this.usersAll = response.json();
+  this.usersAll = response;
+  this.data = response.filter(i => i.user_type ==4 || i.user_type ==null)
   //this.data_sponsor = response.json();
   //this.data_platinum = response.json().filter(i => i.id_position < '6') ;
-
-  if(this.userService.isAdmin())
-    this.data = response.json();//.filter(i => i.id_rol == '4');
-  else
-    this.data = response.json().filter(i => /*i.id_rol == '4' &&*/ i.ita_platinum == localStorage.getItem('ita')); 
-  
   //this.data = this.data.filter(i => i.id_rol < '4') ;
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, trigger, state, style, transition, animate, } from '@angular/core';
+import { Component, OnInit, ViewChild, } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { Location } from '@angular/common';
@@ -12,6 +12,8 @@ import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteDat
 import { Observable } from "rxjs/Observable";
 import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
 import { CustomData } from "../services/custom-data";
+import { trigger, state, transition, style, animate } from '@angular/animations';
+
 
 @Component({
   selector: 'app-profile',
@@ -20,18 +22,10 @@ import { CustomData } from "../services/custom-data";
   animations: [
     trigger('cardtable1', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out')
@@ -39,18 +33,10 @@ import { CustomData } from "../services/custom-data";
     ]),
     trigger('cardtable2', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -58,19 +44,11 @@ import { CustomData } from "../services/custom-data";
     ]),
    trigger('carduserprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1
       })),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out'),
@@ -78,18 +56,10 @@ import { CustomData } from "../services/custom-data";
     ]),
     trigger('cardprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -119,8 +89,8 @@ export class ProfileComponent implements OnInit {
   public _event : Event;
 
   public customData: CustomData;
-  @ViewChild("remoteDataSponsor") private remoteDataSponsor: CompleterCmp;
-  @ViewChild("remoteDataPlatinum") private remoteDataPlatinum: CompleterCmp;
+  @ViewChild("remoteDataSponsor", {static:true}) private remoteDataSponsor: CompleterCmp;
+  @ViewChild("remoteDataPlatinum", {static:true}) private remoteDataPlatinum: CompleterCmp;
   public name: string;
   public placeholderSponsor: string;
   public placeholderPlatinum: string;
@@ -128,7 +98,7 @@ export class ProfileComponent implements OnInit {
   public formCompany: any;
   public formSubCompany: any;
   public disabledSubCompany: boolean = false;
-  public dataCompany: FormControl;
+  public dataCompany: any;
   public dataSubCompany: FormControl;
 
   constructor(private http: Http, private completerService: CompleterService, public authService: AuthService, public location: Location, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
@@ -141,9 +111,7 @@ export class ProfileComponent implements OnInit {
     this.navbarTitleService.updateTitle('Perfil Usuario');
     
     this.formData = {
-      ita: "",
-      sponsor : {},
-      platinum: {}
+
     };
     
     this.myFormSponsor = this.builder.group({
@@ -163,15 +131,22 @@ export class ProfileComponent implements OnInit {
 
     this.avatar_url = '';
     this.imageIsUpload = true;
-    this.loadUser(JSON.parse(localStorage.getItem('user')));
+    //this.loadUser(JSON.parse(localStorage.getItem('user')));
 
     this.getQuestions();
-    this.placeholderSponsor = "Nombre del patriconador o ITA...";
-    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
 
-    this.formCompany = { };
-    this.formSubCompany= { };
-    this.getCompanies();
+    this.userService.getUser().subscribe(
+      data => {
+        this.formData = {
+            email:data['email'],
+            name: data['name']
+        }
+      }
+    )
+
+    //this.formCompany = { };
+    //this.formSubCompany= { };
+    //this.getCompanies();
 
    
   }
@@ -179,7 +154,7 @@ export class ProfileComponent implements OnInit {
   public getCompanies() {
     //this.progress = true;
     this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response.json(), 
+      (response) => this.dataCompany = response, 
       (error) => console.log(error.json()), 
       //() => this.onCompleteLogin()
   );
@@ -194,7 +169,7 @@ export class ProfileComponent implements OnInit {
       //this.formData.id_sub_company=1;
       this.userService.getSubCompanies(id_company).subscribe(
        (response) => {
-         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         //this.dataSubCompany = response.filter(i => i.id_company == id_company); 
          //this.formData.id_sub_company=0;
          this.disabledSubCompany = false;
        }, 
@@ -206,7 +181,7 @@ export class ProfileComponent implements OnInit {
     public getQuestions() {
     //this.progress = true;
     this.userService.getQuestions().subscribe(
-        (response) => this.questions = (response.json()), 
+        (response) => this.questions = (response), 
         (error) => console.log(error.json())
        //() => this.onCompleteForget()
       );
@@ -214,24 +189,24 @@ export class ProfileComponent implements OnInit {
 
   public loadUser(user){
     this.formData = user;
-    this.formData.sponsor = {
-      "ita": this.formData.ita_sponsor,
-      "name": ''
-    }
-    this.formData.platinum = {
-      "ita": this.formData.ita_platinum,
-      "name": ''
-    }
+    // this.formData.sponsor = {
+    //   "ita": this.formData.ita_sponsor,
+    //   "name": ''
+    // }
+    // this.formData.platinum = {
+    //   "ita": this.formData.ita_platinum,
+    //   "name": ''
+    // }
     console.log(user);
-    this.sponsor = user.name_sponsor;
-    this.platinum = user.name_platinum;    
+    // this.sponsor = user.name_sponsor;
+    // this.platinum = user.name_platinum;    
 
     
-    this.formData.password = '';
+    //this.formData.password = '';
     this.avatar_url = user.photo;
 
-    this.getSubCompanies(user.id_company);
-    this.formData.id_company = user.id_company;
+    //this.getSubCompanies(user.id_company);
+    //this.formData.id_company = user.id_company;
     //this.formData.id_sub_company = user.id_sub_company;
     
 
@@ -327,7 +302,7 @@ export class ProfileComponent implements OnInit {
 
     //console.log('Submitting values', this.formData);
      this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccessUpdate(response.json()), 
+        (response) => this.onSuccessUpdate(response), 
         (error) => this.onErrorUpdate(error.json()), 
         () => this.onCompleteUpdate()
       );
@@ -379,7 +354,7 @@ export class ProfileComponent implements OnInit {
     this.imageIsUpload = false;
     //console.log($event);
     this.userService.fileChange($event).subscribe(
-        (response) => this.onSuccessUpload(response.json()), 
+        (response) => this.onSuccessUpload(response), 
         (error) => console.log(error.json()), 
         () => this.onCompleteUpload()
     )

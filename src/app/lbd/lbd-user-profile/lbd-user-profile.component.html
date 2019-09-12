@@ -9,18 +9,35 @@
         <img class="avatar border-gray" [src]="avatarImage" alt="..."/>
 
         <h4 class="title">{{ name }}<br />
-          <small>{{ username }}</small>
+          <!-- <small>{{ username }}</small> -->
         </h4>
       </a>
     </div>
     <p class="text-center"><a href="mailto:{{email}}">{{email}}</a></p>
     <em><p class="description text-center" [innerHtml]="address"></p></em>
     <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p>
+    <p class="text-center" *ngIf="dob">{{dob.$date | date: 'd/MM/yy'}}</p>
+    <p class="text-center" *ngIf="smoker"><b>Fumador:</b> {{smoker}}</p>
+    <p class="text-center" *ngIf="health"><b>Salud:</b> {{health}}</p>
+    <p class="text-center" *ngIf="surgical"><b>¿Ha sido intervenido quirurgicamente?:</b> {{surgical == 'yes'? 'Si':'No'}}</p>
+
+    <div class="author" style="margin-top:5px;">
+        <hr *ngIf="company_name && plan_name && price">
+        <h4 class="title" style="margin: 10px" *ngIf="company_name && plan_name && price">Cotización interesada</h4>
+        <a>
+          <img class="avatar border-gray" *ngIf="company_logo" [src]="company_logo" alt="..."/>
+          <h4 class="title">{{ company_name }}<br />
+            <small class="text-center" *ngIf="plan_name && price">{{plan_name}}</small><br />
+            <small class="text-center" *ngIf="plan_name && price">${{price | number:'.2-2'}}</small>
+          </h4>
+        </a>
+      </div>
+
   </div>
-  <hr>
+  <!-- <hr>
   <div class="text-center">
     <button href="#" class="btn btn-simple"><i class="fa fa-facebook-square"></i></button>
     <button href="#" class="btn btn-simple"><i class="fa fa-twitter"></i></button>
     <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>
-  </div>
+  </div> -->
 </div>

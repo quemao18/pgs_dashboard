@@ -11,7 +11,7 @@ export class LbdCheckboxComponent implements AfterViewInit {
   @Input()
   public checked: boolean;
 
-  @ViewChild('checkbox')
+  @ViewChild('checkbox', {static:true})
   public checkbox;
 
   constructor() { }

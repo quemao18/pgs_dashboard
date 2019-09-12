@@ -1,4 +1,4 @@
-import {Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import { Location, DatePipe } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import {  Router, ActivatedRoute, Params } from '@angular/router';
@@ -13,6 +13,7 @@ import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import {INgxMyDpOptions, IMyDateModel} from 'ngx-mydatepicker';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-news',
@@ -114,12 +115,12 @@ export class NewsComponent implements OnInit {
   public page:number = 1;
   public pagination: number = vars.pagination;
   public url: any;
-  @ViewChild('modal')
+  @ViewChild('modal', {static:true})
   modal: ModalComponent;
-  @ViewChild('modalNewEvent')
+  @ViewChild('modalNewEvent', {static:true})
   modalNewEvent: ModalComponent;
 
-  @ViewChild("datepickerE") datepickerE: ElementRef;
+  @ViewChild("datepickerE", {static:true}) datepickerE: ElementRef;
   public isShowDatepicker: boolean = false;
 
   public title: string = 'Agregar';

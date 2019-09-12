@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { NavItem } from '../lbd.module';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
+import { NavItem } from '../../app.component';
 
 @Component({
   selector: 'lbd-sidebar-items',

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, trigger, state, style, transition, animate, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import { TableData } from '../lbd/lbd-table/lbd-table.component';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import * as vars from '../config';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { UserService } from '../services/user.service';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-user',
@@ -15,18 +16,10 @@ import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@ang
   animations: [
     trigger('cardtable1', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out')
@@ -34,18 +27,10 @@ import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@ang
     ]),
     trigger('cardtable2', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -53,19 +38,11 @@ import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@ang
     ]),
    trigger('carduserprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1
       })),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out'),
@@ -73,18 +50,10 @@ import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@ang
     ]),
     trigger('cardprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -123,9 +92,9 @@ export class UsersComponent implements OnInit {
 
   private data:Array<any> = [];
 
-  @ViewChild('modalEdit')
+  @ViewChild('modalEdit', {static:true})
   modalEdit: ModalComponent;
-  @ViewChild('modal')
+  @ViewChild('modal', {static:true})
   modal: ModalComponent;
 
   public search:string ='';
@@ -135,7 +104,7 @@ export class UsersComponent implements OnInit {
   public myFormCompany: FormGroup;
   public myFormSubCompany: FormGroup;
   public disabledSubCompany: boolean = false;
-  public dataCompany: FormControl;
+  public dataCompany: any;
   public dataSubCompany: FormControl;
   
 
@@ -188,7 +157,7 @@ export class UsersComponent implements OnInit {
   public getCompanies() {
     //this.progress = true;
     this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response.json(), 
+      (response) => this.dataCompany = response, 
       (error) => console.log(error.json()), 
       //() => this.onCompleteLogin()
   );
@@ -202,7 +171,7 @@ export class UsersComponent implements OnInit {
       this.formCompany.id_sub_company=1;
       this.userService.getSubCompanies(0).subscribe(
        (response) => {
-         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         //this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
          this.formCompany.id_sub_company=0;
          this.disabledSubCompany = false;
        }, 
@@ -268,7 +237,7 @@ export class UsersComponent implements OnInit {
     this.progress=true;
     console.log('Submitting values', this.formData);
      this.userService.newUser(this.formData).subscribe(
-        (response) => this.onSuccessNewUser(response.json()), 
+        (response) => this.onSuccessNewUser(response), 
         (error) => this.onErrorNewUser(error.json()), 
         () => this.onCompleteNewUser()
       );
@@ -298,7 +267,7 @@ export class UsersComponent implements OnInit {
     this.progress=true;
     console.log('Submitting values', this.formData);
      this.userService.updateUser(this.formData).subscribe(
-        (response) => this.onSuccessUpdate(response.json()), 
+        (response) => this.onSuccessUpdate(response), 
         (error) => this.onErrorUpdate(error.json()), 
         () => this.onCompleteUpdate()
       );
@@ -328,7 +297,7 @@ export class UsersComponent implements OnInit {
     //this.formData = this.allUsers.find(ele => ele.ita == row.ita)
     this.progress=true;
     this.userService.updateStatus(row).subscribe(
-        (response) => this.onSuccessStatus(response.json()), 
+        (response) => this.onSuccessStatus(response), 
         (error) => this.onErrorStatus(error.json()), 
         () => this.onCompleteStatus()
       );
@@ -363,26 +332,16 @@ export class UsersComponent implements OnInit {
   public getRols(){
     //console.log(this.rols);
     this.userService.getRols().subscribe(
-        (response) => this.rols = response.json(), 
+        (response) => this.rols = response, 
         (error) => console.log(error.json()), 
         //() => this.onCompleteLogin()
     );
-  }
-
-  public getStatusUser(ita): void{
-    //console.log(this.rols);
-    this.userService.getStatus(ita).subscribe(
-        (response) => this.status = response.json().status, 
-        (error) => console.log(error.json()), 
-        //() => this.onCompleteLogin()
-    );
-    //return this.status;
   }
 
   public getPositions(){
     //console.log(this.rols);
     this.userService.getPositions().subscribe(
-        (response) => this.positions = response.json(), 
+        (response) => this.positions = response, 
         (error) => console.log(error.json()), 
         //() => this.onCompleteLogin()
     );

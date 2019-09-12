@@ -30,6 +30,30 @@ export class LbdUserProfileComponent {
   @Input()
   address: string;
 
+  @Input()
+  surgical: string;
+
+  @Input()
+  health: string;
+
+  @Input()
+  dob: Date;
+
+  @Input()
+  company_name: string;
+
+  @Input()
+  plan_name: string;
+
+  @Input()
+  price: number;
+
+  @Input()
+  smoker: string;
+  
+  @Input()
+  company_logo: string;
+
 
   constructor() { }
 }

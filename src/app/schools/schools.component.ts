@@ -1,4 +1,4 @@
-import {Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { Location, DatePipe } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import {  Router, ActivatedRoute, Params } from '@angular/router';
@@ -18,6 +18,8 @@ import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/
 import { CustomData } from "../services/custom-data";
 
 import {INgxMyDpOptions, IMyDateModel} from 'ngx-mydatepicker';
+
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-schools',
@@ -118,11 +120,11 @@ export class SchoolsComponent implements OnInit {
   public page:number = 1;
   public pagination: number = vars.pagination;
   public url: any;
-  @ViewChild('modal')
+  @ViewChild('modal', {static:true})
   modal: ModalComponent;
-  @ViewChild('modalNewCategory')
+  @ViewChild('modalNewCategory', {static:true})
   modalNewCategory: ModalComponent;
-  @ViewChild('modalNewSubCategory')
+  @ViewChild('modalNewSubCategory', {static:true})
   modalNewSubCategory: ModalComponent;
   public title: string = 'Agregar';
   public titleModal: string = 'Media';
@@ -130,7 +132,7 @@ export class SchoolsComponent implements OnInit {
 
   public dataCategory: FormControl;
   public dataSubCategory: FormControl;
-  public dataUsers: FormControl;
+  public dataUsers: any;
   public dataCategory2: Array<any> = [];
   public dataSubCategory2: Array<any> = [];;
   public myFormCategory: FormGroup;
@@ -146,14 +148,14 @@ export class SchoolsComponent implements OnInit {
   public busy: boolean = false;
   public creator: any;
   public q : string = '';
-  @ViewChild("remoteDataCreator") private remoteDataCreator: CompleterCmp;
+  @ViewChild("remoteDataCreator", {static:true}) private remoteDataCreator: CompleterCmp;
   public name: string;
   public placeholderCreator: string;
   public customData: CustomData;
 
   public search:string ='';
 
-  @ViewChild("datepickerE") datepickerE: ElementRef;
+  @ViewChild("datepickerE", {static:true}) datepickerE: ElementRef;
   public isShowDatepicker: boolean = false;
   
   constructor(public datePipe:DatePipe, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public schoolService: SchoolService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
@@ -245,7 +247,7 @@ export class SchoolsComponent implements OnInit {
     this.userService.getUsers(q).subscribe(
         (response) => { 
             this.myFormUsers.enable();
-            this.dataUsers = response.json(); 
+            this.dataUsers = response; 
         }, 
         (error) => { console.log(error.json()); this.progress=false; }, 
         //() => this.onCompleteLogin()

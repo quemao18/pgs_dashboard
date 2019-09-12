@@ -1,6 +1,7 @@
-import {Component, OnInit, trigger, state, style, transition, animate} from '@angular/core';
+import {Component, OnInit,} from '@angular/core';
 import {NotificationService, NotificationType, NotificationOptions} from '../lbd/services/notification.service';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-notifications',

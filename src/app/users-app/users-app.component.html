@@ -4,7 +4,7 @@
     <div class="col-md-12 card" [@cardtable1]>
 
   <div class="header">
-    <h4 class="title"><a *ngIf="isAdmin()" (click)="newUser()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-add-user"></i></a></h4>
+    <!-- <h4 class="title"><a *ngIf="isAdmin()" (click)="newUser()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-add-user"></i></a></h4> -->
     <p class="category">{{ subtitle }} </p>
     
 
@@ -32,14 +32,15 @@
          <!--  filterBy: ['ita', 'name', 'last']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
          <!-- <td> {{row.ita}} </td> -->
          <td> {{ row.name }} </td>
-         <td> {{ row.last }} </td> 
+         <!-- <td> {{ row.last }} </td>  -->
          <td> {{ row.email }} </td> <!-- Email -->
-         <td> {{ row.company_name }} </td> <!-- empresa -->
-         <td> {{ row.sub_company_name }} </td> <!-- organizacion -->
+         <td> {{ row.gender == 'male' ? 'Masculino': 'Femenino' }} </td> <!--  -->
+         <td> {{ row.smoker == 'yes' ? 'Si': 'No' }} </td> 
+         <td> {{ age(row.dob.$date)  }} </td> <!--  -->
           <td> 
               <a (click)="showUser(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
-              <a (click)="editUser(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
-              <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i (onCreate)="getStatusUser(row.ita)" [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
+              <!-- <a (click)="editUser(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a> -->
+              <!-- <a [title]="row.status==0 ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i (onCreate)="getStatusUser(row.ita)" [ngClass]="row.status==0 ? 'pe-7s-check' : 'pe-7s-power'"></i></a> -->
               <a *ngIf="isAdmin() || isAuth()" (click)="deleteUser(row)" title="Eliminar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
             </td>  
         </tr>
@@ -436,6 +437,7 @@
   <!--- Show Modal -->
 
 <modal #modal>
+  <spinner-component [spinnerShow]="progress_modal"></spinner-component>
    <modal-header [show-close]="true">
         <h4 class="modal-title">{{titleModal}}</h4>
     </modal-header>
@@ -443,9 +445,17 @@
     <div [@cardprofile]>
       <lbd-user-profile
         [backgroundImage]="'https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400'"
-        [avatarImage]="formData.photo!='' ? formData.photo  : 'assets/img/faces/face-0.jpg'"
-        [name]="formData.name+' '+formData.last"
+        [avatarImage]="formData.photo ? formData.photo  : 'assets/img/faces/face-0.jpg'"
+        [name]="formData.name"
         [email]="formData.email"
+        [dob]="formData.dob"
+        [health]="formData.health"
+        [surgical]="formData.surgical"
+        [company_name] = "formData.company_name"
+        [company_logo] = "formData.company_logo"
+        [plan_name] = "formData.plan_name"
+        [price] = "formData.price"
+        [smoker] = "formData.smoker == 'Yes' ? 'Si': 'No'"
         >
       </lbd-user-profile>
     </div>

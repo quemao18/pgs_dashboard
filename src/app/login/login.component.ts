@@ -1,4 +1,4 @@
-import { Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter, ViewChildren, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChildren, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import {  Router, ActivatedRoute, Params } from '@angular/router';
@@ -14,6 +14,7 @@ import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteDat
 import { Observable } from "rxjs/Observable";
 import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
 import { CustomData } from "../services/custom-data";
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
@@ -22,48 +23,22 @@ import { CustomData } from "../services/custom-data";
   animations: [
     trigger('carduserprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1
       })),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out'),
       ])
     ]),
-    trigger('cardprofile', [
-      state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
-        transform: 'translate3D(0px, 0px, 0px)',
-        opacity: 1})),
-      transition('void => *', [
-        style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
-          transform: 'translate3D(0px, 150px, 0px)',
-        }),
-        animate('0.3s 0.25s ease-out')
-      ])
-    ])
+
   ]
 })
 
 export class LoginComponent implements OnInit {
-  public formData: any;
+  public formData: any = {username:'', password:''};
   public questions: any;
   public companies: any;
   public subCompanies: any;
@@ -91,10 +66,10 @@ export class LoginComponent implements OnInit {
   public placeholderPlatinum: string;
   public userNotExist:boolean = false;
   public customData: CustomData;
-  @ViewChild("remoteDataSponsor") private remoteDataSponsor: CompleterCmp;
-  @ViewChild("remoteDataPlatinum") private remoteDataPlatinum: CompleterCmp;
+  @ViewChild("remoteDataSponsor", {static: true}) private remoteDataSponsor: CompleterCmp;
+  @ViewChild("remoteDataPlatinum", {static: true}) private remoteDataPlatinum: CompleterCmp;
   public disabledSubCompany: boolean = false;
-  public dataCompany: FormControl;
+  public dataCompany: any;
   public dataSubCompany: FormControl;
 
   constructor(private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public userService:UserService, public activatedRoute: ActivatedRoute, public app: AppComponent, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
@@ -112,18 +87,15 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/dashboard']);
             
           this.formData = {
-            address:""
+            
           };
 
           this.formDataForget = {
           };
-          this.placeholderSponsor = "Por favor espere...";
-          this.placeholderPlatinum = "Por favor espere...";
-          this.placeholderSponsor = "Nombre del patriconador o ITA...";
-          this.placeholderPlatinum = "Nombre del platino directo o ITA...";
+
           this.disabledSubCompany = true;
           
-          this.getQuestions();
+          //this.getQuestions();
 
 
           //this.showCompletForm = true;           
@@ -179,7 +151,7 @@ export class LoginComponent implements OnInit {
     
     //console.log('Submitting values', this.formData);
      this.userService.getUserEmail(this.formData.email).subscribe(
-        (response) => this.onSuccessUserEmail(response.json()), 
+        (response) => this.onSuccessUserEmail(response), 
         (error) => this.onErrorUserEmail(error.json()), 
         () => this.onCompleteUserEmail()
       );
@@ -270,7 +242,7 @@ export class LoginComponent implements OnInit {
     public forgetPass() {
     this.progress = true;
     this.userService.forgetPass(this.formDataForget).subscribe(
-        (response) => this.onSuccessForget(response.json()), 
+        (response) => this.onSuccessForget(response), 
         (error) => this.onErrorForget(error.json()), 
         () => this.onCompleteForget()
       );
@@ -301,10 +273,11 @@ export class LoginComponent implements OnInit {
   }
 
   public onSubmit() {
+    //console.log(this.formData)
     this.progress = true;
-    this.authService.login(this.formData).subscribe(
-        (response) => this.onSuccessLogin(response.json()), 
-        (error) => this.onErrorLogin(error.json()), 
+    this.userService.login(this.formData).subscribe(
+        (response) => this.onSuccessLogin(response), 
+        (error) => this.onErrorLogin(error), 
         () => this.onCompleteLogin()
       );
    
@@ -312,68 +285,34 @@ export class LoginComponent implements OnInit {
     //this.authService.login_2(this.formData);
     }
     onSuccessLogin(response){
-      
-    if(response.email==null || response.id_question ==null || response.email=='' || response.id_question =='')
-    {
-      this.showRegisterForm = true;  
-      //this.formData = response;
-      this.register();
-      this.getSubCompanies(response.id_sub_company);
-      //this.getUserIta();
-      this.showNotification('top', 'center', 'Debe completar los datos del<b> registro </b>para poder entrar', 'pe-7s-attention', 3);
-      this.formData.email = response.email;
-      this.getUserEmail();
-      //this.getUsers();
 
-    }else{
-      this.showRegisterForm = false;  
-      //localStorage.setItem('ita', response.ita);
-      localStorage.setItem('id_user', response.id_user);
-      localStorage.setItem('email', response.email);
-      localStorage.setItem('name', response.name);
-      localStorage.setItem('last', response.last);
-      localStorage.setItem('id_rol', response.id_rol);
-      //localStorage.setItem('id_position', response.id_position);
-      localStorage.setItem('user', JSON.stringify(response));
-      this.authService.setLoggedIn(true);
-
-    if(response.id_rol == '1') 
-        this.userService.setIsAdmin(true) 
-      else 
-        this.userService.setIsAdmin(false) 
-
-    if(response.id_rol == '2') 
-        this.userService.setIsAuth(true) 
-      else 
-        this.userService.setIsAuth(false) 
+    console.log(response);
+    this.userService.setIsUserLoggedIn(response.access_token);
+    this.authService.setLoggedIn(true);
+    this.userService.getUser().subscribe(
+      data=> {
+        console.log(data);
+        if(data['user_type'] === 1){
+            this.router.navigate(['/dashboard']);
+            this.userService.setIsAdmin(true);
+            this.authService.setName(data['name']);
+        }
+          else{
+            this.showNotification('top', 'center', '<b>No tiene accesso a este dashboard</b>', 'pe-7s-attention', 4);
+            this.authService.setLoggedIn(false);
+          }
+      }
+    )
     
-    if(response.id_rol == '3') 
-        this.userService.setIsPublish(true) 
-      else 
-        this.userService.setIsPublish(false) 
-
-    if(response.id_rol == '4') {
-      this.userService.setIsUser(true);
-      //this.showNotification('top', 'center', '<b>Usted no tiene acceso al dashboard</b>', 'pe-7s-attention', 4);
-      //this.authService.logout();
-    }else{ 
-        this.userService.setIsUser(false) 
     }
-    this.authService.setName(response.name + ' ' + response.last);
-    
-  }
-    this.progress = false;
-
-    //console.log(response);
-    
-  }
 
     onErrorLogin(error){
-    //this.pService.done();
+    console.log(error);
+    //this.pService.done(); "description": "Invalid credentials", 
     this.progress = false;
     this.authService.setLoggedIn(false);
-    if(error.message)
-    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    if(error.error.description=='Invalid credentials')
+    this.showNotification('top', 'center', '<b>Usuario o password incorrectos</b>', 'pe-7s-attention', 4);
     else
     this.showNotification('top', 'center', '<b>Error al comunicar con el servidor</b>', 'pe-7s-attention', 4);
     //this.authService.logout();
@@ -382,20 +321,20 @@ export class LoginComponent implements OnInit {
   onCompleteLogin(){
     //this.pService.done();
     this.progress = false;
-    if(this.showRegisterForm){
-      //this.getUsers();
-      this.showRegisterForm = true;
-    }
-    else{
-    //console.log('ok');
-    //this.app.ngOnInit();
-      var name = localStorage.getItem('name') + ' ' + localStorage.getItem('last');
-      setTimeout(()=>{
-      this.showNotification('top', 'center', 'Hola <b>' + name  + '</b>. Bienvenido al <b>Dashboard de ' + vars.app + '</b>.', 'pe-7s-gift', 1);
-      }, 1500);
+    // if(this.showRegisterForm){
+    //   //this.getUsers();
+    //   this.showRegisterForm = true;
+    // }
+    // else{
+    // //console.log('ok');
+    // //this.app.ngOnInit();
+    //   var name = localStorage.getItem('name') + ' ' + localStorage.getItem('last');
+    //   setTimeout(()=>{
+    //   this.showNotification('top', 'center', 'Hola <b>' + name  + '</b>. Bienvenido al <b>Dashboard de ' + vars.app + '</b>.', 'pe-7s-gift', 1);
+    //   }, 1500);
 
-      this.router.navigate(['/dashboard']);
-    }
+    //   this.router.navigate(['/dashboard']);
+    // }
   }
 
   public onSubmitEditUser(){
@@ -404,7 +343,7 @@ export class LoginComponent implements OnInit {
     if(!this.userNotExist){
       //actualiza usuario
      this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccess(response.json()), 
+        (response) => this.onSuccess(response), 
         (error) => this.onError(error.json()), 
         () => this.onComplete()
       );
@@ -414,7 +353,7 @@ export class LoginComponent implements OnInit {
       //this.formData.id_position = 6;
       console.log('Submitting values', this.formData);
       this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccess(response.json()), 
+        (response) => this.onSuccess(response), 
         (error) => this.onError(error.json()), 
         () => this.onComplete()
       );
@@ -471,13 +410,6 @@ export class LoginComponent implements OnInit {
 
     public getUsers(element){
     //this.progress = true;
-    //this.myFormSponsor.disable();
-    //this.myFormPlatinum.disable();
-    this.placeholderSponsor = "Por favor espere...";
-    this.placeholderPlatinum = "Por favor espere...";
-    this.placeholderSponsor = "Nombre del patriconador o ITA...";
-    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
-    
     //console.log(this.rols);
     
     this.userService.getUsers(element.value).subscribe(
@@ -493,17 +425,19 @@ export class LoginComponent implements OnInit {
 
 
   public onSuccessUsers(response){
-  //console.log(response.json())
+  console.log(response)
   this.progress = false;
-  //this.myFormPlatinum.enable();
-  //this.myFormSponsor.enable();
-  //this.placeholderSponsor = "Nombre del patriconador o ITA...";
-  //this.placeholderPlatinum = "Nombre del platino directo o ITA...";
-  this.usersAll = response.json();
+  this.usersAll = response;
   this.data_sponsor = response.json();
   this.data_platinum = response.json().filter(i => i.id_position < '4') ;
   //this.formData = response.json().filter(i => i.ita == this.formData.ita)[0] ;
-  localStorage.setItem('users', JSON.stringify(response.json()));
+  //localStorage.setItem('users', JSON.stringify(response.json()));
+  if(response.access_token){
+    //localStorage.setItem('access_token', (data.json().access_token));
+    this.userService.setIsUserLoggedIn(response.access_token);
+    this.router.navigate(['/dashboard'])
+    }
+
   //console.log
   
   //console.log(row['sponsor']);
@@ -524,7 +458,7 @@ export class LoginComponent implements OnInit {
     public getQuestions() {
     //this.progress = true;
     this.userService.getQuestions().subscribe(
-        (response) => this.questions = (response.json()), 
+        (response) => this.questions = (response), 
         (error) => { 
           if(error.message)
           this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
@@ -542,7 +476,7 @@ export class LoginComponent implements OnInit {
   public getCompanies() {
     //this.progress = true;
     this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response.json(), 
+      (response) => this.dataCompany = response, 
       (error) => console.log(error.json()), 
       //() => this.onCompleteLogin()
   );
@@ -557,7 +491,7 @@ export class LoginComponent implements OnInit {
       this.formCompany.id_sub_company=1;
       this.userService.getSubCompanies(0).subscribe(
        (response) => {
-         this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
+         //this.dataSubCompany = response.filter(i => i.id_company == id_company); 
          this.formCompany.id_sub_company=0;
          this.disabledSubCompany = false;
        }, 
@@ -575,7 +509,7 @@ export class LoginComponent implements OnInit {
   public forgetPass2() {
     this.progress = true;
     this.userService.forgetPass2(this.formDataForget).subscribe(
-        (response) => this.onSuccessForget2(response.json()), 
+        (response) => this.onSuccessForget2(response), 
         (error) => this.onErrorForget2(error.json()), 
         () => this.onCompleteForget2()
       );
@@ -628,19 +562,11 @@ export class LoginComponent implements OnInit {
   animations: [
     trigger('carduserprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1
       })),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out'),
@@ -648,18 +574,10 @@ export class LoginComponent implements OnInit {
     ]),
     trigger('cardprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')

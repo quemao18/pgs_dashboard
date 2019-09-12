@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FooterItem } from '../lbd/lbd-footer/lbd-footer.component';
+import * as vars from '../config';
 
 @Component({
   selector: 'app-footer-layout',
@@ -25,6 +26,6 @@ export class FooterLayoutComponent implements OnInit {
       */
    ];
    
-    this.copyright = '&copy; <a href="http://www.npeht.com">NPEHT</a>';
+    this.copyright = '&copy; <a href="'+ vars.url + '">'+vars.app+'</a>';
   }
 }

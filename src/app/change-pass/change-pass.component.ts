@@ -1,4 +1,4 @@
-import {Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import {  Router, ActivatedRoute, Params } from '@angular/router';
@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service';
 import { AuthGuard } from '../services/auth-guard.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
+import { trigger, state, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-user',
@@ -15,19 +16,11 @@ import * as vars from '../config';
   animations: [
     trigger('carduserprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1
       })),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out'),
@@ -35,18 +28,10 @@ import * as vars from '../config';
     ]),
     trigger('cardprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -56,7 +41,10 @@ import * as vars from '../config';
 })
 
 export class ChangePassComponent implements OnInit {
-  public formDataChange: any;
+  public formDataChange: any = { user_id:'',
+  name: '',
+  password: '',
+  password_conf:'' };
   public pass: any;
   public formDataForget: any;
   public progress: boolean = false;
@@ -74,14 +62,18 @@ export class ChangePassComponent implements OnInit {
           //this.isLoggedIn();
           this.navbarTitleService.updateTitle('Cambiar Password');
           console.log(localStorage);
-          this.formDataChange = {
-            //ita: localStorage.getItem('ita'),
-            id_user: localStorage.getItem('id_user'),
-            email: localStorage.getItem('email'),
-            password: '',
-            password_conf: '',
-          };
-          
+
+          this.userService.getUser().subscribe(
+            data => {
+              console.log(data)
+              this.formDataChange= {
+                  user_id:data['user_id'],
+                  name: data['name'],
+                  password: '',
+                  password_conf:''
+              }
+            }
+          )
 
   }
 
@@ -91,9 +83,9 @@ export class ChangePassComponent implements OnInit {
    //this.showNotification('top', 'center', '<b>Los passwords no son iguales</b>', 'pe-7s-attention', 4);
     //console.log(this.formDataChange);
     this.progress = true;
-    this.userService.changePass(this.formDataChange).subscribe(
-        (response) => this.onSuccessChange(response.json()), 
-        (error) => this.onErrorChange(error.json()), 
+    this.userService.putPass(this.formDataChange.user_id, this.formDataChange.password).subscribe(
+        (response) => this.onSuccessChange(response), 
+        (error) => this.onErrorChange(error), 
         () => this.onCompleteChange()
       );
    
@@ -102,14 +94,14 @@ export class ChangePassComponent implements OnInit {
   }
   
   onSuccessChange(response){
-  this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+  this.showNotification('top', 'center', '<b>Password cambiado correctamente</b>', 'pe-7s-check', 2);
   console.log(response);
-  
+  this.authService.logout();
   }
   
   onErrorChange(error){
   this.progress = false;
-  this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+  this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4);
   console.log(error);  
   }
 
@@ -117,7 +109,6 @@ export class ChangePassComponent implements OnInit {
   //this.pService.done();
   this.progress = false;
   this.showForgetForm = false;
-  this.authService.logout();
   //this.router.navigate(['/login']);
   }
 

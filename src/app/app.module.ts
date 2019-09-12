@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes, CanActivate, CanActivateChild, CanDeactivate } from '@angular/router';
-import { AgmCoreModule } from 'angular2-google-maps/core';
+import { AgmCoreModule } from '@agm/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -11,7 +11,7 @@ import { FooterLayoutComponent } from './footer-layout/footer-layout.component';
 import { LbdModule } from './lbd/lbd.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { UserComponent } from './user/user.component';
+
 import { TableComponent } from './table/table.component';
 import { TypographyComponent } from './typography/typography.component';
 import { IconsComponent } from './icons/icons.component';
@@ -36,7 +36,7 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
-import { AudiosComponent } from './audios/audios.component';
+
 import { VideosComponent } from './videos/videos.component';
 import { NewsComponent } from './news/news.component';
 import { SchoolsComponent } from './schools/schools.component';
@@ -52,19 +52,20 @@ import { ImageUploadModule } from "angular2-image-upload";
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 import { Ng2CompleterModule } from "ng2-completer";
+import { HttpClientModule } from '@angular/common/http';
+import { PlanService } from './services/plan.service';
+import { CompanyService } from './services/company.service';
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 
 const appRoutes: Routes = [
-  { path: 'maps', component: MapsComponent },
+  //{ path: 'maps', component: MapsComponent },
   { path: 'policity', component: PolicityComponent, },
   {
     path: '', component: FooterLayoutComponent, children:
     [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
       { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
       { path: 'users-app', component: UsersAppComponent, canActivate: [AuthGuard] },
-      { path: 'audios', component: AudiosComponent, canActivate: [AuthGuard] },
       { path: 'videos', component: VideosComponent, canActivate: [AuthGuard] },
       { path: 'schools', component: SchoolsComponent, canActivate: [AuthGuard] },
       { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
@@ -87,12 +88,11 @@ const appRoutes: Routes = [
     AppComponent,
     FooterLayoutComponent,
     DashboardComponent,
-    UserComponent,
     UsersAppComponent,
     TableComponent,
     TypographyComponent,
     IconsComponent,
-    MapsComponent,
+    //MapsComponent,
     NotificationsComponent, 
     LoginComponent, 
     LogoutComponent,
@@ -104,13 +104,13 @@ const appRoutes: Routes = [
     SafePipe,
     //UcFirstPipe,
     ChangePassComponent,
-    AudiosComponent,
     VideosComponent,
     NewsComponent,
     SchoolsComponent,
     ProfileComponent, 
     MinuteSecondsPipe, 
     PolicityComponent,
+    
 
   ],
   imports: [
@@ -120,6 +120,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     NgxPaginationModule,
     //Ng2TableModule,
     //PaginationModule,
@@ -127,7 +128,8 @@ const appRoutes: Routes = [
     SpinnerComponentModule,
     RouterModule.forRoot(appRoutes),
     //PaginationModule.forRoot(),
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAEPDOJl5CPLz6NZcMqJBqZWfVXec3UsJg' }),
+    //AgmCoreModule.forRoot({ apiKey: 'AIzaSyAEPDOJl5CPLz6NZcMqJBqZWfVXec3UsJg' }),
+    //AgmCoreModule,
     LbdModule, 
     NgPipesModule,
     NguiAutoCompleteModule,
@@ -136,7 +138,7 @@ const appRoutes: Routes = [
     ImageUploadModule.forRoot(),
     Ng2CompleterModule
   ],
-  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService,
+  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
   {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

@@ -1,10 +1,12 @@
 import {Component, Input, OnInit, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
 import { NavbarTitleService } from '../services/navbar-title.service';
-import { NavItem, NavItemType } from '../lbd.module';
+// import { NavItem, NavItemType } from '../lbd.module';
 import { MobileSidebarToggleService } from '../services/mobile-sidebar-toggle.service';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
+import { NavItem, NavItemType } from '../../app.component';
 export type BackgroundColor = 'blue' | 'azure' | 'green' | 'orange' | 'red' | 'purple';
+
 
 @Component({
   selector: 'lbd-sidebar',

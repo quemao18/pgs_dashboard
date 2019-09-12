@@ -1,4 +1,4 @@
-import {Component, OnInit, trigger, state, style, transition, animate, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import { Location } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import {  Router, ActivatedRoute, Params } from '@angular/router';
@@ -16,6 +16,8 @@ import { Observable } from 'rxjs/Observable';
 import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteData } from 'ng2-completer';
 import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
 import { CustomData } from "../services/custom-data";
+import { trigger, state, transition, style, animate } from '@angular/animations';
+
 
 @Component({
   selector: 'app-videos',
@@ -116,11 +118,11 @@ export class VideosComponent implements OnInit {
   public page:number = 1;
   public pagination: number = vars.pagination;
   public url: any;
-  @ViewChild('modal')
+  @ViewChild('modal', {static:true})
   modal: ModalComponent;
-  @ViewChild('modalNewCategory')
+  @ViewChild('modalNewCategory', {static:true})
   modalNewCategory: ModalComponent;
-  @ViewChild('modalNewSubCategory')
+  @ViewChild('modalNewSubCategory', {static:true})
   modalNewSubCategory: ModalComponent;
   public title: string = 'Agregar';
   public titleModal: string = 'Media';
@@ -128,7 +130,7 @@ export class VideosComponent implements OnInit {
 
   public dataCategory: FormControl;
   public dataSubCategory: FormControl;
-  public dataUsers: FormControl;
+  public dataUsers: any;
   public dataCategory2: Array<any> = [];
   public dataSubCategory2: Array<any> = [];;
   public myFormCategory: FormGroup;
@@ -144,7 +146,7 @@ export class VideosComponent implements OnInit {
   public busy: boolean = false;
   public creator: any;
   public q : string = '';
-  @ViewChild("remoteDataCreator") private remoteDataCreator: CompleterCmp;
+  @ViewChild("remoteDataCreator", {static:true}) private remoteDataCreator: CompleterCmp;
   public name: string;
   public placeholderCreator: string;
   public customData: CustomData;
@@ -250,7 +252,7 @@ export class VideosComponent implements OnInit {
     this.userService.getUsers(q).subscribe(
         (response) => { 
             this.myFormUsers.enable();
-            this.dataUsers = response.json(); 
+            this.dataUsers = response; 
         }, 
         (error) => { console.log(error.json()); this.progress=false; }, 
         //() => this.onCompleteLogin()
