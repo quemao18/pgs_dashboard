@@ -37,9 +37,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SpinnerComponentModule } from 'ng2-component-spinner';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
 
-import { VideosComponent } from './videos/videos.component';
 import { NewsComponent } from './news/news.component';
-import { SchoolsComponent } from './schools/schools.component';
+import { CompaniesComponent } from './companies/companies.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { ProfileComponent } from './profile/profile.component';
@@ -55,7 +54,13 @@ import { Ng2CompleterModule } from "ng2-completer";
 import { HttpClientModule } from '@angular/common/http';
 import { PlanService } from './services/plan.service';
 import { CompanyService } from './services/company.service';
+import { environment } from '../environments/environment';
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
+import { AngularFireModule,} from "@angular/fire";
+// import { AngularFirestoreModule, } from '@angular/fire/firestore';
+import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/storage';
+
+
 
 const appRoutes: Routes = [
   //{ path: 'maps', component: MapsComponent },
@@ -64,11 +69,9 @@ const appRoutes: Routes = [
     path: '', component: FooterLayoutComponent, children:
     [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+      // { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
       { path: 'users-app', component: UsersAppComponent, canActivate: [AuthGuard] },
-      { path: 'videos', component: VideosComponent, canActivate: [AuthGuard] },
-      { path: 'schools', component: SchoolsComponent, canActivate: [AuthGuard] },
-      { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
+      { path: 'companies', component: CompaniesComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent,  },
       { path: 'change-pass', component: ChangePassComponent, },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
@@ -104,9 +107,8 @@ const appRoutes: Routes = [
     SafePipe,
     //UcFirstPipe,
     ChangePassComponent,
-    VideosComponent,
     NewsComponent,
-    SchoolsComponent,
+    CompaniesComponent,
     ProfileComponent, 
     MinuteSecondsPipe, 
     PolicityComponent,
@@ -136,9 +138,11 @@ const appRoutes: Routes = [
     CustomFormsModule,
     NgxMyDatePickerModule.forRoot(),
     ImageUploadModule.forRoot(),
-    Ng2CompleterModule
+    Ng2CompleterModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule
   ],
-  providers: [AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
+  providers: [AngularFireStorage, AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
   {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

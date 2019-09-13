@@ -1,32 +1,106 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as vars from '../config';
-import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class CompanyService {
 
+  access_token: string;
   constructor(private router: Router, private http: HttpClient) {
-  
+    this.access_token =  (localStorage.getItem('access_token'));
   }
 
   generateHeaders() {
-    const headers = new HttpHeaders( {'Authorization': 'JWT '+ this.getAccessToken() } );
+    const headers = new HttpHeaders( {'Authorization': 'JWT '+ this.access_token } );
     return headers;
   }
 
-  getAccessToken() {
-    return (localStorage.getItem('access_token'));
-  }
-
   
-  getCompany(company_id){
+  getCompany(company_id: string){
     //console.log(pago);
     return this.http.get(vars.apiUrl + 'v1/company/'+company_id, 
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }
 
+  getCompanies(q:string){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + 'v1/company/companies/'+q, 
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  putStatus(id: string){
+    console.log('token', this.access_token);
+    return this.http.put(vars.apiUrl + 'v1/company/'+ id + '/status',
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  putLogoUrl(downloadURL: string, id:string) {
+    return this.http.put(vars.apiUrl + 'v1/company/'+ id + '/logo', {url:downloadURL},
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+
+  putCompany(data:any){
+    console.log(data);
+    return this.http.put(vars.apiUrl + 'v1/company/'+ data.company_id , {name:data.name, email:data.email, logo:data.logo, description:data.description},
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  postCompany(data:any){
+    //console.log(user_id);
+    return this.http.post(vars.apiUrl + 'v1/company' , {data},
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+
+  deleteCompany(id:string){
+    //console.log(user_id);
+    return this.http.delete(vars.apiUrl + 'v1/company/'+ id,
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  public fileChange(event: any, company_id:string) {
+    console.log(company_id)
+    let fileList: FileList = event.target.files;
+    if(fileList.length > 0) {
+        let file: File = fileList[0];
+        console.log('file', file);
+        const formData = new FormData();
+        formData.append('image', file, company_id+ '.' +file.name.split('.').pop());
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        console.log(formData);
+        return this.http.post(vars.apiUrl+ "v1/company/logo", formData, {
+          headers: headers,
+        });
+            
+    }
+    }
+
   
+  postFile(fileToUpload: File, id:string){
+    const endpoint = vars.apiUrl+'v1/company/logo';
+    const formData: FormData = new FormData();
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    formData.append('file', fileToUpload, id+ '.' +fileToUpload.name.split('.').pop());
+    return this.http.post(endpoint, formData, 
+      {headers:headers,responseType: 'json'})
+      //.map(() => { return true; })
+      //.catch( (e) => console.log(e) )
+      
+  }
 
 }

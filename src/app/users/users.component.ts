@@ -118,67 +118,23 @@ export class UsersComponent implements OnInit {
     if(!this.userService.isAdmin() && !this.userService.isAuth() )
         this.router.navigate(['/dashboard']);
 
-    //this.notify = {show: false, message: ''};
     this.tableData = {
     headerRow: ['Nombre', 'Apellido', 'Email', 'Empresa', 'Organización', 'ROL' , 'ACCIONES'],
   };
 
     this.data = [];
     this.formData = {
-      ita: '',
-      email: '',
-      name: '',
-      last: '',
-      address: '',
-      id_position: '',
-      id_rol: 0,
-      id_company:0,
-      id_sub_company:0,
-      status:''
     };
 
     this.showCardUser = this.showEditForm = this.showNewForm = this.progress = false;
-    this.getRols();    
-    this.getPositions();
-    this.getUsersBackend(this.search);
-
+    
     this.formCompany = { };
-    this.formSubCompany= { };
 
-
-    this.getCompanies();
-
-    this.formData.id_company = 0;
-    this.formData.id_sub_company = 0;
 
   }
 
 
-  public getCompanies() {
-    //this.progress = true;
-    this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response, 
-      (error) => console.log(error.json()), 
-      //() => this.onCompleteLogin()
-  );
-    //console.log (val);
-    //this.authService.login_2(this.formData);
-  }
 
-  public getSubCompanies(id_company){
-    //console.log(id_category);
-     this.disabledSubCompany = true;
-      this.formCompany.id_sub_company=1;
-      this.userService.getSubCompanies(0).subscribe(
-       (response) => {
-         //this.dataSubCompany = response.json().filter(i => i.id_company == id_company); 
-         this.formCompany.id_sub_company=0;
-         this.disabledSubCompany = false;
-       }, 
-       (error) => console.log(error.json()), 
-       //() => this.onCompleteLogin()
-   );
- }
 
   public filterValues(val){
       console.log(val);
@@ -224,7 +180,7 @@ export class UsersComponent implements OnInit {
     this.showEditForm = true;
     this.showCardUser = false;
     this.formData = row;
-    this.getSubCompanies(row.id_sub_company);
+    //this.getSubCompanies(row.id_sub_company);
   }
 
   public showUser(row){
@@ -236,11 +192,11 @@ export class UsersComponent implements OnInit {
   public onSubmitNewUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
-     this.userService.newUser(this.formData).subscribe(
-        (response) => this.onSuccessNewUser(response), 
-        (error) => this.onErrorNewUser(error.json()), 
-        () => this.onCompleteNewUser()
-      );
+    //  this.userService.newUser(this.formData).subscribe(
+    //     (response) => this.onSuccessNewUser(response), 
+    //     (error) => this.onErrorNewUser(error.json()), 
+    //     () => this.onCompleteNewUser()
+    //   );
   }
 
    onSuccessNewUser(response){
@@ -266,11 +222,11 @@ export class UsersComponent implements OnInit {
   public onSubmitEditUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
-     this.userService.updateUser(this.formData).subscribe(
-        (response) => this.onSuccessUpdate(response), 
-        (error) => this.onErrorUpdate(error.json()), 
-        () => this.onCompleteUpdate()
-      );
+    //  this.userService.updateUser(this.formData).subscribe(
+    //     (response) => this.onSuccessUpdate(response), 
+    //     (error) => this.onErrorUpdate(error.json()), 
+    //     () => this.onCompleteUpdate()
+    //   );
   }
 
     onSuccessUpdate(response){
@@ -290,18 +246,6 @@ export class UsersComponent implements OnInit {
   onCompleteUpdate(){
     console.log('ok');
     this.ngOnInit();
-  }
-
-  public changeStatus(row){
-    //this.getStatus(row);
-    //this.formData = this.allUsers.find(ele => ele.ita == row.ita)
-    this.progress=true;
-    this.userService.updateStatus(row).subscribe(
-        (response) => this.onSuccessStatus(response), 
-        (error) => this.onErrorStatus(error.json()), 
-        () => this.onCompleteStatus()
-      );
- 
   }
 
   onSuccessStatus(response){
@@ -329,47 +273,15 @@ export class UsersComponent implements OnInit {
 
   }
 
-  public getRols(){
-    //console.log(this.rols);
-    this.userService.getRols().subscribe(
-        (response) => this.rols = response, 
-        (error) => console.log(error.json()), 
-        //() => this.onCompleteLogin()
-    );
-  }
-
-  public getPositions(){
-    //console.log(this.rols);
-    this.userService.getPositions().subscribe(
-        (response) => this.positions = response, 
-        (error) => console.log(error.json()), 
-        //() => this.onCompleteLogin()
-    );
-  }
   public getUsers(q){
     this.progress = true;
     //console.log(this.rols);
     this.userService.getUsers(q).subscribe(
         (response) => this.onSuccessUsers (response),
         (error) => { 
-          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          this.showNotification('top', 'center', '<b></b>', 'pe-7s-attention', 4); 
           console.log(error.json()); 
           this.progress=false; 
-        }, 
-        //() => this.onCompleteLogin()
-    );
-  }
-
-  public getUsersBackend(q){
-    this.progress = true;
-    //console.log(this.rols);
-    this.userService.getUsersBackEnd(q).subscribe(
-        (response) => this.onSuccessUsers (response),
-        (error) => { 
-          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
-          console.log(error.json()); 
-          this.progress=false; 
-          this.data = [];
         }, 
         //() => this.onCompleteLogin()
     );

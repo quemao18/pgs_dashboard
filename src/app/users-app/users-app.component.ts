@@ -188,32 +188,6 @@ export class UsersAppComponent implements OnInit {
     return 0;
   }
 
-  public getCompanies() {
-    //this.progress = true;
-    this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response, 
-      (error) => console.log(error.json()), 
-      //() => this.onCompleteLogin()
-  );
-    //console.log (val);
-    //this.authService.login_2(this.formData);
-  }
-
-
-  public getSubCompanies(id_company){
-    //console.log(id_category);
-     this.disabledSubCompany = true;
-      this.formCompany.id_sub_company=1;
-      this.userService.getSubCompanies(0).subscribe(
-       (response) => {
-         //this.dataSubCompany = response.filter(i => i.id_company == id_company); 
-         this.formCompany.id_sub_company=0;
-         this.disabledSubCompany = false;
-       }, 
-       (error) => console.log(error.json()), 
-       //() => this.onCompleteLogin()
-   );
- }
 
   public getNameUser(ita){
     let name = '';
@@ -234,34 +208,6 @@ export class UsersAppComponent implements OnInit {
       
   }
 
-  public onSponsorSelected(selected: CompleterItem) {
-    if (selected) {
-      //console.log(selected.originalObject);
-        this.formData.sponsor = {
-          "ita": selected.originalObject.ita,
-          "name": selected.originalObject.name + ' ' + selected.originalObject.last
-        };
-        this.remoteDataSponsor.blur();
-        this.remoteDataPlatinum.focus();
-    } else {
-        this.formData.sponsor = {};
-    }
-    //console.log(this.formData);
-  }
-
-  public onPlatinumSelected(selected: CompleterItem) {
-    if (selected) {
-      //console.log(selected.originalObject);
-        this.formData.platinum = {
-          "ita": selected.originalObject.ita,
-          "name": selected.originalObject.name + ' ' + selected.originalObject.last
-        };
-        this.remoteDataPlatinum.blur();
-    } else {
-        this.formData.platinum = {};
-    }
-    //console.log(this.formData);
-  }
 
     public newUser(){
 
@@ -309,18 +255,7 @@ export class UsersAppComponent implements OnInit {
     this.showEditForm = true;
     this.showCardUser = false;
     this.formData = row;
-    this.sponsor = row.name_sponsor;
-    this.platinum = row.name_platinum;
-    this.getSubCompanies(row.id_company);
-    this.formData.id_sub_company = row.id_sub_company;
-    this.formData.sponsor = {
-      "ita": row.ita_sponsor,
-      "name": row.name_sponsor
-    }
-    this.formData.platinum = {
-      "ita": row.ita_platinum,
-      "name": row.name_platinum
-    }
+
    //console.log(this.formData);
   }
 
@@ -352,11 +287,11 @@ export class UsersAppComponent implements OnInit {
     this.progress=true;
     console.log('Submitting values', this.formData);
     
-    this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccessNewUser(response), 
-        (error) => this.onErrorNewUser(error), 
-        () => this.onCompleteNewUser()
-      );
+    // this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+    //     (response) => this.onSuccessNewUser(response), 
+    //     (error) => this.onErrorNewUser(error), 
+    //     () => this.onCompleteNewUser()
+    //   );
       
   }
 
@@ -383,11 +318,11 @@ export class UsersAppComponent implements OnInit {
   public onSubmitEditUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
-     this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccessUpdate(response), 
-        (error) => this.onErrorUpdate(error.json()), 
-        () => this.onCompleteUpdate()
-      );
+    //  this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+    //     (response) => this.onSuccessUpdate(response), 
+    //     (error) => this.onErrorUpdate(error.json()), 
+    //     () => this.onCompleteUpdate()
+    //   );
   }
 
     onSuccessUpdate(response){
@@ -413,11 +348,11 @@ export class UsersAppComponent implements OnInit {
     //this.getStatus(row);
     //this.formData = this.allUsers.find(ele => ele.ita == row.ita)
     this.progress=true;
-    this.userService.updateStatus(row).subscribe(
-        (response) => this.onSuccessStatus(response), 
-        (error) => this.onErrorStatus(error.json()), 
-        () => this.onCompleteStatus()
-      );
+    // this.userService.updateStatus(row).subscribe(
+    //     (response) => this.onSuccessStatus(response), 
+    //     (error) => this.onErrorStatus(error.json()), 
+    //     () => this.onCompleteStatus()
+    //   );
  
   }
 
@@ -474,23 +409,6 @@ export class UsersAppComponent implements OnInit {
 
   }
 
-  public getRols(){
-    //console.log(this.rols);
-    this.userService.getRols().subscribe(
-        (response) => this.rols = response, 
-        (error) => console.log(error.json()), 
-        //() => this.onCompleteLogin()
-    );
-  }
-
-  public getPositions(){
-    //console.log(this.rols);
-    this.userService.getPositions().subscribe(
-        (response) => this.positions = response, 
-        (error) => console.log(error.json()), 
-        //() => this.onCompleteLogin()
-    );
-  }
   public getUsers(q){
     this.progress = true;
     //console.log(this.rols);

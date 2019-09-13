@@ -20,26 +20,21 @@ import { CustomData } from "../services/custom-data";
 import {INgxMyDpOptions, IMyDateModel} from 'ngx-mydatepicker';
 
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { CompanyService } from '../services/company.service';
+import { AngularFireStorage } from '@angular/fire/storage';
+
 
 @Component({
-  selector: 'app-schools',
-  templateUrl: './schools.component.html',
-  styleUrls: ['./schools.component.scss'],
+  selector: 'app-companies',
+  templateUrl: './companies.component.html',
+  styleUrls: ['./companies.component.scss'],
     animations: [
     trigger('cardtable1', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out')
@@ -47,18 +42,10 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
     ]),
     trigger('cardtable2', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -66,19 +53,11 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
     ]),
    trigger('carduserprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1
       })),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0s ease-out'),
@@ -86,18 +65,10 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
     ]),
     trigger('cardprofile', [
       state('*', style({
-        '-ms-transform': 'translate3D(0px, 0px, 0px)',
-        '-webkit-transform': 'translate3D(0px, 0px, 0px)',
-        '-moz-transform': 'translate3D(0px, 0px, 0px)',
-        '-o-transform': 'translate3D(0px, 0px, 0px)',
         transform: 'translate3D(0px, 0px, 0px)',
         opacity: 1})),
       transition('void => *', [
         style({opacity: 0,
-          '-ms-transform': 'translate3D(0px, 150px, 0px)',
-          '-webkit-transform': 'translate3D(0px, 150px, 0px)',
-          '-moz-transform': 'translate3D(0px, 150px, 0px)',
-          '-o-transform': 'translate3D(0px, 150px, 0px)',
           transform: 'translate3D(0px, 150px, 0px)',
         }),
         animate('0.3s 0.25s ease-out')
@@ -105,7 +76,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
     ])
   ]
 })
-export class SchoolsComponent implements OnInit {
+export class CompaniesComponent implements OnInit {
 
   public tableData: any;
   public data:Array<any> = [];
@@ -157,55 +128,40 @@ export class SchoolsComponent implements OnInit {
 
   @ViewChild("datepickerE", {static:true}) datepickerE: ElementRef;
   public isShowDatepicker: boolean = false;
-  
-  constructor(public datePipe:DatePipe, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public schoolService: SchoolService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
+  imageIsUpload:boolean = false;
+  newPic:boolean = false;
+  logo:string;
+  ref: any;
+  task:any;
+  downloadURL:string;
+  uploadProgress:any;
+
+
+  constructor(private afStorage: AngularFireStorage, public datePipe:DatePipe, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public companyService: CompanyService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     this.customData = new CustomData(userService, http); 
    }
 
   ngOnInit() {
-    this.navbarTitleService.updateTitle('Escuela de negocios');
+    this.navbarTitleService.updateTitle('Aseguradoras');
     //if(!this.userService.isAdmin() && !this.userService.isAuth() )
     //    this.router.navigate(['/dashboard']);
     //this.showNotification('top', 'center', 'Debe permitir <b>ventanas emergentes</b> para reproducir el video', 'pe-7s-attention', 3);
     this.tableData = {
-    headerRow: ['Nombre', 'Inicio', 'Creado por' , 'ACCIONES'],
+    headerRow: ['Nombre', 'Email', 'Descripción', 'ACCIONES'],
     };
 
     this.data = [];
     this.formData = { };
     this.formDataEdit = { };
-    this.formCategory = { };
-    this.formSubCategory = { };
+    this.downloadURL = '';
     this.myFormCategory = this.builder.group({
       category : ['0', [Validators.required, Validators.minLength(3)]],
     });
 
-    this.myFormSubCategory = this.builder.group({
-      sub_category :  ['0', [Validators.required, Validators.minLength(3)]],
-    });
-
-    this.myFormUsers = this.builder.group({
-      users : "",
-    });
-
-    this.myFormUsers = this.builder.group({
-      users: ['', [Validators.required, Validators.minLength(3)]],
-    });
 
     //this.formData.categories.id_category = 1;
     this.showEditForm = this.showNewForm = this.progress = false;
-    this.getSchools(this.search);
-    //this.getSubCategoriesAll();
-    //this.getSubCategories();
-    this.formData.id_category = 0;
-    this.formData.id_sub_category = 0;
-    this.formData.description = '';
-    this.formData.duration = 0;
-    this.placeholderCreator = 'Nombre del creador o ITA';
-
-    this.formData.date_from = {jsdate: new Date()};   // initialize today with jsdate property
-    this.formData.date_finish = {jsdate: new Date()};   // initialize today with jsdate property
-    
+    this.getCompanies(this.search);
   }
 
     //onSelect(countryid) {
@@ -241,29 +197,14 @@ export class SchoolsComponent implements OnInit {
   }
 
 
-    public getUsers(q){
-    this.myFormUsers.disable();
-    //console.log(this.rols);
-    this.userService.getUsers(q).subscribe(
-        (response) => { 
-            this.myFormUsers.enable();
-            this.dataUsers = response; 
-        }, 
-        (error) => { console.log(error.json()); this.progress=false; }, 
-        //() => this.onCompleteLogin()
-    );
-    
-  }
 
-
-
-  public getSchools(q){
+  public getCompanies(q:string){
     this.progress = true;
     //console.log(this.rols);
-    this.schoolService.getSchools(q).subscribe(
-        (response) => this.onSuccessSchools (response),
+    this.companyService.getCompanies(q).subscribe(
+        (response) => this.onSuccessCompanies (response),
         (error) => { 
-          this.showNotification('top', 'center', '<b>'+error.json().message+'</b>', 'pe-7s-attention', 4); 
+          this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
           this.data = []; 
           console.log(error.json()); 
           this.progress=false; 
@@ -272,11 +213,11 @@ export class SchoolsComponent implements OnInit {
     );
   }
 
-  public onSuccessSchools(response){
+  public onSuccessCompanies(response){
     this.progress = false;
   //this.data = response.json().filter(i => i.id_rol < '4'); 
   //this.data = this.data.filter(i => i.id_rol < '4') ;
-    this.data = response.json();
+    this.data = response;
   }
 
 
@@ -291,48 +232,35 @@ export class SchoolsComponent implements OnInit {
     return this._sanitizer.bypassSecurityTrustHtml(html);
   }
 
-  public newSchool(){
+  public newCompany(){
     this.showNewForm = true;
     this.showEditForm = false;
     this.formData ={};
-    this.formData.id_category = 0;
-    this.formData.id_sub_category = 0;
-    this.formData.description = '';
-    this.disabledSubCategory = true;
-    this.placeholderCreator = 'Nombre del creador';
-    this.creator = '';
-    this.formData.date_from = {jsdate: new Date()};   // initialize today with jsdate property
-    //this.formData.date_finish = {jsdate: new Date()};   // initialize today with jsdate property
   }
 
 
-  public editSchool(row){
+  public editCompany(row:any){
     this.showEditForm = true;
     this.formData = row;
-    
-    this.formData.users = {
-      "id_user": row.id_user_create,
-      "name": row.name_user_create + ' ' + row.last_user_create
-    };
-    this.creator = row.name_user_create + ' ' + row.last_user_create;
-    this.formData.date_from =  {jsdate: new Date(row.date_from)};
-    //this.formData.date_finish = {jsdate: new Date(row.date_finish)};
-    this.formData.url = row.url;
+    this.downloadURL = '';
+    //this.formData.company_id = row.company_id;
+    //console.log(this.formData)
+    //this.formData.url = row.url;
   }
 
   public cancel(){
     console.log(this.formData);
-    this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
+    //this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
   }
 
 
-  public showSchool(row){
+  public showCompany(row){
     this.formData = row;
     this.titleModal = row.name;
     //this.id = this.YouTubeGetID(row.url);
     //this.url = this._sanitizer.bypassSecurityTrustResourceUrl(this.baseUrl + this.id);    
-    this.url = this.baseUrl+this.YouTubeGetID(row.url)+this.compUrl;
+    //this.url = this.baseUrl+this.YouTubeGetID(row.url)+this.compUrl;
 
     this.modal.open();
   }
@@ -344,7 +272,7 @@ export class SchoolsComponent implements OnInit {
   }
 
 
-  public onSubmitNewSchool(){
+  public onSubmitNewCompany(){
     this.progress=true;
     //if(!this.validateYouTubeUrl(this.formData.url) || !this.isUrlValid(this.formData.url))
     //     this.showNotification('top', 'center', '<b> Verifica el URL </b>', 'pe-7s-attention', 4);
@@ -352,50 +280,48 @@ export class SchoolsComponent implements OnInit {
       this.formData.duration = this.duration;
       console.log('Submitting values', this.formData);
     //if(this.formData.users.ita==null)
-     this.schoolService.newSchool(this.formData).subscribe(
-        (response) => this.onSuccessNewSchool(response.json()), 
-        (error) => this.onErrorNewSchool(error.json()), 
-        () => this.onCompleteNewSchool()
+     this.companyService.postCompany(this.formData).subscribe(
+        (response) => this.onSuccessNewCompany(response), 
+        (error) => this.onErrorNewCompany(error), 
+        () => this.onCompleteNewCompany()
       );
     //}
   }
 
-  onSuccessNewSchool(response){
-    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+  onSuccessNewCompany(response){
+    this.showNotification('top', 'center', '<b>Aseguradora creada</b>', 'pe-7s-check', 2);
     console.log(response);
     
   }
 
-  onErrorNewSchool(error){
+  onErrorNewCompany(error){
     this.progress = false;
     this.showNewForm = true;
     this.showEditForm = false;
 
-    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
-    console.log(error.message);   
+    this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4);
+    console.log(error);   
   }
 
-  onCompleteNewSchool(){
+  onCompleteNewCompany(){
     console.log('ok');
     this.ngOnInit();
    }
 
-  public onSubmitEditSchool(){
+  public onSubmitEditCompany(){
     this.progress=true;
-    this.formData.ita_login = localStorage.getItem('id_user');
-    this.formData.duration = this.duration;
-    this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
+    
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
     console.log('Submitting values', this.formData);
-     this.schoolService.updateSchool(this.formData).subscribe(
-        (response) => this.onSuccessUpdate(response.json()), 
-        (error) => this.onErrorUpdate(error.json()), 
+     this.companyService.putCompany(this.formData).subscribe(
+        (response) => this.onSuccessUpdate(response), 
+        (error) => this.onErrorUpdate(error), 
         () => this.onCompleteUpdate()
       );
   }
 
   onSuccessUpdate(response){
-    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    this.showNotification('top', 'center', '<b>Actualizada correctamente</b>', 'pe-7s-check', 2);
     console.log(response);
   }
 
@@ -403,8 +329,8 @@ export class SchoolsComponent implements OnInit {
     this.progress = false;
     this.showEditForm = true;
     this.showNewForm = false;
-    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
-    console.log(error.message);  
+    this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4);
+    console.log(error);  
   }
   
   onCompleteUpdate(){
@@ -412,25 +338,26 @@ export class SchoolsComponent implements OnInit {
     this.ngOnInit();
   }
 
-  public changeStatus(row){
+  public changeStatus(row:any){
 
     this.progress=true;
-    this.schoolService.updateStatus(row).subscribe(
-        (response) => this.onSuccessStatus(response.json()), 
-        (error) => this.onErrorStatus(error.json()), 
+    this.companyService.putStatus(row.company_id).subscribe(
+        (response) => this.onSuccessStatus(response), 
+        (error) => this.onErrorStatus(error), 
         () => this.onCompleteStatus()
       );
  
   }
 
   onSuccessStatus(response){
-    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    this.showNotification('top', 'center', '<b>Estado cambiado</b>', 'pe-7s-check', 2);
     //console.log(response);
   }
 
   onErrorStatus(error){
+    console.log(error);
     this.progress = false;
-    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4);
     //console.log(error.message);   
   }
   
@@ -443,22 +370,22 @@ export class SchoolsComponent implements OnInit {
     public deleteSchool(row){
 
     this.progress=true;
-    this.schoolService.deleteSchool(row).subscribe(
-        (response) => this.onSuccessDelete(response.json()), 
-        (error) => this.onErrorDelete(error.json()), 
+    this.companyService.deleteCompany(row).subscribe(
+        (response) => this.onSuccessDelete(response), 
+        (error) => this.onErrorDelete(error), 
         () => this.onCompleteDelete()
       );
  
   }
 
   onSuccessDelete(response){
-    this.showNotification('top', 'center', '<b>'+response.message+'</b>', 'pe-7s-check', 2);
+    this.showNotification('top', 'center', '<b>Eliminada correctamente</b>', 'pe-7s-check', 2);
     //console.log(response);
   }
 
   onErrorDelete(error){
     this.progress = false;
-    this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
+    this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4);
     //console.log(error.message);   
   }
   
@@ -483,46 +410,65 @@ export class SchoolsComponent implements OnInit {
     return this.userService.isAdmin();
   }
 
-  getDuration(){
-    this.progress = false;
-    this.busy = true;
-    //console.log(this.formSubCategory);
-    this.schoolService.getDuration(this.formData.url).subscribe(
-        (response) =>{ this.duration = (response.json()) }, 
-        (error) =>console.log(error.json()), 
-        () => {console.log('Done'), this.busy = false;}
-      );
-
-  }
-
 
 
   public dismissed(){
     this.url = '';
   }
 
-  opnened(){
-
+  
+  public image($event){
+    this.newPic = true;
+    this.imageIsUpload = false;
   }
 
-  validateYouTubeUrl(url)
-{
-    //var url = $('#youTubeUrl').val();
-        if (url != undefined || url != '') {
-            var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
-            var match = url.match(regExp);
-            if (match && match[2].length == 11) {
-                // Do anything for being valid
-                // if need to change the url to embed url then use below line
-                return true;
-                //$('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
-            }
-            else {
-                // Do anything for not being valid
-                return false;
-            }
+  uploadFirebase(event: any) {
+    const randomId = Math.random().toString(36).substring(2);
+    this.ref = this.afStorage.ref('companies/logos/'+this.formData.company_id);
+    this.task = this.ref.put(event.target.files[0]);
+    //this.uploadProgress = this.task.percentageChanges();
+    //this.uploadProgress = (this.task.snapshot.getBytesTransferred() / this.task.snapshot.getTotalBytes()) * 100;
+    //this.downloadURL = this.task.downloadURL();
+    this.uploadProgress = true;
+    const downloadURL = this.ref.getDownloadURL().subscribe(url => { 
+      this.downloadURL = url;
+      console.log(this.downloadURL)
+      this.formData.logo = this.downloadURL;
+      this.companyService.putLogoUrl(this.downloadURL, this.formData.company_id).subscribe(
+        data => {
+          console.log(data)
+          this.uploadProgress = false;
         }
-}
+      )
+    });
+  }
+
+  onSuccessUpload(response:any){
+    console.log(response);
+    if(!response)
+      {
+        this.imageIsUpload = false;
+        this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4);
+      }else{
+        this.imageIsUpload = true;
+        this.formData.logo = response.logo;
+        this.logo = response.logo;
+      }
+    
+  }
+
+  onCompleteUpload(){
+    this.progress = false;
+    console.log('ok');
+
+    //this.formData.id_event = 0;
+
+   }
+
+  public imageRemoved($event){
+    this.imageIsUpload = false;
+    this.downloadURL = this.formData.logo;
+  }
 
 isUrlValid(userInput) {
     var res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);

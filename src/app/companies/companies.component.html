@@ -1,0 +1,219 @@
+<spinner-component [spinnerShow]="progress"></spinner-component>
+<div *ngIf="!showEditForm && !showCardUser && !showNewForm" class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 card" [@cardtable1]>
+
+  <div class="header">
+    <h4 class="title"><a (click)="newCompany()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-id"></i></a></h4>
+    <p class="category">{{ subtitle }} </p>
+    
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 pull-right">
+          <div class="inner-addon left-addon">
+        <i class="glyphicon glyphicon-search"></i>
+        <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter [(ngModel)]="search"
+        (keyup)="0" (keyup.enter)="getCompanies($event.target.value)">
+        </div>
+        </div>
+      </div>
+  </div>
+
+
+  <div class="content table-responsive table-full-width">
+    <table class="table table-hover table-striped table-responsive">
+      <thead>
+        <tr>
+          <th *ngFor="let header of tableData.headerRow">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data | paginate: { itemsPerPage: pagination, currentPage: page }">
+         <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
+         <td>  {{row.name}} </td> 
+         <td>  {{row.email}} </td> 
+         <td>  {{row.description}} </td> 
+         
+         <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
+          <td> 
+              <a (click)="showCompany(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
+              <a (click)="editCompany(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
+              <a [title]="row.status==false ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i [ngClass]="row.status==false ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
+              <a (click)="deleteCompany(row)" title="Eliminar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
+            </td>  
+        </tr>
+
+      </tbody>
+    </table>
+    <div align="center" class="has-text-centered">
+      <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New media -->
+
+<div *ngIf="showNewForm" class="container-fluid">
+
+
+      <div class="card" [@carduserprofile]>
+        <div class="header">
+          <h4 class="title">Nueva Aseguradora</h4>
+        </div>
+        <div class="content">
+          <form #form="ngForm" (ngSubmit)="onSubmitNewCompany()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="name">Nombre</label>
+                  <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre escuela" [(ngModel)]="formData.name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="url">Email  </label> 
+                  <input #url="ngModel"
+                  type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email" >
+                </div>
+              </div>
+  
+            </div>
+            
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Descripción (Opcional)</label>
+                  <input type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="formData.description">
+                </div>
+              </div>
+            </div>
+                  <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="description">Avatar</label>
+                        <image-upload
+                        (change)="uploadImage($event, formData.company_id)"
+                        (onRemove)="imageRemoved($event)"
+                        [max]="1" 
+                        [extensions]="['jpeg','png', 'jpg']"
+                        buttonCaption="Selecciona la foto"
+                        dropBoxMessage="O arrastra la foto"
+                        >
+                  
+                  </image-upload>
+                      </div>
+                  </div>
+
+            <hr>
+            <div class="btn-toolbar">
+            <button [disabled]="!form.valid " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+            <button (click)="showNewForm=!showNewForm; cancel()" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<!-- Edit media -->
+
+<div *ngIf="showEditForm" class="container-fluid">
+
+
+      <div class="card" [@carduserprofile]>
+        <div class="header">
+          <h4 class="title">Editar</h4>
+        </div>
+        <div class="content">
+          <form #formEdit="ngForm" (ngSubmit)="onSubmitEditCompany()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="name">Nombre</label>
+                  <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre" [(ngModel)]="formData.name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="name">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" required placeholder="Email" [(ngModel)]="formData.email">
+                </div>
+              </div>
+              
+            </div>
+            
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Descripción (Opcional)</label>
+                  <input type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="formData.description">
+                </div>
+              </div>
+            </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <progress style="float: right" max="100" *ngIf="(uploadProgress)"></progress>
+                    <label for="description">LOGO</label>
+                    <img style="margin-left: 10px; padding: 10px" [src]="downloadURL? downloadURL:formData.logo" height="80px" />
+                    <image-upload
+                    (change)="uploadFirebase($event)"
+                    (remove)="imageRemoved($event)"
+                    [max]="1" 
+                    [extensions]="['jpeg','png', 'jpg']"
+                    buttonCaption="Selecciona la foto"
+                    dropBoxMessage="O arrastra la foto"
+                
+                    >
+                    
+                    </image-upload>
+
+                    <!-- <image-upload
+  [max]="100"
+  [url]="'example.com/images/upload'"
+  [headers]="{Authorization: 'MyToken'}"
+  [buttonCaption]="'Select Images!'"
+  [dropBoxMessage]="'Drop your images here!'"
+  [extensions]="['jpg','png','gif']"
+  [class]="'customClass'"      
+  (removed)="onRemoved($event)"
+  (uploadFinished)="onUploadFinished($event)"
+  (uploadStateChanged)="onUploadStateChanged($event)">
+</image-upload> -->
+
+                  </div>
+              </div>
+              
+            <hr>
+            <div class="btn-toolbar">
+            <button [disabled]="uploadProgress || !formEdit.valid " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+            <button (click)="showEditForm=!showEditForm; cancel()" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
+            </div>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <modal #modal>
+      <!-- <spinner-component [spinnerShow]="progress_modal"></spinner-component> -->
+       <modal-header [show-close]="true">
+            <h4 class="modal-title">{{titleModal}}</h4>
+        </modal-header>
+        <modal-body>
+        <div [@cardprofile]>
+          <lbd-user-profile
+            [backgroundImage]="'assets/img/background-1.jpg'"
+            [avatarImage]="formData.logo ? formData.logo  : 'assets/img/faces/face-0.jpg'"
+            [name]="formData.name"
+            [email]="formData.email"
+            >
+          </lbd-user-profile>
+        </div>
+        </modal-body>
+    </modal>
+
+

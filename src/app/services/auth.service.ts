@@ -6,6 +6,7 @@ import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/
 import { UserService } from '../services/user.service';
 //import { AUTH_CONFIG } from './auth0-variables';
 //import { tokenNotExpired } from 'angular2-jwt';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 // Avoid name not found warnings
 declare var auth0: any;
@@ -34,6 +35,7 @@ export class AuthService {
   
   }
 
+
   setName(name: string) {
     // Update login status subject
     //this.loggedIn$.next(value);
@@ -53,14 +55,7 @@ export class AuthService {
     this.error = value;
   }
 
- login(user){
-      //console.log(pago);
-      let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-      let options = new RequestOptions({ headers: headers });
-      return this.http.post(vars.apiUrl+ "/users/user/", "user="+JSON.stringify(user)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
-  }
-
+ 
   logout() {
     localStorage.clear();
     this.getLoggedInName.subscribe(name => this.changeName(''));

@@ -121,12 +121,6 @@ export class LoginComponent implements OnInit {
 
     this.formData = {};
   
-    //this.myFormPlatinum.disable();
-    //this.myFormSponsor.disable();
-    this.placeholderSponsor = "Patrocinador";
-    this.placeholderPlatinum = "Platino directo";
-    this.placeholderSponsor = "Nombre del patriconador o ITA...";
-    this.placeholderPlatinum = "Nombre del platino directo o ITA...";
     this.formData.id_question = 1;
 
     this.formCompany = { };
@@ -135,26 +129,17 @@ export class LoginComponent implements OnInit {
       company : ['0', [Validators.required, Validators.minLength(3)]],
     });
 
-    this.myFormSubCompany = this.builder.group({
-      sub_company :  ['0', [Validators.required, Validators.minLength(3)]],
-    });
-
-    this.getCompanies();
-
-    this.formData.id_company = 0;
-    this.formData.id_sub_company = 0;
-
     }
 
     public getUserEmail(){
     this.progress=true;
     
     //console.log('Submitting values', this.formData);
-     this.userService.getUserEmail(this.formData.email).subscribe(
-        (response) => this.onSuccessUserEmail(response), 
-        (error) => this.onErrorUserEmail(error.json()), 
-        () => this.onCompleteUserEmail()
-      );
+    //  this.userService.getUserEmail(this.formData.email).subscribe(
+    //     (response) => this.onSuccessUserEmail(response), 
+    //     (error) => this.onErrorUserEmail(error.json()), 
+    //     () => this.onCompleteUserEmail()
+    //   );
   }
 
     onSuccessUserEmail(response){
@@ -177,12 +162,7 @@ export class LoginComponent implements OnInit {
     onErrorUserEmail(error){
     this.progress = false;
     this.userNotExist = true;
-    //this.getUsers('');    
-    /*this.showRegisterForm = false;
-    this.formData = {};
-    this.showNotification('top', 'center', '<b>'+error.message+' Por favor comuniquese con su platino directo o patrocinante...</b>', 'pe-7s-attention', 4);
-    //this.router.navigate(['/login']);*/
-    //console.log(error.message);  
+   
   }
   
   onCompleteUserEmail(){
@@ -241,11 +221,11 @@ export class LoginComponent implements OnInit {
 
     public forgetPass() {
     this.progress = true;
-    this.userService.forgetPass(this.formDataForget).subscribe(
-        (response) => this.onSuccessForget(response), 
-        (error) => this.onErrorForget(error.json()), 
-        () => this.onCompleteForget()
-      );
+    // this.userService.forgetPass(this.formDataForget).subscribe(
+    //     (response) => this.onSuccessForget(response), 
+    //     (error) => this.onErrorForget(error.json()), 
+    //     () => this.onCompleteForget()
+    //   );
    
     //console.log (val);
     //this.authService.login_2(this.formData);
@@ -342,21 +322,21 @@ export class LoginComponent implements OnInit {
     console.log('Submitting values', this.formData);
     if(!this.userNotExist){
       //actualiza usuario
-     this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccess(response), 
-        (error) => this.onError(error.json()), 
-        () => this.onComplete()
-      );
+    //  this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+    //     (response) => this.onSuccess(response), 
+    //     (error) => this.onError(error.json()), 
+    //     () => this.onComplete()
+    //   );
     }else{
       //nuevo usuario
       //this.formData.id_rol = 4;
       //this.formData.id_position = 6;
       console.log('Submitting values', this.formData);
-      this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccess(response), 
-        (error) => this.onError(error.json()), 
-        () => this.onComplete()
-      );
+      // this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+      //   (response) => this.onSuccess(response), 
+      //   (error) => this.onError(error.json()), 
+      //   () => this.onComplete()
+      // );
     }
   }
 
@@ -455,50 +435,6 @@ export class LoginComponent implements OnInit {
   }
 
 
-    public getQuestions() {
-    //this.progress = true;
-    this.userService.getQuestions().subscribe(
-        (response) => this.questions = (response), 
-        (error) => { 
-          if(error.message)
-          this.showNotification('top', 'center', '<b>'+error.message+'</b>', 'pe-7s-attention', 4);
-          else
-          this.showNotification('top', 'center', '<b>Error al comunicar con el servidor</b>', 'pe-7s-attention', 4);
-         }
-       //() => this.onCompleteForget()
-      );
-   
-    //console.log (val);
-    //this.authService.login_2(this.formData);
-  }
-
-
-  public getCompanies() {
-    //this.progress = true;
-    this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response, 
-      (error) => console.log(error.json()), 
-      //() => this.onCompleteLogin()
-  );
-    //console.log (val);
-    //this.authService.login_2(this.formData);
-  }
-
-
-  public getSubCompanies(id_company){
-    //console.log(id_category);
-     this.disabledSubCompany = true;
-      this.formCompany.id_sub_company=1;
-      this.userService.getSubCompanies(0).subscribe(
-       (response) => {
-         //this.dataSubCompany = response.filter(i => i.id_company == id_company); 
-         this.formCompany.id_sub_company=0;
-         this.disabledSubCompany = false;
-       }, 
-       (error) => console.log(error.json()), 
-       //() => this.onCompleteLogin()
-   );
- }
 
     //if(!val)
      // this.showNotification('top', 'center', vars.apiError, 'pe-7s-attention', 3);
@@ -508,11 +444,11 @@ export class LoginComponent implements OnInit {
 
   public forgetPass2() {
     this.progress = true;
-    this.userService.forgetPass2(this.formDataForget).subscribe(
-        (response) => this.onSuccessForget2(response), 
-        (error) => this.onErrorForget2(error.json()), 
-        () => this.onCompleteForget2()
-      );
+    // this.userService.forgetPass2(this.formDataForget).subscribe(
+    //     (response) => this.onSuccessForget2(response), 
+    //     (error) => this.onErrorForget2(error.json()), 
+    //     () => this.onCompleteForget2()
+    //   );
    
     //console.log (val);
     //this.authService.login_2(this.formData);

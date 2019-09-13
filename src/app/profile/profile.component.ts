@@ -133,8 +133,6 @@ export class ProfileComponent implements OnInit {
     this.imageIsUpload = true;
     //this.loadUser(JSON.parse(localStorage.getItem('user')));
 
-    this.getQuestions();
-
     this.userService.getUser().subscribe(
       data => {
         this.formData = {
@@ -151,41 +149,6 @@ export class ProfileComponent implements OnInit {
    
   }
 
-  public getCompanies() {
-    //this.progress = true;
-    this.userService.getCompanies().subscribe(
-      (response) => this.dataCompany = response, 
-      (error) => console.log(error.json()), 
-      //() => this.onCompleteLogin()
-  );
-    //console.log (val);
-    //this.authService.login_2(this.formData);
-  }
-
-
-  public getSubCompanies(id_company){
-    //console.log(id_category);
-     this.disabledSubCompany = true;
-      //this.formData.id_sub_company=1;
-      this.userService.getSubCompanies(id_company).subscribe(
-       (response) => {
-         //this.dataSubCompany = response.filter(i => i.id_company == id_company); 
-         //this.formData.id_sub_company=0;
-         this.disabledSubCompany = false;
-       }, 
-       (error) => console.log(error.json()), 
-       //() => this.onCompleteLogin()
-   );
- }
-
-    public getQuestions() {
-    //this.progress = true;
-    this.userService.getQuestions().subscribe(
-        (response) => this.questions = (response), 
-        (error) => console.log(error.json())
-       //() => this.onCompleteForget()
-      );
-  }
 
   public loadUser(user){
     this.formData = user;
@@ -301,11 +264,11 @@ export class ProfileComponent implements OnInit {
       this.formData.avatar_url = this.avatar_url;
 
     //console.log('Submitting values', this.formData);
-     this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-        (response) => this.onSuccessUpdate(response), 
-        (error) => this.onErrorUpdate(error.json()), 
-        () => this.onCompleteUpdate()
-      );
+    //  this.userService.updateUserAppBack(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+    //     (response) => this.onSuccessUpdate(response), 
+    //     (error) => this.onErrorUpdate(error.json()), 
+    //     () => this.onCompleteUpdate()
+    //   );
   }
 
     onSuccessUpdate(response){

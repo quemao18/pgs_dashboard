@@ -6,6 +6,7 @@ import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/
 //import { AUTH_CONFIG } from './auth0-variables';
 //import { tokenNotExpired } from 'angular2-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class UserService {
@@ -37,6 +38,10 @@ export class UserService {
     return headers;
   }
 
+  getAccessToken() { 
+    return (localStorage.getItem('access_token'));
+  }
+
 
   login(data: any) {
     return this.http.post(vars.apiUrl + 'v1/auth', data, {
@@ -50,7 +55,7 @@ export class UserService {
     });
   }
 
-  getUsers(q){
+  getUsers(q:string){
     //console.log(pago);
     return this.http.get(vars.apiUrl + 'v1/account/accounts/'+q, 
     {headers: this.generateHeaders(),responseType: 'json'}
@@ -58,21 +63,14 @@ export class UserService {
   }
 
 
-  getCompanies(){
-    //console.log(pago);
-    return this.http.get(vars.apiUrl + 'v1/company/companies', 
-    {headers: this.generateHeaders(),responseType: 'json'}
-    )
-  }
-
-  putPass(user_id, pass){
+  putPass(user_id:string, pass:string){
     //console.log(user_id);
     return this.http.put(vars.apiUrl + 'v1/account/'+ user_id + '/password', {password:pass},
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }
 
-  deleteUser(user_id){
+  deleteUser(user_id:string){
     //console.log(user_id);
     return this.http.delete(vars.apiUrl + 'v1/account/'+ user_id,
     {headers: this.generateHeaders(),responseType: 'json'}
@@ -130,10 +128,6 @@ export class UserService {
 
   getIsUserLoggedIn() {
     return this.isUserLoggedIn; 
-  }
-
-  getAccessToken() {
-    return (localStorage.getItem('access_token'));
   }
 
   setIsUserLoggedIn(token) {
