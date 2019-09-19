@@ -54,6 +54,9 @@ export class LbdUserProfileComponent {
   @Input()
   company_logo: string;
 
+  @Input()
+  description: string;
+
 
   constructor() { }
 }

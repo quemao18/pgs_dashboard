@@ -60,7 +60,7 @@ import { AngularFireModule,} from "@angular/fire";
 // import { AngularFirestoreModule, } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/storage';
 
-
+import { AgGridModule } from 'ag-grid-angular';
 
 const appRoutes: Routes = [
   //{ path: 'maps', component: MapsComponent },
@@ -71,7 +71,7 @@ const appRoutes: Routes = [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       // { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
       { path: 'users-app', component: UsersAppComponent, canActivate: [AuthGuard] },
-      { path: 'companies', component: CompaniesComponent, canActivate: [AuthGuard] },
+      { path: 'companies', component: CompaniesComponent,},
       { path: 'login', component: LoginComponent,  },
       { path: 'change-pass', component: ChangePassComponent, },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
@@ -140,7 +140,8 @@ const appRoutes: Routes = [
     ImageUploadModule.forRoot(),
     Ng2CompleterModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    AgGridModule.withComponents([])
   ],
   providers: [AngularFireStorage, AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
   {provide: LocationStrategy, useClass: HashLocationStrategy}

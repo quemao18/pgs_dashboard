@@ -1,5 +1,5 @@
 <spinner-component [spinnerShow]="progress"></spinner-component>
-<div *ngIf="!showEditForm && !showCardUser && !showNewForm" class="container-fluid">
+<div *ngIf="!showEditForm && !showCardUser && !showNewForm && !showPlans && !showNewFormPlan" class="container-fluid">
   <div class="row">
     <div class="col-md-12 card" [@cardtable1]>
 
@@ -37,6 +37,7 @@
          <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
           <td> 
               <a (click)="showCompany(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
+              <a (click)="showPlansCompany(row)" title="Planes" class="icon" [routerLink]=""><i class="pe-7s-albums"></i></a> 
               <a (click)="editCompany(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
               <a [title]="row.status==false ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i [ngClass]="row.status==false ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
               <a (click)="deleteCompany(row)" title="Eliminar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
@@ -52,6 +53,147 @@
     </div>
   </div>
 </div>
+
+<!--show plans-->
+<div *ngIf="!showEditForm && !showCardUser && !showNewForm && showPlans" class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 card" [@cardtable1]>
+  
+    <div class="header">
+      <h4 class="title">
+        <a (click)="newPlan()" class="icon" [routerLink]=''> Planes para {{companyName}} 
+        <i class="pe-7s-plus"></i>
+        </a>
+        <small class="title" style="float: right"> <a (click)="ngOnInit()" [routerLink]="">  Volver  <i class="pe-7s-back"></i></a></small>
+      </h4>
+     
+      
+    </div>
+  
+  
+    <div class="content table-responsive table-full-width">
+      <table class="table table-hover table-striped table-responsive">
+        <thead>
+          <tr>
+            <th *ngFor="let headerPlan of headerRowPlan">{{ headerPlan }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr  *ngFor="let row of dataPlan | paginate: { itemsPerPage: pagination, currentPage: page }">
+           <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
+           <td>  {{row.name}} </td> 
+           <td>  {{row.description}} </td> 
+
+           <!-- <td>  ${{row.price[0]}} </td><td>  ${{row.price[1]}} </td><td> ${{row.price[2]}} </td>  -->
+           
+           <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
+            <td> 
+                <!-- <a (click)="showCompany(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a>  -->
+                <a (click)="editPlan(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
+                <a [title]="row.status==false ? 'Activar' : 'Desactivar'" (click)="changeStatusPlan(row)" class="icon" [routerLink]=""><i [ngClass]="row.status==false ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
+                <a (click)="deletePlan(row)" title="Eliminar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
+              </td>  
+          </tr>
+  
+        </tbody>
+      </table>
+      <div align="center" class="has-text-centered">
+        <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- New Plan -->
+
+<div *ngIf="showNewFormPlan" class="container-fluid">
+
+    <div class="card" [@carduserprofile]>
+      <div class="header">
+        <h4 class="title">{{titlePlan}} plan para {{companyName}}</h4>
+      </div>
+      <div class="content">
+        <form #formEdit="ngForm" (ngSubmit)="onSubmitPlan()">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre" [(ngModel)]="formDataPlan.name">
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label for="name">Descripción</label>
+                <input type="email" class="form-control" id="description" name="description" required placeholder="description" [(ngModel)]="formDataPlan.description">
+              </div>
+            </div>
+            
+          </div>
+          
+          <!-- <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="name">Precio Opcción 1</label>
+                  <input type="number" class="form-control" min="0" id="price" name="price[]" required placeholder="Precio 1" [(ngModel)]="formDataPlan.price0">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="name">Precio Opcción 2</label>
+                  <input type="number" class="form-control" min="0" id="price" name="price[]" required placeholder="Precio 2" [(ngModel)]="formDataPlan.price1">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="name">Precio Opcción 3</label>
+                    <input type="number" class="form-control" min="0" id="price" name="price[]" required placeholder="Precio 3" [(ngModel)]="formDataPlan.price2">
+                  </div>
+                </div>
+              
+            </div> -->
+          
+            <section style="    border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
+                <div class="form-group">
+                <label style="margin: 12px 12px 12px 0px;" for="rol">Precios</label>
+                <div class="country">
+                <label style="margin:12px" for="rol">País/región</label>
+                <select (change)="onChangeCountry()" style="width: 400px" required name="country" id="country" [(ngModel)]="formCountry.country_id" class="form-control" id="inlineFormCustomSelect">
+                  <option [selected]="formCountry.country_id == 0" value="0">--Seleccciona--</option>
+                  <option *ngFor="let q of countries " [value]="q.country_id" [selected]="formCountry.country_id == q.country_id" >
+                    {{q.name }}
+                  </option>
+                </select>
+                <a title="Agregar" (click)="modalNewCountry.open()" class="icon" [routerLink]=''> <i class="pe-7s-plus"></i></a>
+              </div>
+                </div>
+                <!-- <label for="name">Precios</label> -->
+                <ag-grid-angular 
+                    style="width: 100%; height: 520px; margin-top: -5px;" 
+                    class="ag-theme-balham"
+                    [rowData]="rowData" 
+                    [columnDefs]="columnDefs"
+                    [defaultColDef]="defaultColDef"
+                    #agGrid
+                    (gridReady)="onGridReady($event)"
+                    (cellValueChanged) = "cellValueChanged()"
+                    >
+                </ag-grid-angular>
+              </section>
+
+            
+          <hr>
+          <div class="btn-toolbar">
+          <button [disabled]="!formEdit.valid || formCountry.country_id==0" type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+          <button (click)="showNewFormPlan=!showNewFormPlan;showPlans=true" type="button" class="btn btn-info btn-fill pull-right">Cancelar</button>
+          </div>
+          <div class="clearfix"></div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 <!-- New media -->
 
@@ -75,7 +217,7 @@
                 <div class="form-group">
                   <label for="url">Email  </label> 
                   <input #url="ngModel"
-                  type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="formData.email" >
+                  type="email" class="form-control" required id="email" name="email" placeholder="Email" [(ngModel)]="formData.email" >
                 </div>
               </div>
   
@@ -92,23 +234,26 @@
             </div>
                   <div class="col-md-12">
                       <div class="form-group">
-                        <label for="description">Avatar</label>
-                        <image-upload
-                        (change)="uploadImage($event, formData.company_id)"
-                        (onRemove)="imageRemoved($event)"
-                        [max]="1" 
-                        [extensions]="['jpeg','png', 'jpg']"
-                        buttonCaption="Selecciona la foto"
-                        dropBoxMessage="O arrastra la foto"
-                        >
-                  
-                  </image-upload>
+                          <progress style="float: right" *ngIf="uploadProgress > 0 && uploadProgress < 100" class="progress is-large is-success" value="{{uploadProgress}}" max="100">{{uploadProgress}}%</progress>                          
+                          <label for="description">LOGO</label>
+                          <!-- <img style="margin-left: 10px; padding: 10px" [src]="downloadURL? downloadURL:formData.logo" height="80px" /> -->
+                          <image-upload
+                          (change)="detectFiles($event, true)"
+                          (removed)="imageRemoved($event)"
+                          [max]="1" 
+                          [extensions]="['jpeg','png', 'jpg']"
+                          buttonCaption="Selecciona la foto"
+                          dropBoxMessage="O arrastra la foto"
+                      
+                          >
+                          
+                          </image-upload>
                       </div>
                   </div>
 
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="!form.valid " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+            <button [disabled]="!form.valid || !imageIsUpload " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
             <button (click)="showNewForm=!showNewForm; cancel()" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -156,11 +301,11 @@
 
                 <div class="col-md-12">
                   <div class="form-group">
-                    <progress style="float: right" max="100" *ngIf="(uploadProgress)"></progress>
+                  <progress *ngIf="uploadProgress > 0 && uploadProgress < 100" class="progress is-large is-success" value="{{uploadProgress}}" max="100">{{uploadProgress}}%</progress>                          
                     <label for="description">LOGO</label>
                     <img style="margin-left: 10px; padding: 10px" [src]="downloadURL? downloadURL:formData.logo" height="80px" />
                     <image-upload
-                    (change)="uploadFirebase($event)"
+                    (change)="detectFiles($event, false)"
                     (remove)="imageRemoved($event)"
                     [max]="1" 
                     [extensions]="['jpeg','png', 'jpg']"
@@ -189,7 +334,7 @@
               
             <hr>
             <div class="btn-toolbar">
-            <button [disabled]="uploadProgress || !formEdit.valid " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+            <button [disabled]="!imageIsUpload || !formEdit.valid " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
             <button (click)="showEditForm=!showEditForm; cancel()" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
             </div>
             <div class="clearfix"></div>
@@ -201,7 +346,8 @@
     <modal #modal>
       <!-- <spinner-component [spinnerShow]="progress_modal"></spinner-component> -->
        <modal-header [show-close]="true">
-            <h4 class="modal-title">{{titleModal}}</h4>
+            <h4 class="modal-title">{{titleModal}}
+            </h4>
         </modal-header>
         <modal-body>
         <div [@cardprofile]>
@@ -210,10 +356,31 @@
             [avatarImage]="formData.logo ? formData.logo  : 'assets/img/faces/face-0.jpg'"
             [name]="formData.name"
             [email]="formData.email"
+            [description]="formData.description ? formData.description: ''"
             >
           </lbd-user-profile>
         </div>
         </modal-body>
     </modal>
 
+
+    
+<modal [animation]="true" [keyboard]="true" [backdrop]="true" (onClose)="saveCountry()" (onDismiss)="dismissed()"
+#modalNewCountry>
+<form #modalFormCountry="ngForm">
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">Nuevo País</h4>
+    </modal-header>
+    <modal-body>
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" required [(ngModel)]="formCountry.name" name="country" id="country">
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modalNewCountry.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-primary" [disabled]="!modalFormCountry.valid" (click)="modalNewCountry.close()">Guardar</button>
+    </modal-footer>
+</form>
+</modal>
 

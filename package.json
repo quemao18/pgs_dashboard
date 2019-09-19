@@ -26,6 +26,8 @@
     "@angular/platform-server": "^8.2.5",
     "@angular/router": "^8.2.5",
     "@ngui/auto-complete": "^0.14.4",
+    "ag-grid-angular": "^21.2.1",
+    "ag-grid-community": "^21.2.1",
     "angular2-google-maps": "^0.17.0",
     "angular2-image-upload": "^0.6.6",
     "animate.css": "^3.5.2",

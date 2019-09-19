@@ -26,6 +26,13 @@ export class CompanyService {
     )
   }
 
+  getCompanyPlans(company_id: string){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + 'v1/company/'+company_id+'/plans', 
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
   getCompanies(q:string){
     //console.log(pago);
     return this.http.get(vars.apiUrl + 'v1/company/companies/'+q, 
@@ -34,7 +41,7 @@ export class CompanyService {
   }
 
   putStatus(id: string){
-    console.log('token', this.access_token);
+    //console.log('token', this.access_token);
     return this.http.put(vars.apiUrl + 'v1/company/'+ id + '/status',
     {headers: this.generateHeaders(),responseType: 'json'}
     )
@@ -48,23 +55,50 @@ export class CompanyService {
 
 
   putCompany(data:any){
-    console.log(data);
-    return this.http.put(vars.apiUrl + 'v1/company/'+ data.company_id , {name:data.name, email:data.email, logo:data.logo, description:data.description},
+    //console.log(data);
+    return this.http.put(vars.apiUrl + 'v1/company/'+ data.company_id , data,
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }
 
   postCompany(data:any){
     //console.log(user_id);
-    return this.http.post(vars.apiUrl + 'v1/company' , {data},
+    return this.http.post(vars.apiUrl + 'v1/company' , data,
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }
 
-
   deleteCompany(id:string){
-    //console.log(user_id);
+    //console.log(id);
     return this.http.delete(vars.apiUrl + 'v1/company/'+ id,
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  getCountries(q:string){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + 'v1/country/countries', 
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  postCountry(data:any){
+    //console.log(user_id);
+    return this.http.post(vars.apiUrl + 'v1/country' , data,
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  putCountry(data:any){
+    //console.log(data);
+    return this.http.put(vars.apiUrl + 'v1/country/'+ data.country_id , data,
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  deleteCountry(id:string){
+    //console.log(id);
+    return this.http.delete(vars.apiUrl + 'v1/country/'+ id,
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }

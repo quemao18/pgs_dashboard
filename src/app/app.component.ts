@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
         iconClass: 'pe-7s-user',
         title: 'Usuario',
         dropdownItems: [
-          { title: 'Perfil', routerLink: 'profile' },
+          //{ title: 'Perfil', routerLink: 'profile' },
           { title: 'Cambiar password', routerLink: 'change-pass' },
           'separator',
           { title: 'Salir', routerLink: 'logout' },
