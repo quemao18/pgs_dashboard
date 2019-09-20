@@ -81,9 +81,8 @@
         <tbody>
           <tr  *ngFor="let row of dataPlan | paginate: { itemsPerPage: pagination, currentPage: page }">
            <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
-           <td>  {{row.name}} </td> 
-           <td>  {{row.description}} </td> 
-
+           <td style="width: 30%">  {{row.name}} </td> 
+           <td style="width: 50%">  {{row.description}} </td> 
            <!-- <td>  ${{row.price[0]}} </td><td>  ${{row.price[1]}} </td><td> ${{row.price[2]}} </td>  -->
            
            <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
@@ -166,7 +165,7 @@
                     {{q.name }}
                   </option>
                 </select>
-                <a title="Agregar" (click)="modalNewCountry.open()" class="icon" [routerLink]=''> <i class="pe-7s-plus"></i></a>
+                <!-- <a title="Agregar" (click)="modalNewCountry.open()" class="icon" [routerLink]=''> <i class="pe-7s-plus"></i></a> -->
               </div>
                 </div>
                 <!-- <label for="name">Precios</label> -->

@@ -56,6 +56,7 @@ export class AppComponent implements OnInit {
       // { type: NavItemType.Sidebar, title: 'Usuarios', routerLink: 'users', iconClass: 'pe-7s-users', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:false, isUserIn:false },
       { type: NavItemType.Sidebar, title: 'Usuarios App', routerLink: 'users-app', iconClass: 'pe-7s-phone', isLoggedIn: true, isAdminIn:true,},
       { type: NavItemType.Sidebar, title: 'Aseguradoras', routerLink: 'companies', iconClass: 'pe-7s-note2', isLoggedIn: true, isAdminIn:true,},
+      { type: NavItemType.Sidebar, title: 'País/Región', routerLink: 'countries', iconClass: 'pe-7s-world', isLoggedIn: true, isAdminIn:true,},
       //{ type: NavItemType.Sidebar, title: 'Planes Seguros', routerLink: 'videos', iconClass: 'pe-7s-video', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
       //{ type: NavItemType.Sidebar, title: 'Escuela de negocios', routerLink: 'schools', iconClass: 'pe-7s-portfolio', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },
       //{ type: NavItemType.Sidebar, title: 'Noticias', routerLink: 'news', iconClass: 'pe-7s-news-paper', isLoggedIn: true, isAdminIn:true, isAuthIn:true, isPublishIn:true, isUserIn:false },

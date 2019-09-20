@@ -61,6 +61,7 @@ import { AngularFireModule,} from "@angular/fire";
 import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AgGridModule } from 'ag-grid-angular';
+import { CountriesComponent } from './countries/countries.component';
 
 const appRoutes: Routes = [
   //{ path: 'maps', component: MapsComponent },
@@ -69,9 +70,10 @@ const appRoutes: Routes = [
     path: '', component: FooterLayoutComponent, children:
     [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'countries', component: CountriesComponent, canActivate: [AuthGuard] },
       // { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
       { path: 'users-app', component: UsersAppComponent, canActivate: [AuthGuard] },
-      { path: 'companies', component: CompaniesComponent,},
+      { path: 'companies', component: CompaniesComponent, canActivate: [AuthGuard]},
       { path: 'login', component: LoginComponent,  },
       { path: 'change-pass', component: ChangePassComponent, },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
@@ -111,7 +113,7 @@ const appRoutes: Routes = [
     CompaniesComponent,
     ProfileComponent, 
     MinuteSecondsPipe, 
-    PolicityComponent,
+    PolicityComponent, CountriesComponent,
     
 
   ],

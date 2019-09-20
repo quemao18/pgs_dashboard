@@ -1,0 +1,89 @@
+<spinner-component [spinnerShow]="progress"></spinner-component>
+<div *ngIf="!showEditForm && !showCardUser && !showNewForm && !showPlans && !showNewFormPlan" class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 card" [@cardtable1]>
+
+  <div class="header">
+    <h4 class="title"><a (click)="newCountry()" class="icon" [routerLink]=''> {{ title }} <i class="pe-7s-world"></i></a></h4>
+    <!-- <p class="category">{{ subtitle }} </p> -->
+    
+
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 pull-right">
+          <div class="inner-addon left-addon">
+        <i class="glyphicon glyphicon-search"></i>
+        <input type="text" class="form-control" id="search" name="searchFilter" placeholder="Buscar..." #searchFilter [(ngModel)]="search"
+        (keyup)="0" (keyup.enter)="getCountries($event.target.value)">
+        </div>
+        </div>
+      </div>
+  </div>
+
+<div class="content table-responsive table-full-width">
+    <table class="table table-hover table-striped table-responsive">
+      <thead>
+        <tr>
+          <th *ngFor="let headerPlan of headerRowPlan">{{ headerPlan }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr  *ngFor="let row of countries | paginate: { itemsPerPage: pagination, currentPage: page }">
+         <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
+         <td style="width: 80%">  {{row.name}} </td> 
+         <!-- <td>  {{row.description}} </td>  -->
+         <!-- <td></td> -->
+         <!-- <td>  ${{row.price[0]}} </td><td>  ${{row.price[1]}} </td><td> ${{row.price[2]}} </td>  -->
+         
+         <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
+          <td> 
+              <!-- <a (click)="showCompany(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a>  -->
+              <a (click)="editCountry(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
+              <a [title]="row.status==false ? 'Activar' : 'Desactivar'" (click)="changeStatus(row)" class="icon" [routerLink]=""><i [ngClass]="row.status==false ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
+              <a (click)="deleteCountry(row)" title="Eliminar" class="icon" [routerLink]=""><i class="pe-7s-trash" ></i></a>
+            </td>  
+        </tr>
+
+      </tbody>
+    </table>
+    <div align="center" class="has-text-centered">
+      <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- New media -->
+
+<div *ngIf="showNewForm" class="container-fluid">
+
+
+    <div class="card" [@carduserprofile]>
+      <div class="header">
+        <h4 class="title">{{title}} País o región</h4>
+      </div>
+      <div class="content">
+        <form #form="ngForm" (ngSubmit)="saveCountry()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre país o región" [(ngModel)]="formCountry.name">
+              </div>
+            </div>
+          
+
+          </div>
+          
+
+          <hr>
+          <div class="btn-toolbar">
+          <button [disabled]="!form.valid" type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+          <button (click)="showNewForm=!showNewForm;" type="submit" class="btn btn-info btn-fill pull-right">Cancelar</button>
+          </div>
+          <div class="clearfix"></div>
+        </form>
+      </div>
+    </div>
+  </div>

@@ -265,7 +265,7 @@ export class UsersAppComponent implements OnInit {
     if(row.plan_id){
       this.planService.getPlan(row.plan_id).subscribe(
         data=>{
-          
+          if(!data['Error']){
           this.formData.plan_name = data['name'];
           this.companyService.getCompany(data['company_id']).subscribe(
             data=>{
@@ -275,6 +275,8 @@ export class UsersAppComponent implements OnInit {
             }
           );
         }
+        this.progress_modal = false;
+        }
       )
     }
     else
@@ -282,16 +284,16 @@ export class UsersAppComponent implements OnInit {
     //console.log();
     this.modal.open();
   }
-
+/*
   public onSubmitNewUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
     
-    // this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-    //     (response) => this.onSuccessNewUser(response), 
-    //     (error) => this.onErrorNewUser(error), 
-    //     () => this.onCompleteNewUser()
-    //   );
+    this.userService.newUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+        (response) => this.onSuccessNewUser(response), 
+        (error) => this.onErrorNewUser(error), 
+        () => this.onCompleteNewUser()
+      );
       
   }
 
@@ -318,11 +320,11 @@ export class UsersAppComponent implements OnInit {
   public onSubmitEditUser(){
     this.progress=true;
     console.log('Submitting values', this.formData);
-    //  this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
-    //     (response) => this.onSuccessUpdate(response), 
-    //     (error) => this.onErrorUpdate(error.json()), 
-    //     () => this.onCompleteUpdate()
-    //   );
+     this.userService.updateUserApp(this.formData, this.formData.sponsor, this.formData.platinum).subscribe(
+        (response) => this.onSuccessUpdate(response), 
+        (error) => this.onErrorUpdate(error.json()), 
+        () => this.onCompleteUpdate()
+      );
   }
 
     onSuccessUpdate(response){
@@ -348,11 +350,11 @@ export class UsersAppComponent implements OnInit {
     //this.getStatus(row);
     //this.formData = this.allUsers.find(ele => ele.ita == row.ita)
     this.progress=true;
-    // this.userService.updateStatus(row).subscribe(
-    //     (response) => this.onSuccessStatus(response), 
-    //     (error) => this.onErrorStatus(error.json()), 
-    //     () => this.onCompleteStatus()
-    //   );
+    this.userService.updateStatus(row).subscribe(
+        (response) => this.onSuccessStatus(response), 
+        (error) => this.onErrorStatus(error.json()), 
+        () => this.onCompleteStatus()
+      );
  
   }
 
@@ -371,9 +373,9 @@ export class UsersAppComponent implements OnInit {
     this.ngOnInit();
     //this.router.navigate(['/users']);
   }
+*/
 
-
-  public deleteUser(row){
+  public deleteUser(row:any){
 
     this.progress=true;
     this.userService.deleteUser(row.user_id).subscribe(
@@ -409,7 +411,7 @@ export class UsersAppComponent implements OnInit {
 
   }
 
-  public getUsers(q){
+  public getUsers(q:string){
     this.progress = true;
     //console.log(this.rols);
     this.userService.getUsers(q).subscribe(
@@ -426,7 +428,7 @@ export class UsersAppComponent implements OnInit {
 
 
   public onSuccessUsers(response){
-  console.log(response)
+  //console.log(response)
   this.progress = false;
   this.usersAll = response;
   this.data = response.filter(i => i.user_type ==4 || i.user_type ==null)
@@ -435,7 +437,7 @@ export class UsersAppComponent implements OnInit {
   //this.data = this.data.filter(i => i.id_rol < '4') ;
   }
 
-public getUsersAll(q){
+public getUsersAll(q:string){
     this.progress = true;
     //console.log(this.rols);
     this.userService.getUsers(q).subscribe(
@@ -446,7 +448,7 @@ public getUsersAll(q){
   }
 
 
-  public onSuccessUsersAll(response){
+  public onSuccessUsersAll(response:any){
   this.progress = false;
   //this.data_sponsor = response.json();
   
@@ -455,24 +457,6 @@ public getUsersAll(q){
   //this.data = this.data.filter(i => i.id_rol < '4') ;
   }
 
-  public getUsersPlatinum(q){
-    this.progress = true;
-    //console.log(this.rols);
-    this.userService.getUsers(q).subscribe(
-        (response) => this.onSuccessUsersPlatinum (response),
-        (error) => console.log(error.json()), 
-        //() => this.onCompleteLogin()
-    );
-  }
-
-
-  public onSuccessUsersPlatinum(response){
-  this.progress = false;
-  //this.data_platinum = response.json();
-  //this.dataService = this.completerService.local(this.data_patro, 'name.ita', 'name');
-  //this.data = response.json().filter(i => i.id_rol == '4' && i.ita_master == localStorage.getItem('ita')); 
-  this.data_platinum = response.json().filter(i => i.id_position < '4') ;
-  }
 
    public showNotification(from: string, align: string, message: string, icon: string, type: number) {
     //const type = Math.floor((Math.random() * 4) + 1);

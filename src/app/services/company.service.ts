@@ -77,7 +77,7 @@ export class CompanyService {
 
   getCountries(q:string){
     //console.log(pago);
-    return this.http.get(vars.apiUrl + 'v1/country/countries', 
+    return this.http.get(vars.apiUrl + 'v1/country/countries/'+q, 
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }
@@ -92,6 +92,14 @@ export class CompanyService {
   putCountry(data:any){
     //console.log(data);
     return this.http.put(vars.apiUrl + 'v1/country/'+ data.country_id , data,
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
+  
+  putStatusCountry(id: string){
+    //console.log('token', this.access_token);
+    return this.http.put(vars.apiUrl + 'v1/country/'+ id + '/status',
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }

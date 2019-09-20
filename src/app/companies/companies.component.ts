@@ -167,7 +167,29 @@ export class CompaniesComponent implements OnInit {
     {headerName: 'Opción 8', field: 'price8', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell}
   ];
 
-  rowData = [];
+  rowData = [
+    { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+
+    { age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    { age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+
+    { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+
+  ];
+
   gridApi: any;
   gridColumnApi: any;
   arr: any = [];
@@ -251,16 +273,6 @@ export class CompaniesComponent implements OnInit {
   //this.data = response.json().filter(i => i.id_rol < '4'); 
   //this.data = this.data.filter(i => i.id_rol < '4') ;
     this.data = response;
-  }
-
-
-  saveCountry(){
-    this.progress = true;
-    this.companyService.postCountry(this.formCountry).subscribe(
-        (response) => this.onSuccessNewCountry(response), 
-        (error) => this.onErrorNewCountry(error), 
-        //() => this.onCompleteNewModule()
-      );
   }
 
   getCountries(){
@@ -385,7 +397,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   getPriceByCountryId(id:string){
-    return this.formDataPlan.price.filter(x => x.country_id === id)[0];
+    return this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id)[0];
   }
 
   setPriceByCountryId(id:string){
@@ -403,9 +415,37 @@ export class CompaniesComponent implements OnInit {
   onChangeCountry(){
     //console.log(this.getPriceByCountryId(id))
     if(this.formCountry.country_id=='0')
-    this.rowData = [];
+      this.rowData = [];
     else
-    this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
+      if(this.getPriceByCountryId(this.formCountry.country_id)) {
+      this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
+    }else{
+      this.rowData = [
+        { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    
+        { age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+        { age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    
+        { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+    
+      ];
+      this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
+      this.formDataPlan.price = this.arrPrices;
+    }
+   
   }
   
 
@@ -449,9 +489,6 @@ export class CompaniesComponent implements OnInit {
   public onSubmitPlan(){
     this.progress=true;
 
-
-    //this.formDataPlan.price= this.arrPrices;
-    //this.formDataPlan.price = [this.formDataPlan.price0, this.formDataPlan.price1, this.formDataPlan.price2];
     console.log('Submitting values', this.formDataPlan);
     
     if(this.titlePlan == 'Nuevo')
