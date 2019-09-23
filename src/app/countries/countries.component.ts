@@ -83,6 +83,7 @@ export class CountriesComponent implements OnInit {
   public newCountry(){
     this.showNewForm = true;
     this.title = 'Nuevo';
+    this.formCountry = {};
   }
 
   public editCountry(row:any){
