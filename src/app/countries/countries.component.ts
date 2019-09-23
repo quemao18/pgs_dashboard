@@ -3,6 +3,7 @@ import { CompanyService } from '../services/company.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import * as vars from '../config';
+import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 
 
 @Component({
@@ -62,18 +63,19 @@ export class CountriesComponent implements OnInit {
   progress: boolean = false;
   formCountry: any = {};
   countries: any = [];
-  title: string = "País/Región";
+  title: string = "Agregar";
   showNewForm: boolean = false;
   page:number = 1;
   pagination: number = vars.pagination;
   headerRowPlan = [];
 
-  constructor(private companyService: CompanyService, private notificationService: NotificationService) { }
+  constructor(private companyService: CompanyService, private notificationService: NotificationService, private navbarTitleService: NavbarTitleService) { }
 
   ngOnInit() {
     this.getCountries('');
-    this.title = "País/Región";
+    this.title = "Agregar";
     this.headerRowPlan = ['Nombre', 'ACCIONES'];
+    this.navbarTitleService.updateTitle('País/Región');
 
   }
 
@@ -162,7 +164,11 @@ export class CountriesComponent implements OnInit {
   getCountries(term:string){
     this.progress = true;
     this.companyService.getCountries(term).subscribe(
-      (response) => {this.progress = false; this.countries = response;},
+      (response) => {
+        this.progress = false; 
+        if(!response['Error'])
+        this.countries = response;
+      },
       (error) => { 
         this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
         this.progress=false; 
@@ -188,6 +194,10 @@ export class CountriesComponent implements OnInit {
   
   onErrorNewCountry(error:any){
     this.progress = false;
+  }
+
+  cancel(){
+    this.title = 'Agregar';
   }
   
   public showNotification(from: string, align: string, message: string, icon: string, type: number) {

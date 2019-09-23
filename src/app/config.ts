@@ -12,8 +12,8 @@ export var start = 0; //start para limit del api
 export var limit = 60; //limite consulta api
 
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-    apiUrl='http://localhost:5000/api/';
+    apiUrl='https://localhost:5000/api/';
 else
-    apiUrl='http://api.npeht.com/api';
+    apiUrl='https://pgs.nov9m.com:5000/api/';
 
 export var apiUrl;

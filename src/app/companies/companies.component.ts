@@ -268,11 +268,12 @@ export class CompaniesComponent implements OnInit {
     );
   }
 
-  public onSuccessCompanies(response){
+  public onSuccessCompanies(response:any){
     this.progress = false;
   //this.data = response.json().filter(i => i.id_rol < '4'); 
   //this.data = this.data.filter(i => i.id_rol < '4') ;
-    this.data = response;
+    if(!response['Error'])
+      this.data = response;
   }
 
   getCountries(){
