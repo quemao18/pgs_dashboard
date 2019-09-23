@@ -57,6 +57,14 @@ export class LbdUserProfileComponent {
   @Input()
   description: string;
 
+  @Input()
+  country_name: string;
+
+  @Input()
+  spouse_age: string;
+
+  @Input()
+  spouse_gender: string;
 
   constructor() { }
 }

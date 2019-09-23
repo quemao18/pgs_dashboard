@@ -131,6 +131,7 @@ export class UsersAppComponent implements OnInit {
   public dataSubCompany: FormControl;
   company_name: any;
   progress_modal: boolean = false;
+  country_name: any;
 
   constructor(private planService: PlanService, private companyService:CompanyService, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, private userService: UserService, private navbarTitleService: NavbarTitleService, private notificationService: NotificationService, private router: Router) {
     this.customData = new CustomData(userService, http); 
@@ -262,6 +263,12 @@ export class UsersAppComponent implements OnInit {
   public showUser(row){
     this.progress_modal=true;
     this.formData = row;
+    this.companyService.getCountry(row.country_id).subscribe(
+      data =>{
+        if(!data['Error'])
+        this.formData.country_name = data['name'];
+      }
+    )
     if(row.plan_id){
       this.planService.getPlan(row.plan_id).subscribe(
         data=>{

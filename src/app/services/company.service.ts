@@ -110,6 +110,12 @@ export class CompanyService {
     {headers: this.generateHeaders(),responseType: 'json'}
     )
   }
+  getCountry(id: string){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + 'v1/country/'+id, 
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
 
   public fileChange(event: any, company_id:string) {
     console.log(company_id)
