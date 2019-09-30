@@ -17,10 +17,14 @@
     <p class="text-center"><a href="mailto:{{email}}">{{email}}</a></p>
     <em><p class="description text-center" [innerHtml]="address"></p></em>
     <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p>
-    <p class="text-center" *ngIf="dob">{{dob.$date | date: 'd/MM/yy'}}</p>
-    <p class="text-center" *ngIf="smoker"><b>Fumador:</b> {{smoker}}</p>
-    <p class="text-center" *ngIf="health"><b>Salud:</b> {{health}}</p>
-    <p class="text-center" *ngIf="surgical"><b>¿Ha sido intervenido quirurgicamente?:</b> {{surgical == 'yes'? 'Si':'No'}}</p>
+    <p class="text-center" *ngIf="spouse_gender && spouse_gender!=='none'"><b>Conyugue:</b> {{spouse_gender == 'male'? 'Masculino':'Femenino' }} / Edad: {{spouse_age }}</p>
+    <!-- <p class="text-center" *ngIf="dob">{{dob.$date | date: 'd/MM/yy'}}</p> -->
+    <p class="text-center" *ngIf="dependents>0"><b>Dependientes:</b> {{dependents>=3 ? '3+': dependents}}</p>
+    <p class="text-center" *ngIf="company_name==''" ><b>Maternidad </b> <i [class]="maternity? 'pe-7s-check check-success': 'pe-7s-close-circle check-success' "></i></p>
+    <p class="text-center" *ngIf="company_name==''"><b>Fumador </b><i [class]="smoker? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p>
+    <p class="text-center" *ngIf="company_name==''"><b>Transplante de organos </b><i [class]="transplant? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p>
+    <!-- <p class="text-center" *ngIf="health"><b>Salud:</b> {{health}}</p> -->
+    <!-- <p class="text-center" *ngIf="surgical"><b>¿Ha sido intervenido quirurgicamente?:</b> {{surgical == 'yes'? 'Si':'No'}}</p> -->
 
     <div class="author" style="margin-top:5px;">
         <hr *ngIf="company_name && plan_name && price">

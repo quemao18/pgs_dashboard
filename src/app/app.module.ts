@@ -62,6 +62,7 @@ import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/stor
 
 import { AgGridModule } from 'ag-grid-angular';
 import { CountriesComponent } from './countries/countries.component';
+import { NumericEditor } from './numeric-editor.component';
 
 const appRoutes: Routes = [
   //{ path: 'maps', component: MapsComponent },
@@ -114,9 +115,11 @@ const appRoutes: Routes = [
     ProfileComponent, 
     MinuteSecondsPipe, 
     PolicityComponent, CountriesComponent,
+    NumericEditor
     
 
   ],
+  entryComponents: [NumericEditor],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -143,7 +146,8 @@ const appRoutes: Routes = [
     Ng2CompleterModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]), 
+    
   ],
   providers: [AngularFireStorage, AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
   {provide: LocationStrategy, useClass: HashLocationStrategy}

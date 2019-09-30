@@ -26,6 +26,7 @@ import { UploadService } from '../services/upload.service';
 import { PlanService } from '../services/plan.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { AgGridEvent } from 'ag-grid-community';
+import { NumericEditor } from '../numeric-editor.component';
 
 
 
@@ -154,17 +155,18 @@ export class CompaniesComponent implements OnInit {
   width_cell: number = 118;
   // @ViewChild('agGrid', {static:true}) agGrid: AgGridAngular;
   @ViewChild('agGrid', {static:true}) agGrid: AgGridAngular;
+  private frameworkComponents;
 
   columnDefs = [
     {headerName: 'Edad',     field: 'age_range', editable:false, width:150},
-    {headerName: 'Opción 1', field: 'price1', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 2', field: 'price2', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 3', field: 'price3', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 4', field: 'price4', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 5', field: 'price5', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 6', field: 'price6', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 7', field: 'price7', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 8', field: 'price8', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell}
+    {headerName: 'Opción 1', field: 'price1', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    {headerName: 'Opción 2', field: 'price2', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    {headerName: 'Opción 3', field: 'price3', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    {headerName: 'Opción 4', field: 'price4', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    {headerName: 'Opción 5', field: 'price5', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    {headerName: 'Opción 6', field: 'price6', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    {headerName: 'Opción 7', field: 'price7', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    {headerName: 'Opción 8', field: 'price8', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell}
   ];
 
   rowData = [
@@ -229,11 +231,18 @@ export class CompaniesComponent implements OnInit {
       cellClass: "number-cell",
       resizable: false
     };
+    this.frameworkComponents = {
+      numericEditor: NumericEditor
+    };
 
     this.getCountries();
     //this.formCountry.country_id = 0;
     
   }
+
+  NumericCellEditor(){
+      alert()
+    }
 
     //onSelect(countryid) {
     //  this.dataSubCategory = this.mediaService.getSubCategories().filter((item)=> item.countryid == countryid);
@@ -252,6 +261,7 @@ export class CompaniesComponent implements OnInit {
           console.log(new Date(event.jsdate).toISOString());
       
       }
+
 
   public getCompanies(q:string){
     this.progress = true;

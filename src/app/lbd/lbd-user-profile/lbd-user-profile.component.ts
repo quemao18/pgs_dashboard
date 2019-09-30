@@ -50,6 +50,12 @@ export class LbdUserProfileComponent {
 
   @Input()
   smoker: string;
+
+  @Input()
+  transplant: string;
+
+  @Input()
+  maternity: string;
   
   @Input()
   company_logo: string;
@@ -65,6 +71,9 @@ export class LbdUserProfileComponent {
 
   @Input()
   spouse_gender: string;
+  
+  @Input()
+  dependents: string;
 
   constructor() { }
 }
