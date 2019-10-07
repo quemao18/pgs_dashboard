@@ -19,7 +19,7 @@
     <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p>
     <p class="text-center" *ngIf="spouse_gender && spouse_gender!=='none'"><b>Conyugue:</b> {{spouse_gender == 'male'? 'Masculino':'Femenino' }} / Edad: {{spouse_age }}</p>
     <!-- <p class="text-center" *ngIf="dob">{{dob.$date | date: 'd/MM/yy'}}</p> -->
-    <p class="text-center" *ngIf="dependents>0"><b>Dependientes:</b> {{dependents>=5 ? '5+': dependents}} <b> / {{dependents == 1 ? 'Edad':'Edades' }}:</b> {{dependentsAges.join(', ')}}</p>
+    <p class="text-center" *ngIf="dependents>0"><b>Dependientes:</b> {{dependents>=5 ? '5+': dependents}} <b> / {{dependents == 1 ? 'Edad':'Edades' }}:</b> {{dependents_ages.join(', ')}}</p>
     <p class="text-center" *ngIf="company_name==''" ><b>Maternidad </b> <i [class]="maternity? 'pe-7s-check check-success': 'pe-7s-close-circle check-success' "></i></p>
     <p class="text-center" *ngIf="company_name==''"><b>Fumador </b><i [class]="smoker? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p>
     <p class="text-center" *ngIf="company_name==''"><b>Transplante de organos </b><i [class]="transplant? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p>

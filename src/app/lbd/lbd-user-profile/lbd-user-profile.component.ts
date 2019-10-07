@@ -79,7 +79,7 @@ export class LbdUserProfileComponent {
   age: number;
 
   @Input()
-  dependentsAges: Array<number>;
+  dependents_ages: Array<number>;
 
   constructor() { }
 }
