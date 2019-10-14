@@ -617,6 +617,7 @@ export class CompaniesComponent implements OnInit {
 
   public onSubmitEditCompany(){
     this.progress=true;
+    
     if(this.file)
       this.uploadFileFirebase();
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
@@ -756,9 +757,10 @@ export class CompaniesComponent implements OnInit {
 
 
   uploadFileFirebase(){
+    //console.log(company_id);
     this.imageIsUpload = false;
-    let ref = this.uploadService.refCloudStorage('companies/logos');
-    let task = this.uploadService.taskCloudStorage('companies/logos', this.file);
+    let ref = this.uploadService.refCloudStorage('companies/logos/'+this.formData.company_id+'/');
+    let task = this.uploadService.taskCloudStorage('companies/logos/'+this.formData.company_id+'/', this.file);
     //Cambia el porcentaje
     task.percentageChanges().subscribe((porcentaje) => {
       this.uploadProgress = Math.round(porcentaje);
