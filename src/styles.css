@@ -17,3 +17,9 @@
     font-size: 24px;
     font-weight: 800;
     }
+
+    
+.user-plans > .modal-dialog{
+    width: 900px !important;
+    height: 500px !important;
+}

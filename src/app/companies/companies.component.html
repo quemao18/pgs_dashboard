@@ -153,6 +153,30 @@
                 </div>
               
             </div> -->
+
+            <div class="row" [formGroup]="myGroup">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="name">Complicaciones de Maternidad</label>
+                    <input type="number" class="form-control" placeholder="Precio" formControlName="maternityControl">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                    <label for="name">Transplante de órganos</label>
+                    <input type="number" class="form-control" placeholder="Precio" formControlName="transplantControl">
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                    <label for="name">Gastos administrativos</label>
+                    <input type="number" class="form-control" placeholder="Precio" formControlName="costAdminControl">
+                  </div>
+                </div>
+                
+              </div>
+            
           
             <section style="    border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
                 <div class="form-group">
@@ -288,7 +312,6 @@
               </div>
               
             </div>
-            
 
             <div class="row">
               <div class="col-md-12">

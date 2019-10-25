@@ -35,7 +35,7 @@ export class PlanService {
   }
 
   putPlan(data:any){
-    //console.log(user_id);
+    // console.log(data.plan_id);
     return this.http.put(vars.apiUrl + 'v1/plan/'+data.plan_id , data,
     {headers: this.generateHeaders(),responseType: 'json'}
     )

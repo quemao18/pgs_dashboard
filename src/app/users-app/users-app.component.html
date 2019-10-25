@@ -436,13 +436,13 @@
 
   <!--- Show Modal -->
 
-<modal #modal>
+<modal #modal class="user-plans">
   <spinner-component [spinnerShow]="progress_modal"></spinner-component>
    <modal-header [show-close]="true">
         <h4 class="modal-title">{{titleModal}}</h4>
     </modal-header>
-    <modal-body>
-    <div [@cardprofile]>
+    <modal-body >
+    <div [@cardprofile] >
       <lbd-user-profile
         [backgroundImage]="'assets/img/background-1.jpg'"
         [avatarImage]="formData.photo ? formData.photo  : 'assets/img/faces/face-0.jpg'"
@@ -464,6 +464,7 @@
         [transplant] = "formData.transplant"
         [spouse_age] = "formData.spouse_age"
         [spouse_gender] = "formData.spouse_gender"
+        [plans] = "formData.plans"
         >
       </lbd-user-profile>
     </div>

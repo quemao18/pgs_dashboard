@@ -1,4 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import { CompanyService } from '../../services/company.service';
 
 @Component({
   selector: 'lbd-user-profile',
@@ -6,6 +7,9 @@ import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LbdUserProfileComponent {
+
+
+
   @Input()
   backgroundImage: string;
 
@@ -81,5 +85,19 @@ export class LbdUserProfileComponent {
   @Input()
   dependents_ages: Array<number>;
 
-  constructor() { }
+  @Input()
+  plans: Array<String>;
+
+  constructor(private companyService: CompanyService) { }
+
+  sortedArray(array): Array<String> {
+    // console.log(array);
+    array = array || []; 
+    array = array.sort((a,b) => b.date.localeCompare(a.date));
+    return array;
+  }
+
+  
+
+
 }

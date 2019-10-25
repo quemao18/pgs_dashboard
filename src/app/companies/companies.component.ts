@@ -157,6 +157,7 @@ export class CompaniesComponent implements OnInit {
   @ViewChild('agGrid', {static:true}) agGrid: AgGridAngular;
   private frameworkComponents;
 
+
   columnDefs = [
     {headerName: 'Edad',     field: 'age_range', editable:false, width:150},
     {headerName: 'Opción 1', field: 'price1', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
@@ -200,12 +201,29 @@ export class CompaniesComponent implements OnInit {
   formCountry: any = {country_id:0};
   arrPrices: Array<any> = [];
   selected_country_id: string;
+  myGroup: FormGroup;
+  // maternityControl: FormControl;
 
   constructor(private planService: PlanService, private uploadService: UploadService ,private afStorage: AngularFireStorage, public datePipe:DatePipe, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public companyService: CompanyService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     this.customData = new CustomData(userService, http); 
-   }
+    this.myGroup = builder.group({
+      'maternityControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])],
+      'transplantControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])],
+      'costAdminControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])]
+    });
+   
+  }
 
   ngOnInit() {
+    // this.myGroup  = new FormGroup({
+    //   maternityControl : new FormControl('', [
+    //     Validators.required,
+    //     Validators.pattern("^[0-9]*$"),
+    //     Validators.minLength(8),
+    //   ])
+    // });
+   
+    
     this.navbarTitleService.updateTitle('Aseguradoras');
     //if(!this.userService.isAdmin() && !this.userService.isAuth() )
     //    this.router.navigate(['/dashboard']);
@@ -499,9 +517,12 @@ export class CompaniesComponent implements OnInit {
 
   public onSubmitPlan(){
     this.progress=true;
+    this.formDataPlan.maternity = this.myGroup.controls['maternityControl'].value;
+    this.formDataPlan.transplant = this.myGroup.controls['transplantControl'].value;
+    this.formDataPlan.cost_admin = this.myGroup.controls['costAdminControl'].value;
 
     console.log('Submitting values', this.formDataPlan);
-    
+
     if(this.titlePlan == 'Nuevo')
      this.planService.postPlan(this.formDataPlan).subscribe(
         (response) => this.onSuccessPlan(response), 

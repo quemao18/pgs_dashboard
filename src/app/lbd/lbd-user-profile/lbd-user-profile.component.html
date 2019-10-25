@@ -1,5 +1,5 @@
 
-<div class="card card-user">
+<div class="card card-user" >
   <div class="image">
     <img [src]="backgroundImage" alt="..."/>
   </div>
@@ -8,25 +8,64 @@
       <a>
         <img class="avatar border-gray" [src]="avatarImage" alt="..."/>
 
-        <h4 class="title">{{ name }}<br />
-          <!-- <small>{{ username }}</small> -->
-          <small>{{age}} años</small>
+        <h4 class="title">{{ name }} - <small>{{age}} años</small>
         </h4>
       </a>
     </div>
-    <p class="text-center"><a href="mailto:{{email}}">{{email}}</a></p>
-    <em><p class="description text-center" [innerHtml]="address"></p></em>
-    <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p>
-    <p class="text-center" *ngIf="spouse_gender && spouse_gender!=='none'"><b>Conyugue:</b> {{spouse_gender == 'male'? 'Masculino':'Femenino' }} / Edad: {{spouse_age }}</p>
+    <p class="text-center"><a href="mailto:{{email}}">{{email}}</a> - <em class="description text-center" [innerHtml]="address"></em> </p>
+    
+    <!-- <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p> -->
+    <h5 class="text-center" *ngIf="spouse_gender && spouse_gender!=='none'"><b>Conyugue:</b> {{spouse_gender == 'male'? 'Masculino':'Femenino' }} - <small style="font-size: 14px;">{{spouse_age }} años</small></h5>
     <!-- <p class="text-center" *ngIf="dob">{{dob.$date | date: 'd/MM/yy'}}</p> -->
-    <p class="text-center" *ngIf="dependents>0"><b>Dependientes:</b> {{dependents>=5 ? '5+': dependents}} <b> / {{dependents == 1 ? 'Edad':'Edades' }}:</b> {{dependents_ages.join(', ')}}</p>
-    <p class="text-center" *ngIf="company_name==''" ><b>Maternidad </b> <i [class]="maternity? 'pe-7s-check check-success': 'pe-7s-close-circle check-success' "></i></p>
-    <p class="text-center" *ngIf="company_name==''"><b>Fumador </b><i [class]="smoker? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p>
-    <p class="text-center" *ngIf="company_name==''"><b>Transplante de organos </b><i [class]="transplant? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p>
+    <h5 class="text-center" *ngIf="dependents>0"><b>Dependientes:</b> {{dependents>=5 ? '5+': dependents}} - <small style="font-size: 14px;"> <b> {{dependents == 1 ? 'Edad':'Edades' }}:</b> {{dependents_ages.join(', ')}}</small></h5>
+    <!-- <p class="text-center" *ngIf="company_name==''" ><b>Maternidad </b> <i [class]="maternity? 'pe-7s-check check-success': 'pe-7s-close-circle check-success' "></i></p> -->
+    <!-- <p class="text-center" *ngIf="company_name==''"><b>Fumador </b><i [class]="smoker? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p> -->
+    <!-- <p class="text-center" *ngIf="company_name==''"><b>Transplante de organos </b><i [class]="transplant? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p> -->
     <!-- <p class="text-center" *ngIf="health"><b>Salud:</b> {{health}}</p> -->
     <!-- <p class="text-center" *ngIf="surgical"><b>¿Ha sido intervenido quirurgicamente?:</b> {{surgical == 'yes'? 'Si':'No'}}</p> -->
 
-    <div class="author" style="margin-top:5px;">
+    <hr *ngIf="plans">
+    <h4 class="title" style="margin: 10px; text-align: center; padding: 10px; " *ngIf="plans">
+      COTIZACIONES SOLICITADAS<br />
+      <small>Mostrando ultimas 3</small>
+    </h4>
+    <hr *ngIf="plans">
+    <div *ngIf="plans" class="content table-responsive table-full-width">
+      <table class="table table-hover table-striped table-responsive">
+        <thead>
+          <tr>
+            <th>Compañía</th>
+            <th>Plan</th>
+            <th>Fecha</th>
+            <th>Precio</th>
+            <th>Precio conyugue</th>
+            <th>Precio dependientes</th>
+            <th>Deducible</th>
+            <th>Complicaciones de maternidad</th>
+            <th>Transplante de organos</th>
+            <th>Costos admin.</th>
+          </tr>
+        </thead>
+        <tbody>
+    
+          <tr *ngFor="let row of sortedArray(plans) | slice:0:3 | orderBy:'row.date' ">
+           <td> <img *ngIf="row.company_logo" [src]="row.company_logo" alt="row.company_name" height="20px" /> <span *ngIf="row.company_logo==''" >{{company_name}}</span> </td>
+           <td> {{ row.plan_name }} </td>
+           <td> {{ row.date | date : 'd/MM/yy'}} </td> 
+           <td align="center"> ${{ row.option_prices[0] | number }} </td> <!--  -->
+           <td align="center"> {{ row.option_prices[1] ? '$'+(row.option_prices[1] | number) : 'N/A' }} </td> <!--  -->
+           <td align="center"> {{ row.option_prices[2] ? '$'+(row.option_prices[2] | number) : 'N/A' }} </td> <!--  -->
+           <td align="center"> {{ row.deductible ? '$'+(row.deductible | number) : 'N/A' }} </td> <!--  -->
+           <td align="center"> {{ row.maternity ? '$'+(row.maternity | number) : 'N/A' }} </td> <!--  -->
+           <td align="center"> {{ row.transplant ? '$'+(row.transplant | number) : 'N/A' }} </td> <!--  -->
+           <td align="center"> {{ row.cost_admin ? '$'+(row.cost_admin | number) : 'N/A' }} </td> <!--  -->
+          </tr>
+          
+        </tbody>
+      </table>
+
+      </div>
+    <!-- <div class="author" style="margin-top:5px;">
         <hr *ngIf="company_name && plan_name && price">
         <h4 class="title" style="margin: 10px" *ngIf="company_name && plan_name && price">Cotización interesada</h4>
         <a>
@@ -36,7 +75,7 @@
             <small class="text-center" *ngIf="plan_name && price">${{price | number:'.2-2'}}</small>
           </h4>
         </a>
-      </div>
+    </div> -->
 
   </div>
   <!-- <hr>
@@ -46,3 +85,4 @@
     <button href="#" class="btn btn-simple"><i class="fa fa-google-plus-square"></i></button>
   </div> -->
 </div>
+
