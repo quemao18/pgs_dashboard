@@ -27,7 +27,7 @@
     <hr *ngIf="plans">
     <h4 class="title" style="margin: 10px; text-align: center; padding: 10px; " *ngIf="plans">
       COTIZACIONES SOLICITADAS<br />
-      <small>Mostrando ultimas 3</small>
+      <small>Mostrando últimas 3</small>
     </h4>
     <hr *ngIf="plans">
     <div *ngIf="plans" class="content table-responsive table-full-width">
@@ -49,7 +49,7 @@
         <tbody>
     
           <tr *ngFor="let row of sortedArray(plans) | slice:0:3 | orderBy:'row.date' ">
-           <td> <img *ngIf="row.company_logo" [src]="row.company_logo" alt="row.company_name" height="20px" /> <span *ngIf="row.company_logo==''" >{{company_name}}</span> </td>
+           <td> <img *ngIf="row.company_logo" [src]="row.company_logo" alt="row.company_name" height="30px" /> <span *ngIf="row.company_logo==''" >{{company_name}}</span> </td>
            <td> {{ row.plan_name }} </td>
            <td> {{ row.date | date : 'd/MM/yy'}} </td> 
            <td align="center"> ${{ row.option_prices[0] | number }} </td> <!--  -->
