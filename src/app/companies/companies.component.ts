@@ -418,6 +418,10 @@ export class CompaniesComponent implements OnInit {
     this.showNewFormPlan = true;
     this.showPlans = false;
     this.titlePlan = 'Editar';
+    // console.log(row.maternity);
+    this.myGroup.controls['maternityControl'].setValue(row.maternity);
+    this.myGroup.controls['transplantControl'].setValue(row.transplant);
+    this.myGroup.controls['costAdminControl'].setValue(row.cost_admin);
     this.formDataPlan = row;
     //console.log(row.price);
     this.formCountry.country_id = 0;
