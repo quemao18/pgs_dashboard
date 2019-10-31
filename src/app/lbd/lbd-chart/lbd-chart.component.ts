@@ -1,8 +1,10 @@
 import {Component, Input, OnInit, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
 
+
 export interface LegendItem {
   title: string;
   imageClass: string;
+  color:string;
 }
 
 export enum ChartType {
@@ -73,4 +75,21 @@ export class LbdChartComponent implements OnInit, AfterViewInit {
         break;
     }
   }
+
+  public update(): void {
+    const params = [`#${this.chartId}`, this.chartData, this.chartOptions, this.chartResponsive];
+    console.log(params);
+    switch (this.chartType) {
+      case ChartType.Pie:
+        Chartist.Pie(...params);
+        break;
+      case ChartType.Line:
+        Chartist.Line(...params);
+        break;
+      case ChartType.Bar:
+        Chartist.Bar(...params);
+        break;
+    }
+  }
+  
 }

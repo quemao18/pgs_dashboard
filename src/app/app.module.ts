@@ -63,10 +63,15 @@ import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/stor
 import { AgGridModule } from 'ag-grid-angular';
 import { CountriesComponent } from './countries/countries.component';
 import { NumericEditor } from './numeric-editor.component';
+import { LbdChartComponent } from './lbd/lbd-chart/lbd-chart.component';
+
+import { ChartsModule } from 'ng2-charts';
+
 
 const appRoutes: Routes = [
   //{ path: 'maps', component: MapsComponent },
   { path: 'policity', component: PolicityComponent, },
+  
   {
     path: '', component: FooterLayoutComponent, children:
     [
@@ -115,8 +120,8 @@ const appRoutes: Routes = [
     ProfileComponent, 
     MinuteSecondsPipe, 
     PolicityComponent, CountriesComponent,
-    NumericEditor
-    
+    NumericEditor,
+    // LbdChartComponent
 
   ],
   entryComponents: [NumericEditor],
@@ -147,9 +152,11 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     AgGridModule.withComponents([]), 
+    ChartsModule
+    // LbdChartComponent
     
   ],
-  providers: [AngularFireStorage, AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
+  providers: [LbdChartComponent, AngularFireStorage, AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
   {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

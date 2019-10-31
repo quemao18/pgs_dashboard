@@ -4,12 +4,12 @@
     <p class="category">{{ subtitle }}</p>
   </div>
   <div class="content">
-    <div [attr.id]="chartId" class="ct-chart {{ chartClass }}"></div>
+    <div [attr.id]="chartId" class="ct-chart {{ chartClass }}" ></div>
 
     <div class="footer">
       <div class="legend">
         <span *ngFor="let item of legendItems">
-          <i [ngClass]="item.imageClass"></i> {{ item.title }}
+          <i [ngClass]="item.imageClass" [ngStyle]="{'color': item.color}"></i> {{ item.title }}
         </span>
       </div>
       <hr>
