@@ -90,8 +90,8 @@ export class DashboardComponent implements OnInit {
   private countries:any;
   dataUsersPie:any;
   dataUsersLine:any;
-  progress:boolean = false;
-
+  progressPie:boolean = false;
+  progressLine:boolean = false;
   public titlePie = 'Regiones más cotizadas';
   public subTitlePie = 'Cantidad de usuarios por región'
 
@@ -351,11 +351,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getUsers(q:string){
-    this.progress = true;
     //console.log(this.rols);
     this.userService.getUsers(q).subscribe(
         (response) =>{
-          this.progress = false;
           this.dataUsersPie = response;
           this.dataUsersPie = this.dataUsersPie.filter(i => i.user_type ==4 || i.user_type ==null)
           this.dataUsersLine = response;
@@ -365,7 +363,8 @@ export class DashboardComponent implements OnInit {
         (error) => { 
           this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
           console.log(error); 
-          this.progress=false; 
+          this.progressLine=false;
+          this.progressPie =false; 
           this.dataUsersPie = [];
           this.dataUsersLine = [];
         }, 
@@ -374,16 +373,16 @@ export class DashboardComponent implements OnInit {
   }
 
   getCountries(){
-    this.progress = true;
     this.companyService.getCountries('').subscribe(
       (response) => {
         console.log(response);
-        this.progress = false; 
+        this.progressPie = false; 
         this.countries = response;
       },
       (error) => { 
         this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
-        this.progress=false; 
+        this.progressPie=false; 
+        this.progressLine = false;
       }, 
 
     )
@@ -402,19 +401,23 @@ export class DashboardComponent implements OnInit {
   }
 
   updatePie(){
+    this.progressPie = true;
     this.getCountries();
     this.getUsers('');
     setTimeout(() => {
       this.buildRegionsChart();
+      this.progressPie = false;
     }, 1000);
     
   }
 
   updateLine(){
     // this.getCountries();
+    this.progressLine= true;
     this.getUsers('');
     setTimeout(() => {
       this.buildUsersChart();
+      this.progressLine = false;
     }, 1000);
 
     
