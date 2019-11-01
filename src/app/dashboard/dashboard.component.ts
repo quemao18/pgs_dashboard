@@ -144,7 +144,11 @@ export class DashboardComponent implements OnInit {
         {
           id: 'y-axis-0',
           position: 'left',
+          ticks:{
+            stepSize:1
+          }
         },
+        
         // {
         //   id: 'y-axis-1',
         //   position: 'right',
@@ -176,7 +180,7 @@ export class DashboardComponent implements OnInit {
     },
   };
   public lineChartColors: Color[] = [
-    { // red
+    { // blue
       backgroundColor: 'rgba(255,0,0,0.3)',
       borderColor: 'red',
       pointBackgroundColor: 'rgba(148,159,177,1)',
