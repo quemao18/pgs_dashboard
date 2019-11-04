@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, QueryList, ViewChildren} from '@angular/core';
+import {Component, OnInit, ViewChild, QueryList, ViewChildren, AfterViewInit} from '@angular/core';
 // import { LegendItem, ChartType, LbdChartComponent, } from '../lbd/lbd-chart/lbd-chart.component';
 import { Task } from '../lbd/lbd-task-list/lbd-task-list.component';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
@@ -68,7 +68,7 @@ import * as moment from 'moment';
     ])
   ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   public regionsChartType: ChartType;
   public regionsChartData: any;
   // public regionsChartLegendItems: LegendItem[];
@@ -236,12 +236,15 @@ export class DashboardComponent implements OnInit {
     // this.getCountries();
     // this.getUsers('');
     
+
+
+  }
+
+  ngAfterViewInit(){
     setTimeout(() => {
       this.updatePie();
       this.updateLine();
-
-    }, 0);
-
+    }, 1000);
 
   }
 
@@ -266,7 +269,7 @@ export class DashboardComponent implements OnInit {
     var count =0;
     this.pieChartLabels = [];
     this.pieChartData = [];
-
+    if(this.countries)
     this.countries.forEach(country => {
 
       var color = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," +Math.floor(Math.random() * 255) + ")";  
@@ -299,6 +302,7 @@ export class DashboardComponent implements OnInit {
     var values=[];
     var Jan=0, Feb=0, Mar=0, Apr=0, Mai=0, Jun=0, Jul=0, Aug=0, Sep=0, Oct= 0, Nov =0, Dec = 0;
     // moment.locale('es');
+    if(this.dataUsersLine)
     this.dataUsersLine.forEach(user => {
       // console.log(user.name);
       var month = +moment(user.date_modified.$date).utc().format('M');
@@ -411,7 +415,7 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.buildRegionsChart();
       this.progressPie = false;
-    }, 1000);
+    }, 2000);
     
   }
 
@@ -422,7 +426,7 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.buildUsersChart();
       this.progressLine = false;
-    }, 1000);
+    }, 2000);
 
     
   }
