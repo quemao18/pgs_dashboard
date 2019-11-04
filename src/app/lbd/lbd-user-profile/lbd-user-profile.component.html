@@ -48,11 +48,11 @@
         </thead>
         <tbody>
     
-          <tr *ngFor="let row of sortedArray(plans) | slice:0:3 | orderBy:'row.date' ">
+          <tr *ngFor="let row of sortedArray(plans) | slice:0:3 | orderBy: 'row.date.$date' ">
            <td> <img *ngIf="row.company_logo" [src]="row.company_logo" alt="row.company_name" height="30px" /> <span *ngIf="row.company_logo==''" >{{company_name}}</span> </td>
            <td> {{ row.plan_name }} </td>
-           <td> {{ row.date | date : 'd/MM/yy'}} </td> 
-           <td align="center"> ${{ row.option_prices[0] | number }} </td> <!--  -->
+           <td> {{ row.date.$date | date : 'd/MM/yy'}} </td> 
+           <td align="center"> {{ row.option_prices[0] ? '$'+(row.option_prices[0] | number) : 'N/A' }} </td> <!--  -->
            <td align="center"> {{ row.option_prices[1] ? '$'+(row.option_prices[1] | number) : 'N/A' }} </td> <!--  -->
            <td align="center"> {{ row.option_prices[2] ? '$'+(row.option_prices[2] | number) : 'N/A' }} </td> <!--  -->
            <td align="center"> {{ row.deductible ? '$'+(row.deductible | number) : 'N/A' }} </td> <!--  -->
