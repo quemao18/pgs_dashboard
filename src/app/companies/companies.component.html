@@ -30,12 +30,12 @@
       <tbody>
         <tr *ngFor="let row of data | paginate: { itemsPerPage: pagination, currentPage: page }">
          <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
-         <td>  {{row.name}} </td> 
-         <td>  {{row.email}} </td> 
-         <td>  {{row.description}} </td> 
+         <td style="width: 15%;">  {{row.name}} </td> 
+         <td style="width: 15%;">  {{row.email}} </td> 
+         <td style="width: 50%;">  {{row.description}} </td> 
          
          <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
-          <td> 
+          <td style="width: 20%;" > 
               <a (click)="showCompany(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
               <a (click)="showPlansCompany(row)" title="Planes" class="icon" [routerLink]=""><i class="pe-7s-albums"></i></a> 
               <a (click)="editCompany(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>

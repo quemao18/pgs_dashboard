@@ -8,11 +8,11 @@
       <a>
         <img class="avatar border-gray" [src]="avatarImage" alt="..."/>
 
-        <h4 class="title">{{ name }} - <small>{{age}} años</small>
+        <h4 class="title">{{ name }}<small *ngIf="age"> - {{age}} años</small>
         </h4>
       </a>
     </div>
-    <p class="text-center"><a href="mailto:{{email}}">{{email}}</a> - <em class="description text-center" [innerHtml]="address"></em> </p>
+    <p class="text-center"><a href="mailto:{{email}}">{{email}}</a><span *ngIf="address"> - </span><em class="description text-center" [innerHtml]="address"></em> </p>
     
     <!-- <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p> -->
     <h5 class="text-center" *ngIf="spouse_gender && spouse_gender!=='none'"><b>Conyugue:</b> {{spouse_gender == 'male'? 'Masculino':'Femenino' }} - <small style="font-size: 14px;">{{spouse_age }} años</small></h5>
