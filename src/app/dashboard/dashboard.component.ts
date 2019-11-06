@@ -181,16 +181,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   };
   public lineChartColors: Color[] = [
     { // blue
-      backgroundColor: 'rgba(255,0,0,0.3)',
-      borderColor: 'red',
+      backgroundColor: 'rgba(0,0,255,0.3)',
+      borderColor: 'blue',
       pointBackgroundColor: 'rgba(148,159,177,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
+    { // magenta
+      backgroundColor: 'rgba(255,0,255,0.2)',
+      borderColor: 'magenta',
       pointBackgroundColor: 'rgba(148,159,177,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
@@ -300,7 +300,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   buildUsersChart(){
     // console.log(this.countries);
     var values=[];
+    var valuesF=[], valuesM=[];
     var Jan=0, Feb=0, Mar=0, Apr=0, Mai=0, Jun=0, Jul=0, Aug=0, Sep=0, Oct= 0, Nov =0, Dec = 0;
+    var JanF=0, FebF=0, MarF=0, AprF=0, MaiF=0, JunF=0, JulF=0, AugF=0, SepF=0, OctF= 0, NovF =0, DecF = 0;
+    var JanM=0, FebM=0, MarM=0, AprM=0, MaiM=0, JunM=0, JulM=0, AugM=0, SepM=0, OctM= 0, NovM =0, DecM = 0;
     // moment.locale('es');
     if(this.dataUsersLine)
     this.dataUsersLine.forEach(user => {
@@ -310,52 +313,87 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         switch (month) {
           case 1:
           Jan++;
+          if(user.gender == 'female') JanF++;
+          if(user.gender == 'male') JanM++;
           break;
           case 2:
           Feb++;
+          if(user.gender == 'female') FebF++;
+          if(user.gender == 'male') FebM++;
           break;
           case 3:
           Mar++;
+          if(user.gender == 'female') MarF++;
+          if(user.gender == 'male') MarM++;
           break;
           case 4:
           Apr++;
+          if(user.gender == 'female') AprF++;
+          if(user.gender == 'male') AprM++;
           break;
           case 5:
           Mai++;
+          if(user.gender == 'female') MaiF++;
+          if(user.gender == 'male') MaiM++;
           break;
           case 6:
           Jun++;
+          if(user.gender == 'female') JunF++;
+          if(user.gender == 'male') JunM++;
           break;
           case 7:
           Jul++;
+          if(user.gender == 'female') JulF++;
+          if(user.gender == 'male') JulM++;
           break;
           case 8:
           Aug++;
+          if(user.gender == 'female') AugF++;
+          if(user.gender == 'male') AugM++;
           break;
           case 9:
           Sep++;
+          if(user.gender == 'female') SepF++;
+          if(user.gender == 'male') SepM++;
           break;
           case 10:
           Oct++;
+          if(user.gender == 'female') OctF++;
+          if(user.gender == 'male') OctM++;
           break;
           case 11:
           Nov++;
+          if(user.gender == 'female') NovF++;
+          if(user.gender == 'male') NovM++;
           break;
           case 12:
           Dec++;
+          if(user.gender == 'female') DecF++;
+          if(user.gender == 'male') DecM++;
           break;
         }
         // count = 0;
       });
 
       values= [Jan, Feb, Mar, Apr, Mai, Jun, Jul, Aug, Sep, Oct, Nov, Dec];
-      this.lineChartData = [{
+      valuesF= [JanF, FebF, MarF, AprF, MaiF, JunF, JulF, AugF, SepF, OctF, NovF, DecF];
+      valuesM= [JanM, FebM, MarM, AprM, MaiM, JunM, JulM, AugM, SepM, OctM, NovM, DecM];
+      this.lineChartData = [
+        {
         data: values,
         label: 'Usuarios'
-      }];
+        }, 
+        // {
+        //   data: valuesF,
+        //   label: 'Femeninos'
+        // },
+        // {
+        //   data: valuesM,
+        //   label: 'Masculinos'
+        // } 
+    
+    ];
       // console.log(values);
-
-
   }
 
   getUsers(q:string){
