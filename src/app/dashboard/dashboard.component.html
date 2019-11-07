@@ -86,21 +86,48 @@
     </div>
 
   </div>
-<!-- 
+
   <div class="row">
     <div class="col-md-12" [@card2014sales]>
-      <lbd-chart
-        [title]="'2014 Sales'"
-        [subtitle]="'All products including Taxes'"
-        [chartType]="activityChartType"
-        [chartData]="activityChartData"
-        [chartOptions]="activityChartOptions"
-        [chartResponsive]="activityChartResponsive"
-        [legendItems]="activityChartLegendItems"
-        [footerIconClass]="'fa fa-check'"
-        [footerText]="'Data information certified'">
-      </lbd-chart>
-    </div> -->
+
+      <div class="card">
+      <spinner-component [spinnerShow]="progressBar"></spinner-component>
+
+          <div class="header">
+            <h4 class="title">{{titleBar}}</h4>
+            <p class="category">{{subTitleBar}}</p>
+          </div>
+          <div class="content">
+              <div>
+                  <div>
+                    <div class="chart">
+                      <canvas baseChart
+                      [datasets]="barChartData"
+                      [labels]="barChartLabels"
+                      [options]="barChartOptions"
+                      [plugins]="barChartPlugins"
+                      [legend]="barChartLegend"
+                      [chartType]="barChartType">
+                    </canvas>
+                    </div>
+                  </div>
+                </div>
+        
+            <div class="footer">
+              <div class="legend">
+                <span *ngFor="let item of legendItems">
+                  <!-- <i [ngClass]="item.imageClass" [ngStyle]="{'color': item.color}"></i> {{ item.title }} -->
+                </span>
+              </div>
+              <hr>
+              <div class="stats">
+                <a href="#" (click)="updateBar()"><i [ngClass]="footerIconClassPie" ></i> {{ footerTextPie }} </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+  </div>
 
     <!-- <div class="col-md-6" [@cardtasks]>
       <lbd-task-list

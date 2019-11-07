@@ -62,6 +62,14 @@ export class UserService {
     )
   }
 
+  
+  getStatsPlans(){
+    //console.log(pago);
+    return this.http.get(vars.apiUrl + 'v1/account/stats_plans', 
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
 
   putPass(user_id:string, pass:string){
     //console.log(user_id);

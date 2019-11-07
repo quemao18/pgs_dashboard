@@ -366,7 +366,7 @@ export class CompaniesComponent implements OnInit {
       
           this.progress = false;
       }
-    )
+    );
     
   }
 

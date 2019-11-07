@@ -88,10 +88,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public tasks: Task[];
 
   private countries:any;
+  private companies:any;
   dataUsersPie:any;
   dataUsersLine:any;
+  dataUsersBar:any;
+  dataPlan:any;
   progressPie:boolean = false;
   progressLine:boolean = false;
+  progressBar:boolean = false;
   public titlePie = 'Regiones más cotizadas';
   public subTitlePie = 'Cantidad de usuarios por región'
 
@@ -206,12 +210,34 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     },
 
   ];
-  public lineChartLegend = true;
-  public lineChartType = 'line';
-  public lineChartPlugins = [pluginAnnotations];
+    public lineChartLegend = true;
+    public lineChartType = 'line';
+    public lineChartPlugins = [pluginAnnotations];
 
-  // @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
-  // @ViewChildren(BaseChartDirective) charts: QueryList<BaseChartDirective>;
+    // @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
+    // @ViewChildren(BaseChartDirective) charts: QueryList<BaseChartDirective>;
+    public titleBar = 'Planes más cotizados';
+    public subTitleBar = 'Cantidad de planes cotizados por aseguradora'
+    public barChartOptions: ChartOptions = {
+      responsive: true,
+      // We use these empty structures as placeholders for dynamic theming.
+      scales: { xAxes: [{}], yAxes: [{}] },
+      plugins: {
+        datalabels: {
+          anchor: 'end',
+          align: 'end',
+        }
+      }
+    };
+    public barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+    public barChartType: ChartType = 'bar';
+    public barChartLegend = true;
+    public barChartPlugins = [pluginDataLabels];
+
+    public barChartData: ChartDataSets[] = [
+      { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+      { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },  
+  ];
 
 
   constructor(
@@ -244,6 +270,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.updatePie();
       this.updateLine();
+      this.updateBar();
     }, 1000);
 
   }
@@ -396,6 +423,64 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // console.log(values);
   }
 
+  buildPlansChart(){
+    // console.log(this.countries);
+    var labels=[];
+    var data = [];
+    this.barChartLabels = ['Planes cotizados'];
+    this.barChartData = [];
+          
+          this.dataPlan.forEach((plan, index)=>{
+  
+            console.log(plan);  
+            labels.push(plan.fields.plan_name);  
+            data.push(
+              {
+                data: [plan.plan_count],
+                label: plan.fields.plan_name + ' ('+plan.fields.company_name+')',
+                company: plan.fields.company_name,
+              }
+            );
+            // this.barChartData.push(data[index]);
+            // this.barChartLabels = [...this.barChartLabels, labels[index]];
+            // this.newDataPoint(plan, plan.fields.company_name);
+            
+          //   if(!labels.includes(plan.fields.company_name))
+          //   labels.push(plan.fields.company_name);  
+            
+          //   if(labels.includes(plan.fields.company_name))
+          //     data.push(
+          //       {
+          //         data: [plan.plan_count],
+          //         label: plan.fields.plan_name,
+          //         company: plan.fields.company_name,
+          //       }
+          //     );
+          //     else
+          //     data = [];
+            
+          });
+
+          // this.barChartLabels = labels;
+          this.barChartData = data;
+          // console.log(data);
+
+
+
+  }
+
+  newDataPoint(dataArr = [100, 100, 100], label) {
+
+    this.barChartData.forEach((dataset, index) => {
+      this.barChartData[index] = Object.assign({}, this.barChartData[index], {
+        data: [...this.barChartData[index].data, dataArr[index]]
+      });
+    });
+  
+    this.barChartLabels = [...this.barChartLabels, label];
+  
+  }
+
   getUsers(q:string){
     //console.log(this.rols);
     this.userService.getUsers(q).subscribe(
@@ -404,6 +489,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.dataUsersPie = this.dataUsersPie.filter(i => i.user_type ==4 || i.user_type ==null)
           this.dataUsersLine = response;
           this.dataUsersLine = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
+          this.dataUsersBar = response;
+          this.dataUsersBar = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
           console.log(this.dataUsersPie);
         },
         (error) => { 
@@ -433,6 +520,46 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     )
    
+  }
+
+  getPLans(company_id){
+    this.companyService.getCompanyPlans(company_id).subscribe(
+      data=>{
+        //console.log(data);
+        if(data['Error']) 
+          this.dataPlan = [];
+          else
+          this.dataPlan = data;
+      }
+    );
+  }
+
+  getStasPLans(){
+    this.userService.getStatsPlans().subscribe(
+      data=>{
+        //console.log(data);
+        if(data['Error']) 
+          this.dataPlan = [];
+          else
+          this.dataPlan = data;
+      }
+    );
+  }
+
+  getCompanies(q:string){
+ 
+    this.companyService.getCompanies(q).subscribe(
+        (response) => {
+          this.progressBar = false; 
+          this.companies = response;
+        },
+        (error) => { 
+          this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
+          this.progressBar = false;
+          console.log(error.json()); 
+        }, 
+        //() => this.onCompleteLogin()
+    );
   }
 
   getColor(){ 
@@ -466,7 +593,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.progressLine = false;
     }, 2000);
 
-    
+  }
+
+  updateBar(){
+    // this.getCountries();
+    this.progressBar= true;
+    this.getStasPLans();
+    // this.getUsers('');
+    // this.getCompanies('');
+    setTimeout(() => {
+      this.buildPlansChart();
+      this.progressBar = false;
+    }, 2000);
+
   }
 
   // events
