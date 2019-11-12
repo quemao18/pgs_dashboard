@@ -300,6 +300,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.countries.forEach(country => {
 
       var color = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," +Math.floor(Math.random() * 255) + ")";  
+      if(this.dataUsersPie)
       this.dataUsersPie.forEach(user => {
         if(country.country_id==user.country_id) 
           count++;
@@ -429,7 +430,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     var data = [];
     this.barChartLabels = ['Planes cotizados'];
     this.barChartData = [];
-          
+          if(this.dataPlan)
           this.dataPlan.forEach((plan, index)=>{
   
             console.log(plan);  
@@ -580,7 +581,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.buildRegionsChart();
       this.progressPie = false;
-    }, 2000);
+    }, 3000);
     
   }
 
@@ -591,7 +592,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.buildUsersChart();
       this.progressLine = false;
-    }, 2000);
+    }, 3000);
 
   }
 
@@ -604,7 +605,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.buildPlansChart();
       this.progressBar = false;
-    }, 2000);
+    }, 3000);
 
   }
 
