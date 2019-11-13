@@ -265,8 +265,8 @@ export class LoginComponent implements OnInit {
     //this.authService.login_2(this.formData);
     }
     onSuccessLogin(response){
-
     console.log(response);
+    this.tryRegister(this.formData)
     this.userService.setIsUserLoggedIn(response.access_token);
     this.authService.setLoggedIn(true);
     this.userService.getUser().subscribe(
@@ -315,6 +315,15 @@ export class LoginComponent implements OnInit {
 
     //   this.router.navigate(['/dashboard']);
     // }
+  }
+
+  tryRegister(value){
+    this.authService.doRegister(value)
+    .then(res => {
+      console.log(res);
+    }, err => {
+      console.log(err);
+    })
   }
 
   public onSubmitEditUser(){

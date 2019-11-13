@@ -7,6 +7,8 @@ import { UserService } from '../services/user.service';
 //import { AUTH_CONFIG } from './auth0-variables';
 //import { tokenNotExpired } from 'angular2-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import * as firebase from 'firebase/app';
+import { environment } from '../../environments/environment';
 
 // Avoid name not found warnings
 declare var auth0: any;
@@ -32,7 +34,8 @@ export class AuthService {
 
   constructor(private router: Router, private http: Http, private userService: UserService) {
 
-  
+    firebase.initializeApp(environment.firebaseConfig);
+
   }
 
 
@@ -91,4 +94,14 @@ export class AuthService {
   private changeName(name: string) {
        return this.nameUser = name;
     }
+
+  doRegister(value){
+    return new Promise<any>((resolve, reject) => {
+      firebase.auth().createUserWithEmailAndPassword(value.username, value.password)
+      .then(res => {
+        resolve(res);
+      }, err => reject(err))
+    })
+  }
+
 }

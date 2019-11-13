@@ -15,7 +15,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TableComponent } from './table/table.component';
 import { TypographyComponent } from './typography/typography.component';
 import { IconsComponent } from './icons/icons.component';
-import { MapsComponent } from './maps/maps.component';
+// import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { PolicityComponent } from './policity/policity.component';
 
@@ -34,7 +34,7 @@ import { searchPipe, rowPipe, columnPipe, FilterPipe, UcFirstPipe, SafePipe, Min
 
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SpinnerComponentModule } from 'ng2-component-spinner';
+import { SpinnerComponentModule, SpinnerComponent } from 'ng2-component-spinner';
 import { Ng2TableModule } from 'ng2-table/ng2-table';
 
 import { NewsComponent } from './news/news.component';
@@ -57,6 +57,8 @@ import { CompanyService } from './services/company.service';
 import { environment } from '../environments/environment';
 //import { PaginationModule, TabsModule } from 'ngx-bootstrap';
 import { AngularFireModule,} from "@angular/fire";
+import { AngularFireAuthModule  } from '@angular/fire/auth';
+
 // import { AngularFirestoreModule, } from '@angular/fire/firestore';
 import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/storage';
 
@@ -103,7 +105,7 @@ const appRoutes: Routes = [
     TableComponent,
     TypographyComponent,
     IconsComponent,
-    //MapsComponent,
+    // MapsComponent,
     NotificationsComponent, 
     LoginComponent, 
     LogoutComponent,
@@ -113,7 +115,7 @@ const appRoutes: Routes = [
     columnPipe,
     FilterPipe,
     SafePipe,
-    //UcFirstPipe,
+    UcFirstPipe,
     ChangePassComponent,
     NewsComponent,
     CompaniesComponent,
@@ -121,6 +123,7 @@ const appRoutes: Routes = [
     MinuteSecondsPipe, 
     PolicityComponent, CountriesComponent,
     NumericEditor,
+    SpinnerComponent
     // LbdChartComponent
 
   ],
@@ -137,7 +140,7 @@ const appRoutes: Routes = [
     //Ng2TableModule,
     //PaginationModule,
     //TabsModule,
-    SpinnerComponentModule,
+    // SpinnerComponentModule,
     RouterModule.forRoot(appRoutes),
     //PaginationModule.forRoot(),
     //AgmCoreModule.forRoot({ apiKey: 'AIzaSyAEPDOJl5CPLz6NZcMqJBqZWfVXec3UsJg' }),
@@ -151,6 +154,7 @@ const appRoutes: Routes = [
     Ng2CompleterModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
+    AngularFireAuthModule ,
     AgGridModule.withComponents([]), 
     ChartsModule
     // LbdChartComponent
