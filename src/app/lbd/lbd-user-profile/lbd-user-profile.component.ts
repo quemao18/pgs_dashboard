@@ -93,7 +93,7 @@ export class LbdUserProfileComponent {
   sortedArray(array): Array<String> {
     // console.log(array);
     array = array || []; 
-    // array = array.sort((a,b) => b.date.localeCompare(a.date));
+    // array = array.reverse();
     return array;
   }
 

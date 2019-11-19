@@ -48,7 +48,7 @@
         </thead>
         <tbody>
     
-          <tr *ngFor="let row of sortedArray(plans) | slice:0:10 | orderBy: 'row.date.$date' ">
+          <tr *ngFor="let row of (plans).reverse() | orderBy: 'row.date.$date' ">
            <td> <img *ngIf="row.company_logo" [src]="row.company_logo" alt="row.company_name" height="30px" /> <span *ngIf="row.company_logo==''" >{{company_name}}</span> </td>
            <td> {{ row.plan_name }} </td>
            <td> {{ row.date.$date | date : 'd/MM/yy'}} </td> 
