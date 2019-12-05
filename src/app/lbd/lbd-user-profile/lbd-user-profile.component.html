@@ -15,9 +15,9 @@
     <p class="text-center"><a href="mailto:{{email}}">{{email}}</a><span *ngIf="address"> - </span><em class="description text-center" [innerHtml]="address"></em> </p>
     
     <!-- <p class="text-center" *ngIf="phone"><a href="tel:{{phone}}">Teléfono: {{phone}}</a></p> -->
-    <h5 class="text-center" *ngIf="spouse_gender && spouse_gender!=='none'"><b>Conyugue:</b> {{spouse_gender == 'male'? 'Masculino':'Femenino' }} - <small style="font-size: 14px;">{{spouse_age }} años</small></h5>
+    <!-- <h5 class="text-center" *ngIf="spouse_gender && spouse_gender!=='none'"><b>Conyugue:</b> {{spouse_gender == 'male'? 'Masculino':'Femenino' }} - <small style="font-size: 14px;">{{spouse_age }} años</small></h5> -->
     <!-- <p class="text-center" *ngIf="dob">{{dob.$date | date: 'd/MM/yy'}}</p> -->
-    <h5 class="text-center" *ngIf="dependents>0"><b>Dependientes:</b> {{dependents>=5 ? '5+': dependents}} - <small style="font-size: 14px;"> <b> {{dependents == 1 ? 'Edad':'Edades' }}:</b> {{dependents_ages.join(', ')}}</small></h5>
+    <!-- <h5 class="text-center" *ngIf="dependents>0"><b>Dependientes:</b> {{dependents>=5 ? '5+': dependents}} - <small style="font-size: 14px;"> <b> {{dependents == 1 ? 'Edad':'Edades' }}:</b> {{dependents_ages.join(', ')}}</small></h5> -->
     <!-- <p class="text-center" *ngIf="company_name==''" ><b>Maternidad </b> <i [class]="maternity? 'pe-7s-check check-success': 'pe-7s-close-circle check-success' "></i></p> -->
     <!-- <p class="text-center" *ngIf="company_name==''"><b>Fumador </b><i [class]="smoker? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p> -->
     <!-- <p class="text-center" *ngIf="company_name==''"><b>Transplante de organos </b><i [class]="transplant? 'pe-7s-check check-success': 'pe-7s-close-circle check-success'"></i></p> -->
@@ -37,9 +37,9 @@
             <th>Compañía</th>
             <th>Plan</th>
             <th>Fecha</th>
-            <th>Precio</th>
-            <th>Precio conyugue</th>
-            <th>Precio dependientes</th>
+            <th>Titular</th>
+            <th>Conyugue</th>
+            <th>Dependientes</th>
             <th>Deducible</th>
             <th>Complicaciones de maternidad</th>
             <th>Transplante de organos</th>
