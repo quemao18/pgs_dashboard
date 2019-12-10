@@ -139,16 +139,19 @@ export class CompaniesComponent implements OnInit {
 
   public search:string ='';
   file: File;
+  fileComp: File;
 
   @ViewChild("datepickerE", {static:true}) datepickerE: ElementRef;
   public isShowDatepicker: boolean = false;
   imageIsUpload:boolean = false;
   newPic:boolean = false;
-  logo:string;
-  ref: any;
-  task:any;
+  // logo:string;
+  // ref: any;
+  // task:any;
   downloadURL:string;
+  downloadURLComp:string;
   uploadProgress:number;
+  uploadProgressComp:number;
   prices = [0, 0, 0];
   titlePlan:string='';
   company_id: any;
@@ -234,7 +237,7 @@ export class CompaniesComponent implements OnInit {
 
     this.headerRowPlan = ['Nombre', 'Descripción', 'ACCIONES'];
     this.data = [];
-    this.formData = { description: '', logo:'', name:'', email: ''};
+    this.formData = { description: '', logo:'', name:'', email: '', comparative:''};
     this.formDataEdit = this.formCountry = { };
     this.downloadURL = '';
     // this.myFormCategory = this.builder.group({
@@ -343,7 +346,7 @@ export class CompaniesComponent implements OnInit {
     this.showNewForm = true;
     this.showEditForm = false;
     this.formData ={
-      description: '',logo:''
+      description: '',logo:'', comparative:''
     };
     this.imageIsUpload = false;
   }
@@ -571,6 +574,7 @@ export class CompaniesComponent implements OnInit {
     this.showEditForm = true;
     this.formData = row;
     this.downloadURL = '';
+    this.downloadURLComp = '';
     this.imageIsUpload = true;
     //this.formData.company_id = row.company_id;
     //console.log(this.formData)
@@ -645,6 +649,8 @@ export class CompaniesComponent implements OnInit {
     
     if(this.file)
       this.uploadFileFirebase();
+    if(this.fileComp)
+      this.uploadFileFirebaseComp();
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
     console.log('Submitting values edit', this.formData);
      this.companyService.putCompany(this.formData).subscribe(
@@ -780,6 +786,13 @@ export class CompaniesComponent implements OnInit {
       this.uploadFileFirebase()
   }
 
+  detectFilesComp(event:any, new_file:boolean) {
+    this.fileComp = event.target.files[0];
+    this.imageIsUpload = true;
+    //if(new_file)
+      this.uploadFileFirebaseComp()
+  }
+
 
   uploadFileFirebase(){
     //console.log(company_id);
@@ -811,12 +824,49 @@ export class CompaniesComponent implements OnInit {
 
   }
 
+  uploadFileFirebaseComp(){
+    //console.log(company_id);
+    this.imageIsUpload = false;
+    let refComp = this.uploadService.refCloudStorage('companies/comparative/'+this.formData.company_id+'/');
+    let taskComp = this.uploadService.taskCloudStorage('companies/comparative/'+this.formData.company_id+'/', this.fileComp);
+    //Cambia el porcentaje
+    taskComp.percentageChanges().subscribe((porcentaje) => {
+      this.uploadProgressComp = Math.round(porcentaje);
+      //console.log(this.uploadProgress)
+      if (this.uploadProgressComp == 100) {
+        this.imageIsUpload = true;
+      }
+    });
+
+  
+      refComp.getDownloadURL().subscribe((URL) => {
+        this.downloadURLComp = URL;
+        this.formData.comparative = URL;
+        if(this.formData.company_id)
+        this.companyService.putComparativeUrl(this.downloadURLComp, this.formData.company_id).subscribe(
+          data => {
+            console.log(data)
+            //this.uploadProgress = false;
+          }
+        )
+  
+      });
+
+  }
+
 
   imageRemoved($event){
     this.imageIsUpload = false;
     this.downloadURL = this.formData.logo;
     //alert()
   }
+
+  imageRemovedComp($event){
+    this.imageIsUpload = false;
+    this.downloadURLComp = this.formData.comparative;
+    //alert()
+  }
+
 
 isUrlValid(userInput) {
     var res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);

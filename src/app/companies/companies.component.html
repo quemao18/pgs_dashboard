@@ -210,7 +210,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="name">URL información</label>
-                      <input type="url" class="form-control" id="url_info" name="url_info" required placeholder="URL de información para el plan..." [(ngModel)]="formDataPlan.url_info">
+                      <input type="url" class="form-control" id="url_info" name="url_info" placeholder="URL de información para el plan..." [(ngModel)]="formDataPlan.url_info">
                     </div>
                   </div>
                   
@@ -284,6 +284,25 @@
                       </div>
                   </div>
 
+                  <div class="col-md-12">
+                    <div class="form-group">
+                        <progress style="float: right" *ngIf="uploadProgressComp > 0 && uploadProgressComp < 100" class="progress is-large is-success" value="{{uploadProgressComp}}" max="100">{{uploadProgressComp}}%</progress>                          
+                        <label for="description">Imágen comparativa</label>
+                        <!-- <img style="margin-left: 10px; padding: 10px" [src]="downloadURL? downloadURL:formData.logo" height="80px" /> -->
+                        <image-upload
+                        (change)="detectFilesComp($event, true)"
+                        (removed)="imageRemovedComp($event)"
+                        [max]="1" 
+                        [extensions]="['jpeg','png', 'jpg']"
+                        buttonCaption="Selecciona la foto"
+                        dropBoxMessage="O arrastra la foto"
+                    
+                        >
+                        
+                        </image-upload>
+                    </div>
+                </div>
+
             <hr>
             <div class="btn-toolbar">
             <button [disabled]="!form.valid || !imageIsUpload " type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
@@ -335,7 +354,9 @@
                   <div class="form-group">
                   <progress *ngIf="uploadProgress > 0 && uploadProgress < 100" class="progress is-large is-success" value="{{uploadProgress}}" max="100">{{uploadProgress}}%</progress>                          
                     <label for="description">LOGO</label>
-                    <img style="margin-left: 10px; padding: 10px" [src]="downloadURL? downloadURL:formData.logo" height="80px" />
+                    <p>
+                    <img style="margin-left: 5px; padding: 5px" [src]="downloadURL? downloadURL:formData.logo" height="100px" />
+                    </p>
                     <image-upload
                     (change)="detectFiles($event, false)"
                     (remove)="imageRemoved($event)"
@@ -363,6 +384,27 @@
 
                   </div>
               </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                    <progress style="float: right" *ngIf="uploadProgressComp > 0 && uploadProgressComp < 100" class="progress is-large is-success" value="{{uploadProgressComp}}" max="100">{{uploadProgressComp}}%</progress>                          
+                    <label for="description">Imágen comparativa</label>
+                    <p>
+                    <img *ngIf="formData.comparative || downloadURLComp" style="margin-left: 5px; padding: 5px" [src]="downloadURLComp ? downloadURLComp:formData.comparative" height="220px" width="95%" />
+                    </p>
+                    <image-upload
+                    (change)="detectFilesComp($event, true)"
+                    (removed)="imageRemovedComp($event)"
+                    [max]="1" 
+                    [extensions]="['jpeg','png', 'jpg']"
+                    buttonCaption="Selecciona la foto"
+                    dropBoxMessage="O arrastra la foto"
+                
+                    >
+                    
+                    </image-upload>
+                </div>
+            </div>
               
             <hr>
             <div class="btn-toolbar">

@@ -53,6 +53,12 @@ export class CompanyService {
     )
   }
 
+  putComparativeUrl(downloadURL: string, id:string) {
+    return this.http.put(vars.apiUrl + 'v1/company/'+ id + '/comparative', {url:downloadURL},
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
 
   putCompany(data:any){
     //console.log(data);
