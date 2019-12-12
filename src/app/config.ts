@@ -1,6 +1,6 @@
 'use strict';
-export var app='PGS Consulting';
-export var url='https://www.pgs-consulting.com'
+export var app='PGS Health';
+export var url='#'
 export var version: string="2.0";
 //export var apiUrl='http://localhost:8080/npeht_api/api';
 //export var apiUrl='http://144.217.255.53/npeht_api/api';
