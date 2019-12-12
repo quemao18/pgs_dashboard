@@ -14,4 +14,4 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
 else
     apiUrl='https://pgs.nov9m.com:5000/api/';
 
-export var apiUrl;
+export var apiUrl:string;
