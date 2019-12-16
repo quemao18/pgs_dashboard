@@ -123,7 +123,7 @@ const appRoutes: Routes = [
     MinuteSecondsPipe, 
     PolicityComponent, CountriesComponent,
     NumericEditor,
-    SpinnerComponent
+    // SpinnerComponent
     // LbdChartComponent
 
   ],
@@ -140,7 +140,7 @@ const appRoutes: Routes = [
     //Ng2TableModule,
     //PaginationModule,
     //TabsModule,
-    // SpinnerComponentModule,
+    SpinnerComponentModule,
     RouterModule.forRoot(appRoutes),
     //PaginationModule.forRoot(),
     //AgmCoreModule.forRoot({ apiKey: 'AIzaSyAEPDOJl5CPLz6NZcMqJBqZWfVXec3UsJg' }),
