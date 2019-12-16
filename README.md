@@ -9,7 +9,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `backend/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
@@ -29,7 +29,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 First install firebase `npm install -g firebase-tools`
 Run `firebase login` 
-Run `firebase init` to configure firebase project.
+Run `firebase init` to configure firebase project. Set `public` folder to `backend`.
 Run `ng build`
 Run `firebase deploy` 
 To update project only run `ng build` and `firebase deploy`
