@@ -571,12 +571,18 @@ export class CompaniesComponent implements OnInit {
   }
 
   public editCompany(row:any){
+    // this.formData = { description: '', logo:'', name:'', email: '', comparative:''};
+    // console.log(this.formData);
     this.showEditForm = true;
     this.formData = row;
     this.downloadURL = '';
     this.downloadURLComp = '';
     this.imageIsUpload = true;
-    //this.formData.company_id = row.company_id;
+    // console.log(this.formData);
+    // if(row.description!='')
+    // this.formData.description = row.description;
+    // else
+    // this.formData.description = ' '; 
     //console.log(this.formData)
     //this.formData.url = row.url;
   }
@@ -646,12 +652,12 @@ export class CompaniesComponent implements OnInit {
 
   public onSubmitEditCompany(){
     this.progress=true;
-    
     if(this.file)
       this.uploadFileFirebase();
     if(this.fileComp)
       this.uploadFileFirebaseComp();
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
+    if(!this.formData.description) this.formData.description = '';
     console.log('Submitting values edit', this.formData);
      this.companyService.putCompany(this.formData).subscribe(
         (response) => this.onSuccessUpdate(response), 
