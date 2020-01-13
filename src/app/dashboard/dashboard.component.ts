@@ -433,7 +433,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           if(this.dataPlan)
           this.dataPlan.forEach((plan, index)=>{
   
-            console.log(plan);  
+            // console.log(plan);  
             labels.push(plan.fields.plan_name);  
             data.push(
               {
@@ -492,7 +492,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.dataUsersLine = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
           this.dataUsersBar = response;
           this.dataUsersBar = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
-          console.log(this.dataUsersPie);
+          // console.log(this.dataUsersPie);
         },
         (error) => { 
           this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
@@ -509,7 +509,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   getCountries(){
     this.companyService.getCountries('').subscribe(
       (response) => {
-        console.log(response);
+        // console.log(response);
         this.progressPie = false; 
         this.countries = response;
       },

@@ -117,6 +117,8 @@ export class CompaniesComponent implements OnInit {
   companyName: string;
   showNewFormPlan: boolean = false;
   formDataPlan: any = {};
+  formDataPlanCopy: any = {};
+
   headerRowPlan: string[];
 
   public myFormCategory: FormGroup;
@@ -226,7 +228,9 @@ export class CompaniesComponent implements OnInit {
     //   ])
     // });
    
-    
+    this.arrPrices = [];
+    this.formDataPlan.price = [];
+
     this.navbarTitleService.updateTitle('Aseguradoras');
     //if(!this.userService.isAdmin() && !this.userService.isAuth() )
     //    this.router.navigate(['/dashboard']);
@@ -354,6 +358,7 @@ export class CompaniesComponent implements OnInit {
   
   public showPlansCompany(row){
     this.dataPlan = [];
+    this.progress = true;
     this.showNewForm = false;
     this.showEditForm = false;
     this.showPlans = true;
@@ -426,6 +431,7 @@ export class CompaniesComponent implements OnInit {
     this.myGroup.controls['transplantControl'].setValue(row.transplant);
     this.myGroup.controls['costAdminControl'].setValue(row.cost_admin);
     this.formDataPlan = row;
+    this.formDataPlanCopy = row;
     //console.log(row.price);
     this.formCountry.country_id = 0;
     this.rowData = [];
@@ -433,11 +439,12 @@ export class CompaniesComponent implements OnInit {
   }
 
   getPriceByCountryId(id:string){
-    return this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id)[0];
+    return this.formDataPlanCopy.price.filter((x: { country_id: string; }) => x.country_id === id)[0];
   }
 
   setPriceByCountryId(id:string){
     this.formDataPlan.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
+    this.formDataPlanCopy.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
   }
   
   getSelectedCountryId(){
@@ -449,7 +456,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   onChangeCountry(){
-    //console.log(this.getPriceByCountryId(id))
+    // console.log((this.formCountry.country_id));
     if(this.formCountry.country_id=='0')
       this.rowData = [];
     else
@@ -478,8 +485,8 @@ export class CompaniesComponent implements OnInit {
         { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
     
       ];
-      this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
-      this.formDataPlan.price = this.arrPrices;
+      // this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
+      // this.formDataPlan.price = this.arrPrices;
     }
    
   }
@@ -593,6 +600,14 @@ export class CompaniesComponent implements OnInit {
     //console.log(this.formData);
     this.formData = {description:''};
     this.ngOnInit();
+    //this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
+    //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
+  }
+
+  public cancelPlans(){
+    //console.log(this.formData);
+    this.showPlansCompany({name:this.companyName, company_id:this.company_id});
+    // this.ngOnInit();
     //this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
   }
