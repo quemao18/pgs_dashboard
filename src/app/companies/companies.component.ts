@@ -145,7 +145,7 @@ export class CompaniesComponent implements OnInit {
 
   @ViewChild("datepickerE", {static:true}) datepickerE: ElementRef;
   public isShowDatepicker: boolean = false;
-  imageIsUpload:boolean = false;
+  imageIsUpload:boolean = true;
   newPic:boolean = false;
   // logo:string;
   // ref: any;
@@ -381,6 +381,7 @@ export class CompaniesComponent implements OnInit {
   public newPlan(row:any){
     //console.log(this.company_id)
     this.showNewFormPlan = true;
+    this.downloadURLComp = '';
     this.showPlans = false;
     this.titlePlan = 'Nuevo';
     this.formDataPlan = {
@@ -424,6 +425,7 @@ export class CompaniesComponent implements OnInit {
 
   public editPlan(row:any){
     this.showNewFormPlan = true;
+    this.downloadURLComp = '';
     this.showPlans = false;
     this.titlePlan = 'Editar';
     // console.log(row.maternity);
@@ -432,37 +434,11 @@ export class CompaniesComponent implements OnInit {
     this.myGroup.controls['costAdminControl'].setValue(row.cost_admin);
     this.formDataPlan = row;
     this.formDataPlanCopy = row;
+    this.arrPrices = [];
     //console.log(row.price);
-    this.formCountry.country_id = 0;
-    this.rowData = [];
-    
-  }
+    let copy = row.price;
+    this.countries.forEach(element => {
 
-  getPriceByCountryId(id:string){
-    return this.formDataPlanCopy.price.filter((x: { country_id: string; }) => x.country_id === id)[0];
-  }
-
-  setPriceByCountryId(id:string){
-    this.formDataPlan.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
-    this.formDataPlanCopy.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
-  }
-  
-  getSelectedCountryId(){
-    return this.selected_country_id;
-  }
-
-  cellValueChanged(){
-    this.setPriceByCountryId(this.formCountry.country_id);
-  }
-
-  onChangeCountry(){
-    // console.log((this.formCountry.country_id));
-    if(this.formCountry.country_id=='0')
-      this.rowData = [];
-    else
-      if(this.getPriceByCountryId(this.formCountry.country_id)) {
-      this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
-    }else{
       this.rowData = [
         { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
         { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
@@ -485,8 +461,73 @@ export class CompaniesComponent implements OnInit {
         { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
     
       ];
-      // this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
-      // this.formDataPlan.price = this.arrPrices;
+
+    this.arrPrices.push({country_id: element.country_id, table: this.rowData});
+    });
+    
+    //console.log(this.formDataPlan.price)
+    // this.formDataPlan.price = this.arrPrices;
+
+    copy.forEach(element => {
+      // console.log(this.formDataPlan.price.filter(x => x.country_id === element.country_id));      
+      // this.formDataPlan.price.filter(x => x.country_id === element.country_id)[0].table = element.table;
+    });
+
+    this.formCountry.country_id = 0;
+    this.rowData = [];
+    
+  }
+
+  getPriceByCountryId(id:string){
+    return this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id)[0];
+  }
+
+  setPriceByCountryId(id:string){
+    this.formDataPlan.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
+    // this.formDataPlanCopy.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
+  }
+  
+  getSelectedCountryId(){
+    return this.selected_country_id;
+  }
+
+  cellValueChanged(){
+    this.setPriceByCountryId(this.formCountry.country_id);
+  }
+
+  onChangeCountry(){
+    console.log((this.formCountry.country_id));
+    if(this.formCountry.country_id=='0')
+      this.rowData = [];
+    else
+      if(this.getPriceByCountryId(this.formCountry.country_id)) {
+        this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
+    }else{
+        console.log('no data');
+        this.rowData = [
+          { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+      
+          { age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+          { age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+      
+          { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+      
+        ];
+        // this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
+        // this.formDataPlan.price = this.arrPrices;
     }
    
   }
@@ -530,10 +571,17 @@ export class CompaniesComponent implements OnInit {
 
 
   public onSubmitPlan(){
+    window.scroll(0,0);
     this.progress=true;
     this.formDataPlan.maternity = this.myGroup.controls['maternityControl'].value;
     this.formDataPlan.transplant = this.myGroup.controls['transplantControl'].value;
     this.formDataPlan.cost_admin = this.myGroup.controls['costAdminControl'].value;
+    
+    if(!this.formDataPlan.comparative) this.formDataPlan.comparative = '';
+    if(!this.formDataPlan.url_info) this.formDataPlan.url_info = '';
+
+    if(this.fileComp)
+      this.uploadFileFirebaseComp();
 
     console.log('Submitting values', this.formDataPlan);
 
@@ -606,6 +654,7 @@ export class CompaniesComponent implements OnInit {
 
   public cancelPlans(){
     //console.log(this.formData);
+    this.downloadURLComp = '';
     this.showPlansCompany({name:this.companyName, company_id:this.company_id});
     // this.ngOnInit();
     //this.formData.date_from =   this.datePipe.transform(this.formData.date_from.jsdate, 'yyyy-MM-dd');
@@ -669,8 +718,8 @@ export class CompaniesComponent implements OnInit {
     this.progress=true;
     if(this.file)
       this.uploadFileFirebase();
-    if(this.fileComp)
-      this.uploadFileFirebaseComp();
+    // if(this.fileComp)
+      // this.uploadFileFirebaseComp();
     //this.formData.date_finish = this.datePipe.transform(this.formData.date_finish.jsdate, 'yyyy-MM-dd');
     if(!this.formData.description) this.formData.description = '';
     console.log('Submitting values edit', this.formData);
@@ -804,14 +853,14 @@ export class CompaniesComponent implements OnInit {
     this.file = event.target.files[0];
     this.imageIsUpload = true;
     //if(new_file)
-      this.uploadFileFirebase()
+      this.uploadFileFirebase();
   }
 
   detectFilesComp(event:any, new_file:boolean) {
     this.fileComp = event.target.files[0];
     this.imageIsUpload = true;
     //if(new_file)
-      this.uploadFileFirebaseComp()
+      this.uploadFileFirebaseCompPlan();
   }
 
 
@@ -876,6 +925,41 @@ export class CompaniesComponent implements OnInit {
   }
 
 
+  
+  uploadFileFirebaseCompPlan(){
+    //console.log(company_id);
+    this.imageIsUpload = false;
+    let refComp = this.uploadService.refCloudStorage('companies/plan/'+this.formDataPlan.plan_id+'/');
+    let taskComp = this.uploadService.taskCloudStorage('companies/plan/'+this.formDataPlan.plan_id+'/', this.fileComp);
+    //Cambia el porcentaje
+    taskComp.percentageChanges().subscribe((porcentaje) => {
+      this.uploadProgressComp = Math.round(porcentaje);
+      //console.log(this.uploadProgress)
+      if (this.uploadProgressComp == 100) {
+        this.imageIsUpload = true;
+      }
+    });
+
+    setTimeout(() => {
+      
+      refComp.getDownloadURL().subscribe((URL) => {
+        this.downloadURLComp = URL;
+        this.formDataPlan.comparative = URL;
+        if(this.formDataPlan.plan_id)
+        this.companyService.putComparativePlanUrl(this.downloadURLComp, this.formDataPlan.plan_id).subscribe(
+          data => {
+            console.log(data)
+            //this.uploadProgress = false;
+          }
+        )
+  
+      });
+
+    }, 1000);
+
+  }
+
+
   imageRemoved($event){
     this.imageIsUpload = false;
     this.downloadURL = this.formData.logo;
@@ -883,8 +967,12 @@ export class CompaniesComponent implements OnInit {
   }
 
   imageRemovedComp($event){
-    this.imageIsUpload = false;
-    this.downloadURLComp = this.formData.comparative;
+    this.imageIsUpload = true;
+    // if(this.formDataPlan.comparative!='')
+    // this.downloadURLComp = this.formDataPlan.comparative;
+    // else
+    this.formDataPlan.comparative = '';
+    this.downloadURLComp = '';
     //alert()
   }
 

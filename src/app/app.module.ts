@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, enableProdMode } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes, CanActivate, CanActivateChild, CanDeactivate } from '@angular/router';
@@ -69,6 +69,7 @@ import { LbdChartComponent } from './lbd/lbd-chart/lbd-chart.component';
 
 import { ChartsModule } from 'ng2-charts';
 
+enableProdMode();
 
 const appRoutes: Routes = [
   //{ path: 'maps', component: MapsComponent },

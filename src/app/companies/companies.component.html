@@ -215,11 +215,32 @@
                   </div>
                   
                 </div>
+
+                <div class="col-md-12">
+                  <div class="form-group">
+                      <progress style="float: right" *ngIf="uploadProgressComp > 0 && uploadProgressComp < 100" class="progress is-large is-success" value="{{uploadProgressComp}}" max="100">{{uploadProgressComp}}%</progress>                          
+                      <label for="description">Imágen comparativa</label><a *ngIf="formDataPlan.comparative" [routerLink]='' (click)="imageRemovedComp($event)" > Quitar</a>
+                      <p>
+                      <img *ngIf="formDataPlan.comparative || downloadURLComp" style="-webkit-user-select: none;margin: auto; width: 90%;" [src]="downloadURLComp ? downloadURLComp:formDataPlan.comparative" />
+                      </p>
+                      <image-upload
+                      (change)="detectFilesComp($event, true)"
+                      (removed)="imageRemovedComp($event)"
+                      [max]="1" 
+                      [extensions]="['jpeg','png', 'jpg']"
+                      buttonCaption="Selecciona la foto"
+                      dropBoxMessage="O arrastra la foto"
+                  
+                      >
+                      
+                      </image-upload>
+                  </div>
+              </div>
                 
             
           <hr>
           <div class="btn-toolbar">
-          <button [disabled]="!formEdit.valid || formCountry.country_id==0" type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
+          <button [disabled]="!formEdit.valid || !imageIsUpload" type="submit" class="btn btn-success btn-fill pull-right">{{busy ? 'Espere...':'Guardar'}}</button> 
           <button (click)="showNewFormPlan=!showNewFormPlan;showPlans=true; cancelPlans()" type="button" class="btn btn-info btn-fill pull-right">Cancelar</button>
           </div>
           <div class="clearfix"></div>
@@ -284,11 +305,10 @@
                       </div>
                   </div>
 
-                  <div class="col-md-12">
+                  <!-- <div class="col-md-12">
                     <div class="form-group">
                         <progress style="float: right" *ngIf="uploadProgressComp > 0 && uploadProgressComp < 100" class="progress is-large is-success" value="{{uploadProgressComp}}" max="100">{{uploadProgressComp}}%</progress>                          
                         <label for="description">Imágen comparativa</label>
-                        <!-- <img style="margin-left: 10px; padding: 10px" [src]="downloadURL? downloadURL:formData.logo" height="80px" /> -->
                         <image-upload
                         (change)="detectFilesComp($event, true)"
                         (removed)="imageRemovedComp($event)"
@@ -301,7 +321,7 @@
                         
                         </image-upload>
                     </div>
-                </div>
+                </div> -->
 
             <hr>
             <div class="btn-toolbar">
@@ -385,7 +405,7 @@
                   </div>
               </div>
 
-              <div class="col-md-12">
+              <!-- <div class="col-md-12">
                 <div class="form-group">
                     <progress style="float: right" *ngIf="uploadProgressComp > 0 && uploadProgressComp < 100" class="progress is-large is-success" value="{{uploadProgressComp}}" max="100">{{uploadProgressComp}}%</progress>                          
                     <label for="description">Imágen comparativa</label>
@@ -404,7 +424,7 @@
                     
                     </image-upload>
                 </div>
-            </div>
+            </div> -->
               
             <hr>
             <div class="btn-toolbar">

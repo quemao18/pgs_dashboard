@@ -59,6 +59,12 @@ export class CompanyService {
     )
   }
 
+  putComparativePlanUrl(downloadURL: string, id:string) {
+    return this.http.put(vars.apiUrl + 'v1/plan/'+ id + '/comparative', {url:downloadURL},
+    {headers: this.generateHeaders(),responseType: 'json'}
+    )
+  }
+
 
   putCompany(data:any){
     //console.log(data);
