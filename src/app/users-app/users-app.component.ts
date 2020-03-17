@@ -145,7 +145,7 @@ export class UsersAppComponent implements OnInit {
 
     //this.notify = {show: false, message: ''};
     this.tableData = {
-    headerRow: ['Nombre', 'Email', 'Género' , 'Fumador', 'Edad', 'ACCIONES'],
+    headerRow: ['Nombre', 'Email', 'Género', 'Edad', 'ACCIONES'],
   };
 
     this.data = [];
