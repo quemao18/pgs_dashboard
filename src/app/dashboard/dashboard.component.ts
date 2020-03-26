@@ -337,7 +337,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.dataUsersLine.forEach(user => {
       // console.log(user.name);
       var month = +moment(user.date_modified.$date).utc().format('M');
-      // console.log(month);
+      var year = +moment(user.date_modified.$date).utc().format('Y');
+      // console.log(year);
+      if(moment().utc().format('Y') ===  year.toString())
         switch (month) {
           case 1:
           Jan++;
