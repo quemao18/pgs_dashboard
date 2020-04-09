@@ -86,7 +86,7 @@ const appRoutes: Routes = [
       { path: 'countries', component: CountriesComponent, canActivate: [AuthGuard] },
       // { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
       { path: 'users-app', component: UsersAppComponent, canActivate: [AuthGuard] },
-      { path: 'companies', component: CompaniesComponent, },
+      { path: 'companies', component: CompaniesComponent, canActivate: [AuthGuard] },
       { path: 'login', component: LoginComponent,  },
       { path: 'change-pass', component: ChangePassComponent, },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },

@@ -181,9 +181,9 @@
             <section style="border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
                 <div class="form-group">
                 <label style="margin: 12px 12px 12px 0px;" for="rol">Precios</label>
-                <label  style="position: absolute; margin: 10px 25%;" for="rol">Edades</label>
-                <label style="position: absolute; margin: 10px 15%;" for="rol">Rango</label>
-                <label class="switch" style="bottom: 10px;left: 20%" >
+                <label  style="position: absolute; margin: 12px 30%;" for="rol">Edades</label>
+                <label style="position: absolute; margin: 12px 20%;" for="rol">Rango</label>
+                <label class="switch" style="bottom: 10px;left: 25%" >
                   <input type="checkbox" [disabled]="formCountry.country_id == 0" (change)="typeTable=!typeTable;openModal(template, typeTable);" [checked]="typeTable">
                   <span class="slider round"></span>
                 </label>
@@ -487,11 +487,11 @@
 <!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">Open modal</button> -->
 <!-- <br><br> -->
 <!-- <pre class="card card-block card-header">{{message}}</pre> -->
-<ng-template #template>
+<ng-template style="margin-top: 20%;" #template>
   <div class="modal-body text-center">
-    <p>Está seguro que desea cambiar?</p>
-    <button style="margin-right: 10px;" type="button" class="btn btn-default" (click)="confirm(typeTable)" >Si</button>
-    <button type="button" class="btn btn-primary" (click)="decline(typeTable)" >No</button>
+    <p>¿Está seguro que desea cambiar el tipo de tabla?</p>
+    <button style="margin-right: 10px;" type="button" class="btn btn-primary" (click)="confirm(typeTable)" >Si</button>
+    <button type="button" class="btn btn-default" (click)="decline(typeTable)" >No</button>
   </div>
 </ng-template>
 

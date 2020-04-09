@@ -69,5 +69,7 @@ export class NotificationService {
           align: options.align
         }
       });
+    
+
   }
 }
