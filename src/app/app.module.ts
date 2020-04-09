@@ -69,6 +69,9 @@ import { LbdChartComponent } from './lbd/lbd-chart/lbd-chart.component';
 
 import { ChartsModule } from 'ng2-charts';
 
+import { ModalModule } from 'ngx-bootstrap/modal';
+
+
 enableProdMode();
 
 const appRoutes: Routes = [
@@ -82,7 +85,7 @@ const appRoutes: Routes = [
       { path: 'countries', component: CountriesComponent, canActivate: [AuthGuard] },
       // { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
       { path: 'users-app', component: UsersAppComponent, canActivate: [AuthGuard] },
-      { path: 'companies', component: CompaniesComponent, canActivate: [AuthGuard]},
+      { path: 'companies', component: CompaniesComponent, },
       { path: 'login', component: LoginComponent,  },
       { path: 'change-pass', component: ChangePassComponent, },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
@@ -157,7 +160,8 @@ const appRoutes: Routes = [
     AngularFireStorageModule,
     AngularFireAuthModule ,
     AgGridModule.withComponents([]), 
-    ChartsModule
+    ChartsModule,
+    ModalModule.forRoot(),
     // LbdChartComponent
     
   ],

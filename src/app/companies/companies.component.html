@@ -28,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data | paginate: { itemsPerPage: pagination, currentPage: page }">
+        <tr *ngFor="let row of companies | paginate: { itemsPerPage: pagination, currentPage: page }">
          <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
          <td style="width: 15%;">  {{row.name}} </td> 
          <td style="width: 15%;">  {{row.email}} </td> 
@@ -181,6 +181,12 @@
             <section style="border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
                 <div class="form-group">
                 <label style="margin: 12px 12px 12px 0px;" for="rol">Precios</label>
+                <label  style="position: absolute; margin: 10px 25%;" for="rol">Edades</label>
+                <label style="position: absolute; margin: 10px 15%;" for="rol">Rango</label>
+                <label class="switch" style="bottom: 10px;left: 20%" >
+                  <input type="checkbox" [disabled]="formCountry.country_id == 0" (change)="typeTable=!typeTable;openModal(template, typeTable);" [checked]="typeTable">
+                  <span class="slider round"></span>
+                </label>
                 <div class="country">
                 <label style="margin:12px" for="rol">País/región</label>
                 <select (change)="onChangeCountry()" style="width: 400px" required name="country" id="country" [(ngModel)]="formCountry.country_id" class="form-control" id="inlineFormCustomSelect">
@@ -477,4 +483,15 @@
     </modal-footer>
 </form>
 </modal>
+
+<!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">Open modal</button> -->
+<!-- <br><br> -->
+<!-- <pre class="card card-block card-header">{{message}}</pre> -->
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Está seguro que desea cambiar?</p>
+    <button style="margin-right: 10px;" type="button" class="btn btn-default" (click)="confirm(typeTable)" >Si</button>
+    <button type="button" class="btn btn-primary" (click)="decline(typeTable)" >No</button>
+  </div>
+</ng-template>
 

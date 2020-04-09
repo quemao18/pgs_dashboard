@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, TemplateRef} from '@angular/core';
 import { Location, DatePipe } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
 import {  Router, ActivatedRoute, Params } from '@angular/router';
@@ -28,6 +28,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { AgGridEvent } from 'ag-grid-community';
 import { NumericEditor } from '../numeric-editor.component';
 
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -85,7 +86,7 @@ import { NumericEditor } from '../numeric-editor.component';
 export class CompaniesComponent implements OnInit {
 
   public tableData: any;
-  public data:Array<any> = [];
+  public companies:Array<any> = [];
   public dataPlan:any;
   public formData: any;
   public formDataEdit: any;
@@ -160,8 +161,28 @@ export class CompaniesComponent implements OnInit {
   width_cell: number = 118;
   // @ViewChild('agGrid', {static:true}) agGrid: AgGridAngular;
   @ViewChild('agGrid', {static:true}) agGrid: AgGridAngular;
-  private frameworkComponents;
+  public frameworkComponents;
+  typeTable: boolean = false;
 
+  // agesTable = [
+  //   { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  //   { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+  // ];
+
+
+  ageRange=99;
+ 
 
   columnDefs = [
     {headerName: 'Edad',     field: 'age_range', editable:false, width:150},
@@ -176,27 +197,11 @@ export class CompaniesComponent implements OnInit {
   ];
 
   rowData = [
-    { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-
-    { age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    { age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-
-    { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
+   
+    this.createRange,
 
   ];
+
 
   gridApi: any;
   gridColumnApi: any;
@@ -208,8 +213,11 @@ export class CompaniesComponent implements OnInit {
   selected_country_id: string;
   myGroup: FormGroup;
   // maternityControl: FormControl;
+  modalRef: BsModalRef;
 
-  constructor(private planService: PlanService, private uploadService: UploadService ,private afStorage: AngularFireStorage, public datePipe:DatePipe, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public companyService: CompanyService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
+  constructor(
+    private modalService: BsModalService,
+    private planService: PlanService, private uploadService: UploadService ,private afStorage: AngularFireStorage, public datePipe:DatePipe, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public companyService: CompanyService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     this.customData = new CustomData(userService, http); 
     this.myGroup = builder.group({
       'maternityControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])],
@@ -220,13 +228,6 @@ export class CompaniesComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.myGroup  = new FormGroup({
-    //   maternityControl : new FormControl('', [
-    //     Validators.required,
-    //     Validators.pattern("^[0-9]*$"),
-    //     Validators.minLength(8),
-    //   ])
-    // });
    
     this.arrPrices = [];
     this.formDataPlan.price = [];
@@ -240,7 +241,7 @@ export class CompaniesComponent implements OnInit {
     };
 
     this.headerRowPlan = ['Nombre', 'Descripción', 'ACCIONES'];
-    this.data = [];
+    this.companies = [];
     this.formData = { description: '', logo:'', name:'', email: '', comparative:''};
     this.formDataEdit = this.formCountry = { };
     this.downloadURL = '';
@@ -262,7 +263,12 @@ export class CompaniesComponent implements OnInit {
 
     this.getCountries();
     //this.formCountry.country_id = 0;
-    
+    // setTimeout(() => {
+    //   this.companies.forEach(element => {
+    //     this.resetPrice();
+    //   });
+    // }, 3000);
+  
   }
 
   NumericCellEditor(){
@@ -295,7 +301,7 @@ export class CompaniesComponent implements OnInit {
         (response) => this.onSuccessCompanies (response),
         (error) => { 
           this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
-          this.data = []; 
+          this.companies = []; 
           console.log(error.json()); 
           this.progress=false; 
         }, 
@@ -308,7 +314,7 @@ export class CompaniesComponent implements OnInit {
   //this.data = response.json().filter(i => i.id_rol < '4'); 
   //this.data = this.data.filter(i => i.id_rol < '4') ;
     if(!response['Error'])
-      this.data = response;
+      this.companies = response;
   }
 
   getCountries(){
@@ -389,31 +395,8 @@ export class CompaniesComponent implements OnInit {
     };
 
     this.countries.forEach(element => {
-
-      this.rowData = [
-        { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    
-        { age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    
-        { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    
-      ];
-
-    this.arrPrices.push({country_id: element.country_id, table: this.rowData});
+      this.rowData = this.createRange();
+      this.arrPrices.push({country_id: element.country_id, table: this.rowData});
     });
     
     //console.log(this.formDataPlan.price)
@@ -437,41 +420,27 @@ export class CompaniesComponent implements OnInit {
     this.arrPrices = [];
     //console.log(row.price);
     let copy = row.price;
-    this.countries.forEach(element => {
 
-      this.rowData = [
-        { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    
-        { age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-        { age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    
-        { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-    
-      ];
-
-    this.arrPrices.push({country_id: element.country_id, table: this.rowData});
-    });
+    // this.countries.forEach(element => {
+    //   this.rowData =  this.createRange();
+    //   this.arrPrices.push({country_id: element.country_id, table: this.rowData});
+    // });
     
     //console.log(this.formDataPlan.price)
+    //resetea el plan a los nuevos precios
     // this.formDataPlan.price = this.arrPrices;
+    // this.planService.putPlan(this.formDataPlan).subscribe(
+    //   (response) => this.onSuccessPlan(response), 
+    //   (error) => this.onErrorPlan(error), 
+    // );
+    //fin reseteo
 
     copy.forEach(element => {
       // console.log(this.formDataPlan.price.filter(x => x.country_id === element.country_id));      
       // this.formDataPlan.price.filter(x => x.country_id === element.country_id)[0].table = element.table;
+     
     });
+
 
     this.formCountry.country_id = 0;
     this.rowData = [];
@@ -479,6 +448,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   getPriceByCountryId(id:string){
+    console.log(this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id))
     return this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id)[0];
   }
 
@@ -495,41 +465,113 @@ export class CompaniesComponent implements OnInit {
     this.setPriceByCountryId(this.formCountry.country_id);
   }
 
+  createRangeAges(){
+    var itemsAges: any[] = [];
+    for (let i = 0; i <= 99; i++) {
+      // console.log ("Block statement execution no." + i);
+      itemsAges.push({ age_range: i.toString(), price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+
+    }
+    itemsAges.push({ age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+    itemsAges.push({ age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+    itemsAges.push({ age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+    itemsAges.push({ age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+    console.log(itemsAges);
+    return itemsAges;
+
+  }
+
+  createRange(){
+    var items: any[] = [];
+    if(!this.typeTable){
+      items.push( { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push( { age_range: '80+', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push({ age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push({ age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push({ age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push({ age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+    }
+    // var itemsAges: any[] = [];
+    else{
+      for (let i = 0; i <= 99; i++) {
+        // console.log ("Block statement execution no." + i);
+        items.push({ age_range: i.toString(), price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      }
+      items.push({ age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push({ age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push({ age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+      items.push({ age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+    }
+
+    return items;
+
+  }
+
+  openModal(template: TemplateRef<any>, typeTable) {
+    console.log(typeTable);
+    // this.typeTable = typeTable;
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+ 
+  confirm(typeTable): void {
+    // this.message = 'Confirmed!';
+    this.rowData = this.createRange()
+    this.modalRef.hide();
+  }
+ 
+  decline(typeTable): void {
+    console.log('Declined!',typeTable);
+    if(this.getPriceByCountryId(this.formCountry.country_id)) {
+      this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
+    }
+
+    if(this.rowData.length > 17) this.typeTable = true; else this.typeTable = false;
+  
+    this.modalRef.hide();
+  }
+
   onChangeCountry(){
     console.log((this.formCountry.country_id));
+
     if(this.formCountry.country_id=='0')
       this.rowData = [];
     else
       if(this.getPriceByCountryId(this.formCountry.country_id)) {
         this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
+        console.log(this.rowData.length)
+        if(this.rowData.length > 17) this.typeTable = true; else this.typeTable = false;
     }else{
         console.log('no data');
-        this.rowData = [
-          { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '30-34', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '35-39', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '40-44', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '45-49', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '50-54', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '55-59', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '60-64', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '65-69', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '70-74', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '75-79', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-      
-          { age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-          { age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-      
-          { age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
-      
-        ];
+        this.rowData = this.createRange();
+
         // this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
         // this.formDataPlan.price = this.arrPrices;
     }
    
+  }
+
+  resetPrice(){
+    this.countries.forEach(element => {
+      this.rowData =  this.createRange();
+      this.arrPrices.push({country_id: element.country_id, table: this.rowData});
+    });
+    //console.log(this.formDataPlan.price)
+    this.formDataPlan.price = this.arrPrices;
+    this.planService.putPlan(this.formDataPlan).subscribe(
+      (response) => this.onSuccessPlan(response), 
+      (error) => this.onErrorPlan(error), 
+    );
   }
   
 
@@ -584,6 +626,7 @@ export class CompaniesComponent implements OnInit {
       this.uploadFileFirebaseComp();
 
     console.log('Submitting values', this.formDataPlan);
+    this.typeTable = false;
 
     if(this.titlePlan == 'Nuevo')
      this.planService.postPlan(this.formDataPlan).subscribe(
