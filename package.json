@@ -9,6 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "deploy": "ng build && firebase deploy",
+    "post-build": "node ./build/post-build.js",
+    "build-fire": "ng build --outputHashing=all && npm run post-build && firebase deploy ",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -81,6 +83,7 @@
     "protractor": "^5.4.2",
     "ts-node": "~3.3.0",
     "tslint": "~5.7.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "@babel/compat-data": "~7.8.0"
   }
 }

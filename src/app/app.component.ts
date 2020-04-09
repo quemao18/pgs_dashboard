@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 // import { NavItem, NavItemType } from './lbd/lbd.module';
 import { AuthService } from './services/auth.service';
+import { environment } from '../environments/environment';
+import { VersionCheckService } from './services/version-check.service';
 
 export interface DropdownLink {
   title: string;
@@ -38,7 +40,7 @@ export class AppComponent implements OnInit {
   public navItems: NavItem[];
   public userName: string;
 
-  constructor(private auth:AuthService) {  }
+  constructor(private auth:AuthService, private versionCheckService: VersionCheckService) {  }
 
 
   public ngOnInit(): void {
@@ -108,6 +110,9 @@ export class AppComponent implements OnInit {
       //{ type: NavItemType.NavbarRight, title: 'Login', routerLink: 'login',  isLoggedIn: false },
       //{ type: NavItemType.NavbarRight, title: 'Salir', isLoggedIn: true },
     ];
+
+    this.versionCheckService.initVersionCheck(environment.versionCheckURL);
+
   }
   
 }

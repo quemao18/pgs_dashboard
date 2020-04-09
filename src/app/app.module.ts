@@ -70,6 +70,7 @@ import { LbdChartComponent } from './lbd/lbd-chart/lbd-chart.component';
 import { ChartsModule } from 'ng2-charts';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { VersionCheckService } from './services/version-check.service';
 
 
 enableProdMode();
@@ -165,7 +166,9 @@ const appRoutes: Routes = [
     // LbdChartComponent
     
   ],
-  providers: [LbdChartComponent, AngularFireStorage, AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
+  providers: [
+    VersionCheckService,
+    LbdChartComponent, AngularFireStorage, AuthGuard, AuthService, UserService, MediaService, NewService, DatePipe, SchoolService, PlanService, CompanyService,
   {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

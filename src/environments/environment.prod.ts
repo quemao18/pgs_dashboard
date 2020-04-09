@@ -9,5 +9,7 @@ export const environment = {
     messagingSenderId: "855167360160",
     appId: "1:855167360160:web:9a45945fe99faf9c9f7dc5",
     measurementId: "G-GMRKZR3P32"
-  }
+  },
+  versionCheckURL : 'https://pgs-health.web.app/version.json',
+  web: 'https://pgs-health.web.app'
 };
