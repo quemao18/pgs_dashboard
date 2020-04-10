@@ -404,6 +404,11 @@ export class CompaniesComponent implements OnInit {
     //this.formDataPlan = row;
     this.formCountry.country_id = 0;
     this.rowData = [];
+
+    this.myGroup.controls['maternityControl'].setValue(0);
+    this.myGroup.controls['transplantControl'].setValue(0);
+    this.myGroup.controls['costAdminControl'].setValue(0);
+
   }
 
   public editPlan(row:any){
@@ -421,19 +426,16 @@ export class CompaniesComponent implements OnInit {
     //console.log(row.price);
     let copy = row.price;
 
-    // this.countries.forEach(element => {
-    //   this.rowData =  this.createRange();
-    //   this.arrPrices.push({country_id: element.country_id, table: this.rowData});
-    // });
+    this.countries.forEach(element => {
+      if(this.getPriceByCountryId(element.country_id))
+      this.rowData = this.getPriceByCountryId(element.country_id).table;
+      else
+      this.rowData =  this.createRange();
+      this.arrPrices.push({country_id: element.country_id, table: this.rowData});
+    });
     
     //console.log(this.formDataPlan.price)
-    //resetea el plan a los nuevos precios
-    // this.formDataPlan.price = this.arrPrices;
-    // this.planService.putPlan(this.formDataPlan).subscribe(
-    //   (response) => this.onSuccessPlan(response), 
-    //   (error) => this.onErrorPlan(error), 
-    // );
-    //fin reseteo
+    this.formDataPlan.price = this.arrPrices;
 
     copy.forEach(element => {
       // console.log(this.formDataPlan.price.filter(x => x.country_id === element.country_id));      
@@ -453,6 +455,8 @@ export class CompaniesComponent implements OnInit {
   }
 
   setPriceByCountryId(id:string){
+    // console.log(id);
+    // console.log(this.formDataPlan.price.filter(x => x.country_id === id))
     this.formDataPlan.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
     // this.formDataPlanCopy.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
   }
@@ -554,6 +558,8 @@ export class CompaniesComponent implements OnInit {
     }else{
         console.log('no data');
         this.rowData = this.createRange();
+        console.log(this.formDataPlan.price)
+        // this.formDataPlan.price.filter(x => x.country_id === this.formCountry.id)[0].table = this.getAllRows();
 
         // this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
         // this.formDataPlan.price = this.arrPrices;
