@@ -19,6 +19,7 @@ export class VersionCheckService {
      */
     public initVersionCheck(url, frequency = 1000 * 60) {
         setInterval(() => {
+            // this.showNotification();
             this.checkVersion(url);
         }, frequency);
     }
@@ -74,16 +75,14 @@ export class VersionCheckService {
         return currentHash !== newHash;
     }
 
-
-      
     public showNotification() {
 
         $.notify({
             // options
             icon: 'glyphicon glyphicon-warning-sign',
-            title: 'Actualización disponible',
-            message: 'Existe una nueva actualización, haz click aqui', 
-            url: this.route.url,
+            title: 'Nueva versión disponible',
+            message: 'Existe una actualización, haz click aqui para actualizar', 
+            url: environment.web,
             target: '_self'
         },{
             // settings
@@ -91,7 +90,7 @@ export class VersionCheckService {
             position: null,
             type: "info",
             allow_dismiss: false,
-            newest_on_top: true,
+            newest_on_top: false,
             showProgressbar: false,
             placement: {
                 from: "top",
@@ -100,8 +99,8 @@ export class VersionCheckService {
             offset: 20,
             spacing: 10,
             z_index: 1031,
-            delay: 5000,
-            timer: 10000,
+            // delay: 5000,
+            timer: 1000 * 60 * 4,
             url_target: '_blank',
             mouse_over: null,
             animate: {
