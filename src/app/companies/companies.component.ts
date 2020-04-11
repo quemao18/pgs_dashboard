@@ -450,7 +450,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   getPriceByCountryId(id:string){
-    console.log(this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id))
+    // console.log(this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id))
     return this.formDataPlan.price.filter((x: { country_id: string; }) => x.country_id === id)[0];
   }
 
@@ -523,7 +523,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>, typeTable) {
-    console.log(typeTable);
+    // console.log(typeTable);
     // this.typeTable = typeTable;
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
@@ -553,12 +553,12 @@ export class CompaniesComponent implements OnInit {
     else
       if(this.getPriceByCountryId(this.formCountry.country_id)) {
         this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
-        console.log(this.rowData.length)
+        // console.log(this.rowData.length)
         if(this.rowData.length > 17) this.typeTable = true; else this.typeTable = false;
     }else{
         console.log('no data');
         this.rowData = this.createRange();
-        console.log(this.formDataPlan.price)
+        // console.log(this.formDataPlan.price)
         // this.formDataPlan.price.filter(x => x.country_id === this.formCountry.id)[0].table = this.getAllRows();
 
         // this.arrPrices.push({country_id: this.formCountry.country_id, table: this.rowData});
