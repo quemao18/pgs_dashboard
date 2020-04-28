@@ -237,10 +237,10 @@ export class CompaniesComponent implements OnInit {
     //    this.router.navigate(['/dashboard']);
     //this.showNotification('top', 'center', 'Debe permitir <b>ventanas emergentes</b> para reproducir el video', 'pe-7s-attention', 3);
     this.tableData = {
-    headerRow: ['Nombre', 'Email', 'Descripción', 'ACCIONES'],
+    headerRow: ['Nombre', 'Email', 'Descripción', 'Órden', 'ACCIONES'],
     };
 
-    this.headerRowPlan = ['Nombre', 'Descripción', 'ACCIONES'];
+    this.headerRowPlan = ['Nombre', 'Descripción', 'Órden', 'ACCIONES'];
     this.companies = [];
     this.formData = { description: '', logo:'', name:'', email: '', comparative:''};
     this.formDataEdit = this.formCountry = { };
@@ -391,7 +391,8 @@ export class CompaniesComponent implements OnInit {
     this.showPlans = false;
     this.titlePlan = 'Nuevo';
     this.formDataPlan = {
-      company_id: this.company_id
+      company_id: this.company_id,
+      description: '' 
     };
 
     this.countries.forEach(element => {

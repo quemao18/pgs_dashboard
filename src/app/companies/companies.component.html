@@ -31,11 +31,12 @@
         <tr *ngFor="let row of companies | paginate: { itemsPerPage: pagination, currentPage: page }">
          <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
          <td style="width: 15%;">  {{row.name}} </td> 
-         <td style="width: 15%;">  {{row.email}} </td> 
-         <td style="width: 50%;">  {{row.description}} </td> 
+         <td style="width: 20%;">  {{row.email}} </td> 
+         <td style="width: 35%;">  {{row.description}} </td> 
+         <td style="width: 5%; text-align: center;">  {{row.order}} </td> 
          
          <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
-          <td style="width: 20%;" > 
+          <td style="width: 25%;" > 
               <a (click)="showCompany(row)" title="Ver" class="icon" [routerLink]=""><i class="pe-7s-look"></i></a> 
               <a (click)="showPlansCompany(row)" title="Planes" class="icon" [routerLink]=""><i class="pe-7s-albums"></i></a> 
               <a (click)="editCompany(row)" title="Editar" class="icon" [routerLink]=""><i class="pe-7s-pen" ></i></a>
@@ -81,8 +82,10 @@
         <tbody>
           <tr  *ngFor="let row of dataPlan | paginate: { itemsPerPage: pagination, currentPage: page }">
            <!--  | filterBy: ['name']: searchFilter.value <td *ngFor="let rowValues of row | rowPipe"> {{showRow(row, rowValues)}}</td> .-->
-           <td style="width: 30%">  {{row.name}} </td> 
+           <td style="width: 20%">  {{row.name}} </td> 
            <td style="width: 50%">  {{row.description}} </td> 
+           <td style="width: 5%; text-align: center;">  {{row.order}} </td> 
+
            <!-- <td>  ${{row.price[0]}} </td><td>  ${{row.price[1]}} </td><td> ${{row.price[2]}} </td>  -->
            
            <!-- <td>  {{row.name_user_create}} {{row.last_user_create}}</td> Creado por -->
@@ -116,19 +119,24 @@
       <div class="content">
         <form #formEdit="ngForm" (ngSubmit)="onSubmitPlan()">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="name">Nombre</label>
                 <input type="text" class="form-control" id="name" name="name" required placeholder="Nombre" [(ngModel)]="formDataPlan.name">
               </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="name">Descripción (Opcional)</label>
                 <input type="text" class="form-control" id="description" name="description" placeholder="description" [(ngModel)]="formDataPlan.description">
               </div>
             </div>
-            
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="description">Órden</label>
+                <input type="number" min="1" class="form-control" id="order" name="order" placeholder="Órden" [(ngModel)]="formDataPlan.order">
+              </div>
+            </div>
           </div>
           
           <!-- <div class="row">
@@ -255,7 +263,7 @@
     </div>
   </div>
 
-<!-- New media -->
+<!-- New Company -->
 
 <div *ngIf="showNewForm" class="container-fluid">
 
@@ -285,10 +293,16 @@
             
 
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-8">
                 <div class="form-group">
                   <label for="description">Descripción (Opcional)</label>
                   <input type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="formData.description">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="description">Órden</label>
+                  <input type="number" min="1" class="form-control" id="order" name="order" placeholder="Órden" [(ngModel)]="formData.order">
                 </div>
               </div>
             </div>
@@ -340,7 +354,7 @@
       </div>
     </div>
 
-<!-- Edit media -->
+<!-- Edit company -->
 
 <div *ngIf="showEditForm" class="container-fluid">
 
@@ -368,10 +382,16 @@
             </div>
 
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-8">
                 <div class="form-group">
                   <label for="description">Descripción (Opcional)</label>
                   <input type="text" class="form-control" id="description" name="description" placeholder="Descripción" [(ngModel)]="formData.description">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="description">Órden</label>
+                  <input type="number" min="1" class="form-control" id="order" name="order" placeholder="Órden" [(ngModel)]="formData.order">
                 </div>
               </div>
             </div>
