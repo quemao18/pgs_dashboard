@@ -43,7 +43,7 @@
     "core-js": "^2.6.11",
     "firebase": "^6.6.2",
     "handlebars": "^4.7.4",
-    "jquery": "^3.4.1",
+    "jquery": ">=3.5.0",
     "moment": "^2.24.0",
     "ng2-bs3-modal": "^0.10.4",
     "ng2-charts": "^2.3.0",
