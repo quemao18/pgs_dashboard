@@ -39,7 +39,7 @@
     "chartjs-plugin-datalabels": "^0.7.0",
     "core-js": "^2.4.1",
     "firebase": "^6.6.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "ng2-bs3-modal": "^0.10.4",
     "ng2-charts": "^2.3.0",
