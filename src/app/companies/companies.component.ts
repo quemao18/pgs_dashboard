@@ -271,9 +271,9 @@ export class CompaniesComponent implements OnInit {
   
   }
 
-  NumericCellEditor(){
-      alert()
-    }
+  // NumericCellEditor(){
+  //     alert()
+  //   }
 
     //onSelect(countryid) {
     //  this.dataSubCategory = this.mediaService.getSubCategories().filter((item)=> item.countryid == countryid);
@@ -378,7 +378,7 @@ export class CompaniesComponent implements OnInit {
           else
           this.dataPlan = data;
       
-          this.progress = false;
+        this.progress = false;
       }
     );
     
@@ -422,27 +422,29 @@ export class CompaniesComponent implements OnInit {
     this.myGroup.controls['transplantControl'].setValue(row.transplant);
     this.myGroup.controls['costAdminControl'].setValue(row.cost_admin);
     this.formDataPlan = row;
-    this.formDataPlanCopy = row;
+    // this.formDataPlanCopy = row;
     this.arrPrices = [];
     //console.log(row.price);
-    let copy = row.price;
+    // let copy = row.price;
 
     this.countries.forEach(element => {
+
       if(this.getPriceByCountryId(element.country_id))
-      this.rowData = this.getPriceByCountryId(element.country_id).table;
+        this.rowData = this.getPriceByCountryId(element.country_id).table;
       else
-      this.rowData =  this.createRange();
+        this.rowData =  this.createRange();
+    
       this.arrPrices.push({country_id: element.country_id, table: this.rowData});
     });
     
     //console.log(this.formDataPlan.price)
     this.formDataPlan.price = this.arrPrices;
 
-    copy.forEach(element => {
-      // console.log(this.formDataPlan.price.filter(x => x.country_id === element.country_id));      
-      // this.formDataPlan.price.filter(x => x.country_id === element.country_id)[0].table = element.table;
+    // copy.forEach(element => {
+    //   // console.log(this.formDataPlan.price.filter(x => x.country_id === element.country_id));      
+    //   // this.formDataPlan.price.filter(x => x.country_id === element.country_id)[0].table = element.table;
      
-    });
+    // });
 
 
     this.formCountry.country_id = 0;
@@ -653,9 +655,10 @@ export class CompaniesComponent implements OnInit {
     this.showPlans = true;
     
     if(!response.Error){
-      this.showNotification('top', 'center', '<b>Plan agregado correctamente</b>', 'pe-7s-check', 2);
+      this.showNotification('top', 'center', '<b>Plan guardado correctamente</b>', 'pe-7s-check', 2);
       this.showPlansCompany({name:this.companyName, company_id:this.company_id});
       this.showNewFormPlan = false;
+      // this.formDataPlan = [];
       }else{
         this.progress = false;
         this.showNewForm = false;
