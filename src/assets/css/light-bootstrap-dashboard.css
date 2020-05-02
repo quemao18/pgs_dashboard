@@ -451,6 +451,16 @@ input:focus {
   background: linear-gradient(to bottom, #1F77D0 0%, #533ce1 100%);
   background-size: 150% 150%;
 }
+.sidebar[data-color="pgs"]:after {
+  background: #9E946B;
+  background: -moz-linear-gradient(top, #9E946B 0%, #423C34 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9E946B), color-stop(100%, #423C34));
+  background: -webkit-linear-gradient(top, #9E946B 0%, #423C34 100%);
+  background: -o-linear-gradient(top, #9E946B 0%, #423C34 100%);
+  background: -ms-linear-gradient(top, #9E946B 0%, #423C34 100%);
+  background: linear-gradient(to bottom, #9E946B 0%, #423C34 100%);
+  background-size: 150% 150%;
+}
 .sidebar[data-color="azure"]:after {
   background: #1DC7EA;
   background: -moz-linear-gradient(top, #1DC7EA 0%, #4091ff 100%);
@@ -1295,7 +1305,7 @@ input:focus {
   user-select: none;
   /*   this code is for fixing safari bug with hidden overflow for border-radius   */
   -webkit-mask: url("../img/mask.png") 0 0 no-repeat;
-  -webkit-mask-size: 60px 24px;
+  /* -webkit-mask-size: 60px 24px; */
   mask: url("../img/mask.png") 0 0 no-repeat;
 }
 
@@ -1489,12 +1499,12 @@ input:focus {
 .navbar .btn-simple {
   font-size: 16px;
 }
-.navbar.fixed {
+/* .navbar.fixed {
   width: calc(100% - $sidebar-width);
   right: 0;
   left: auto;
   border-radius: 0;
-}
+} */
 
 .navbar-nav > li > .dropdown-menu {
   border-radius: 10px;
@@ -3399,9 +3409,9 @@ input:focus {
     display: none;
   }
 
-  .navbar-fixed-top {
+  /* .navbar-fixed-top {
     -webkit-backface-visibility: hidden;
-  }
+  } */
 
   .social-line .btn {
     margin: 0 0 10px 0;

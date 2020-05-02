@@ -204,6 +204,9 @@ body > .navbar-collapse{
     &[data-color="purple"]:after{
         @include icon-gradient($new-purple, $purple-color-bottom);
     }
+    &[data-color="pgs"]:after{
+        @include icon-gradient($new-pgs, $pgs-color-bottom);
+    }
 }
 
 
