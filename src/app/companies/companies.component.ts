@@ -100,12 +100,6 @@ export class CompaniesComponent implements OnInit {
   public page:number = 1;
   public pagination: number = vars.pagination;
   public url: any;
-  @ViewChild('modal', {static:true})
-  modal: ModalComponent;
-  @ViewChild('modalNewCategory', {static:true})
-  modalNewCategory: ModalComponent;
-  @ViewChild('modalNewSubCategory', {static:true})
-  modalNewSubCategory: ModalComponent;
   public title: string = 'Agregar';
   public titleModal: string = 'Media';
   public titleModalEdit: string = 'Editar Multimedia';
@@ -122,35 +116,19 @@ export class CompaniesComponent implements OnInit {
 
   headerRowPlan: string[];
 
-  public myFormCategory: FormGroup;
-  public myFormSubCategory: FormGroup;
-  public myFormUsers: FormGroup;
-
   public disabled: boolean = false;
   public disabledSubCategory: boolean = false;
-  private id: string ;
-  public baseUrl:string = 'https://www.youtube.com/embed/';
-  public compUrl:string = '?rel=0&autoplay=1';
-  public duration: number = 0;
   public busy: boolean = false;
-  public creator: any;
   public q : string = '';
-  @ViewChild("remoteDataCreator", {static:true}) private remoteDataCreator: CompleterCmp;
   public name: string;
-  public placeholderCreator: string;
   public customData: CustomData;
 
   public search:string ='';
   file: File;
   fileComp: File;
 
-  @ViewChild("datepickerE", {static:true}) datepickerE: ElementRef;
-  public isShowDatepicker: boolean = false;
   imageIsUpload:boolean = true;
   newPic:boolean = false;
-  // logo:string;
-  // ref: any;
-  // task:any;
   downloadURL:string;
   downloadURLComp:string;
   uploadProgress:number;
@@ -159,10 +137,11 @@ export class CompaniesComponent implements OnInit {
   titlePlan:string='';
   company_id: any;
   width_cell: number = 118;
-  // @ViewChild('agGrid', {static:true}) agGrid: AgGridAngular;
   @ViewChild('agGrid', {static:true}) agGrid: AgGridAngular;
   public frameworkComponents;
   typeTable: boolean = false;
+  @ViewChild('modal', {static:true})
+  modal: ModalComponent;
 
   // agesTable = [
   //   { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
@@ -180,26 +159,20 @@ export class CompaniesComponent implements OnInit {
   //   { age_range: '80+'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
   // ];
 
-
-  ageRange=99;
- 
-
   columnDefs = [
-    {headerName: 'Edad',     field: 'age_range', editable:false, width:150},
-    {headerName: 'Opción 1', field: 'price1', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 2', field: 'price2', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 3', field: 'price3', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 4', field: 'price4', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 5', field: 'price5', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 6', field: 'price6', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 7', field: 'price7', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
-    {headerName: 'Opción 8', field: 'price8', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell}
+    // {headerName: 'Edad',     field: 'age_range', editable:false, width:150},
+    // {headerName: 'Opción 1', field: 'price1', cellEditor: 'numericEditor', valueFormatter: function(params) {return (params.value);},  editable:true, width:this.width_cell},
+    // {headerName: 'Opción 2', field: 'price2', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    // {headerName: 'Opción 3', field: 'price3', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    // {headerName: 'Opción 4', field: 'price4', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    // {headerName: 'Opción 5', field: 'price5', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    // {headerName: 'Opción 6', field: 'price6', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    // {headerName: 'Opción 7', field: 'price7', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell},
+    // {headerName: 'Opción 8', field: 'price8', cellEditor: 'numericEditor', valueFormatter: function(params) {return params.value;},  editable:true, width:this.width_cell}
   ];
 
   rowData = [
-   
-    this.createRange,
-
+    // this.createRange(),
   ];
 
 
@@ -224,6 +197,33 @@ export class CompaniesComponent implements OnInit {
       'transplantControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])],
       'costAdminControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])]
     });
+    this.columnDefs = [
+      {headerName: 'Edad',     field: 'age_range', editable:false, width:130},
+      {headerName: 'Opción 1', field: 'price1', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+        return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      }, editable:true, width:this.width_cell},
+      {headerName: 'Opción 2', field: 'price2', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+          return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      }, editable:true, width:this.width_cell},
+      {headerName: 'Opción 3', field: 'price3', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+        return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      }, editable:true, width:this.width_cell},
+      {headerName: 'Opción 4', field: 'price4', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+        return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      },  editable:true, width:this.width_cell},
+      {headerName: 'Opción 5', field: 'price5', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+        return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      },  editable:true, width:this.width_cell},
+      {headerName: 'Opción 6', field: 'price6', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+        return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      },  editable:true, width:this.width_cell},
+      {headerName: 'Opción 7', field: 'price7', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+        return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      },  editable:true, width:this.width_cell},
+      {headerName: 'Opción 8', field: 'price8', cellEditor: 'numericEditor', valueFormatter: function(params) { 
+        return Math.floor(params.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      },  editable:true, width:this.width_cell}
+    ];
    
   }
 
@@ -233,9 +233,6 @@ export class CompaniesComponent implements OnInit {
     this.formDataPlan.price = [];
 
     this.navbarTitleService.updateTitle('Aseguradoras');
-    //if(!this.userService.isAdmin() && !this.userService.isAuth() )
-    //    this.router.navigate(['/dashboard']);
-    //this.showNotification('top', 'center', 'Debe permitir <b>ventanas emergentes</b> para reproducir el video', 'pe-7s-attention', 3);
     this.tableData = {
     headerRow: ['Nombre', 'Email', 'Descripción', 'Órden', 'ACCIONES'],
     };
@@ -245,12 +242,7 @@ export class CompaniesComponent implements OnInit {
     this.formData = { description: '', logo:'', name:'', email: '', comparative:''};
     this.formDataEdit = this.formCountry = { };
     this.downloadURL = '';
-    // this.myFormCategory = this.builder.group({
-    //   category : ['0', [Validators.required, Validators.minLength(3)]],
-    // });
 
-
-    //this.formData.categories.id_category = 1;
     this.showEditForm = this.showPlans = this.showNewForm = this.progress = false;
     this.getCompanies(this.search);
     this.defaultColDef = {
@@ -262,37 +254,7 @@ export class CompaniesComponent implements OnInit {
     };
 
     this.getCountries();
-    //this.formCountry.country_id = 0;
-    // setTimeout(() => {
-    //   this.companies.forEach(element => {
-    //     this.resetPrice();
-    //   });
-    // }, 3000);
-  
   }
-
-  // NumericCellEditor(){
-  //     alert()
-  //   }
-
-    //onSelect(countryid) {
-    //  this.dataSubCategory = this.mediaService.getSubCategories().filter((item)=> item.countryid == countryid);
-    //}
-
-    private myOptions: INgxMyDpOptions = {
-      // other options...
-      dateFormat: 'dd/mm/yyyy',
-  };
-
-  private model: Object = { date: { year: 2018, month: 10, day: 9 } };
-  
-  
-    onDateChanged(event: IMyDateModel): void {
-          // date selected
-          console.log(new Date(event.jsdate).toISOString());
-      
-      }
-
 
   public getCompanies(q:string){
     this.progress = true;
@@ -311,8 +273,6 @@ export class CompaniesComponent implements OnInit {
 
   public onSuccessCompanies(response:any){
     this.progress = false;
-  //this.data = response.json().filter(i => i.id_rol < '4'); 
-  //this.data = this.data.filter(i => i.id_rol < '4') ;
     if(!response['Error'])
       this.companies = response;
   }
@@ -440,12 +400,6 @@ export class CompaniesComponent implements OnInit {
     //console.log(this.formDataPlan.price)
     this.formDataPlan.price = this.arrPrices;
 
-    // copy.forEach(element => {
-    //   // console.log(this.formDataPlan.price.filter(x => x.country_id === element.country_id));      
-    //   // this.formDataPlan.price.filter(x => x.country_id === element.country_id)[0].table = element.table;
-     
-    // });
-
 
     this.formCountry.country_id = 0;
     this.rowData = [];
@@ -458,10 +412,8 @@ export class CompaniesComponent implements OnInit {
   }
 
   setPriceByCountryId(id:string){
-    // console.log(id);
     // console.log(this.formDataPlan.price.filter(x => x.country_id === id))
     this.formDataPlan.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
-    // this.formDataPlanCopy.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
   }
   
   getSelectedCountryId(){
@@ -472,21 +424,21 @@ export class CompaniesComponent implements OnInit {
     this.setPriceByCountryId(this.formCountry.country_id);
   }
 
-  createRangeAges(){
-    var itemsAges: any[] = [];
-    for (let i = 0; i <= 99; i++) {
-      // console.log ("Block statement execution no." + i);
-      itemsAges.push({ age_range: i.toString(), price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+  // createRangeAges(){
+  //   var itemsAges: any[] = [];
+  //   for (let i = 0; i <= 99; i++) {
+  //     // console.log ("Block statement execution no." + i);
+  //     itemsAges.push({ age_range: i.toString(), price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
 
-    }
-    itemsAges.push({ age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
-    itemsAges.push({ age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
-    itemsAges.push({ age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
-    itemsAges.push({ age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
-    console.log(itemsAges);
-    return itemsAges;
+  //   }
+  //   itemsAges.push({ age_range: '1 dependiente'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+  //   itemsAges.push({ age_range: '2 dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+  //   itemsAges.push({ age_range: '3+ dependientes'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+  //   itemsAges.push({ age_range: 'Deducible'  , price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 });
+  //   console.log(itemsAges);
+  //   return itemsAges;
 
-  }
+  // }
 
   createRange(){
     var items: any[] = [];

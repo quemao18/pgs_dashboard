@@ -138,29 +138,6 @@
               </div>
             </div>
           </div>
-          
-          <!-- <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label for="name">Precio Opcción 1</label>
-                  <input type="number" class="form-control" min="0" id="price" name="price[]" required placeholder="Precio 1" [(ngModel)]="formDataPlan.price0">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label for="name">Precio Opcción 2</label>
-                  <input type="number" class="form-control" min="0" id="price" name="price[]" required placeholder="Precio 2" [(ngModel)]="formDataPlan.price1">
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                  <div class="form-group">
-                    <label for="name">Precio Opcción 3</label>
-                    <input type="number" class="form-control" min="0" id="price" name="price[]" required placeholder="Precio 3" [(ngModel)]="formDataPlan.price2">
-                  </div>
-                </div>
-              
-            </div> -->
 
             <div class="row" [formGroup]="myGroup">
                 <div class="col-md-4">
@@ -185,26 +162,27 @@
                 
               </div>
             
+              <label for="precios">Precios</label>
           
-            <section style="border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
+              <section style="border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
                 <div class="form-group">
-                <label style="margin: 12px 12px 12px 0px;" for="rol">Precios</label>
-                <label  style="position: absolute; margin: 12px 30%;" for="rol">Edades</label>
-                <label style="position: absolute; margin: 12px 20%;" for="rol">Rango</label>
-                <label class="switch" style="bottom: 10px;left: 25%" >
+                <!-- <label style="margin: 12px 12px 12px 0px;" for="rol">Precios</label> -->
+                <label  style="position: absolute; margin: 12px 11%;" for="rol">Edades</label>
+                <label style="position: absolute; margin: 12px 1%;" for="rol">Rango</label>
+                <label class="switch" style="top: 2px;left: 5.3%" >
                   <input type="checkbox" [disabled]="formCountry.country_id == 0" (change)="typeTable=!typeTable;openModal(template, typeTable);" [checked]="typeTable">
                   <span class="slider round"></span>
                 </label>
                 <div class="country">
                 <label style="margin:12px" for="rol">País/región</label>
-                <select (change)="onChangeCountry()" style="width: 400px" required name="country" id="country" [(ngModel)]="formCountry.country_id" class="form-control" id="inlineFormCustomSelect">
+                <select (change)="onChangeCountry()" style="width: 280px" required name="country" id="country" [(ngModel)]="formCountry.country_id" class="form-control" id="inlineFormCustomSelect">
                   <option [selected]="formCountry.country_id == 0" value="0">--Seleccciona--</option>
                   <option *ngFor="let q of countries " [value]="q.country_id" [selected]="formCountry.country_id == q.country_id" >
                     {{q.name }}
                   </option>
                 </select>
                 <!-- <a title="Agregar" (click)="modalNewCountry.open()" class="icon" [routerLink]=''> <i class="pe-7s-plus"></i></a> -->
-              </div>
+                </div>
                 </div>
                 <!-- <label for="name">Precios</label> -->
                 <ag-grid-angular 
