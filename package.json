@@ -55,7 +55,7 @@
     "ngx-mydatepicker": "^2.4.10",
     "ngx-pagination": "^3.3.1",
     "ngx-pipes": "^1.7.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "rxjs": "^6.5.4",
     "rxjs-compat": "^6.5.4",
     "serialize-javascript": "^2.1.2",
@@ -67,6 +67,7 @@
     "@angular-devkit/build-angular": "^0.803.25",
     "@angular/cli": "^8.3.25",
     "@angular/compiler-cli": "^8.2.14",
+    "@babel/compat-data": "~7.8.0",
     "@types/bootstrap": "^3.4.0",
     "@types/jasmine": "2.5.54",
     "@types/jquery": "^3.3.31",
@@ -74,7 +75,7 @@
     "codelyzer": "^5.1.2",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "^4.4.1",
+    "karma": "^5.0.5",
     "karma-chrome-launcher": "~2.2.0",
     "karma-cli": "~1.0.1",
     "karma-coverage-istanbul-reporter": "^1.4.3",
@@ -83,7 +84,10 @@
     "protractor": "^5.4.2",
     "ts-node": "~3.3.0",
     "tslint": "~5.7.0",
-    "typescript": "^3.5.3",
-    "@babel/compat-data": "~7.8.0"
+    "typescript": "^3.5.3"
+  },
+  "resolutions": {
+    "minimist": "^1.2.3",
+    "yargs-parser": "^13.1.2"
   }
 }
