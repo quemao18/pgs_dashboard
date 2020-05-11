@@ -71,6 +71,7 @@ import { ChartsModule } from 'ng2-charts';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { VersionCheckService } from './services/version-check.service';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 
 
 enableProdMode();
@@ -160,6 +161,7 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     AngularFireAuthModule ,
+    AngularFireAnalyticsModule,
     AgGridModule.withComponents([]), 
     ChartsModule,
     ModalModule.forRoot(),
