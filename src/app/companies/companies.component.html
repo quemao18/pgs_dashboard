@@ -164,15 +164,21 @@
             
               <label for="precios">Precios</label>
           
-              <section style="border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
+              <section [style.cursor] = "!statusCountry ? 'not-allowed' : 'pointer'"  style="border: 1px solid #ececec;padding: 10px;background-color: ghostwhite;">
                 <div class="form-group">
                 <!-- <label style="margin: 12px 12px 12px 0px;" for="rol">Precios</label> -->
                 <label  style="position: absolute; margin: 12px 11%;" for="rol">Edades</label>
                 <label style="position: absolute; margin: 12px 1%;" for="rol">Rango</label>
                 <label class="switch" style="top: 2px;left: 5.3%" >
-                  <input type="checkbox" [disabled]="formCountry.country_id == 0" (change)="typeTable=!typeTable;openModal(template, typeTable);" [checked]="typeTable">
+                  <input type="checkbox" [disabled]="formCountry.country_id == 0 || !statusCountry" (change)="typeTable=!typeTable;openModal(template, typeTable);" [checked]="typeTable">
                   <span class="slider round"></span>
                 </label>
+                <!-- <label  style="position: absolute; margin: 12px 16%;" for="rol">País</label>
+                <label style="position: absolute; margin: 12px 6%;" for="rol">Habilitado</label>
+                <label class="switch" style="top: 2px;left: 15.3%" >
+                  <input type="checkbox" [disabled]="formCountry.country_id == 0"  [checked]="formCountry.status">
+                  <span class="slider round"></span>
+                </label> -->
                 <div class="country">
                 <label style="margin:12px" for="rol">País/región</label>
                 <select (change)="onChangeCountry()" style="width: 280px" required name="country" id="country" [(ngModel)]="formCountry.country_id" class="form-control" id="inlineFormCustomSelect">
@@ -181,22 +187,29 @@
                     {{q.name }}
                   </option>
                 </select>
+
+                <a 
+                [class.disabled]="formCountry.country_id == 0 "
+                [title]="!statusCountry ? 'Activar País' : 'Desactivar País'" (click)="statusCountry=!statusCountry; changeStatusCountry(formCountry.country_id)" class="icon" [routerLink]=""><i [ngClass]="!statusCountry ? 'pe-7s-check' : 'pe-7s-power'"></i></a>
                 <!-- <a title="Agregar" (click)="modalNewCountry.open()" class="icon" [routerLink]=''> <i class="pe-7s-plus"></i></a> -->
                 </div>
                 </div>
                 <!-- <label for="name">Precios</label> -->
-                <ag-grid-angular 
-                    style="width: 100%; height: 520px; margin-top: -5px;" 
-                    class="ag-theme-balham"
-                    [rowData]="rowData" 
-                    [columnDefs]="columnDefs"
-                    [defaultColDef]="defaultColDef"
-                    [frameworkComponents]="frameworkComponents"
-                    #agGrid
-                    (gridReady)="onGridReady($event)"
-                    (cellValueChanged) = "cellValueChanged()"
-                    >
-                </ag-grid-angular>
+                <div [ngClass]="{'disabled-table': !statusCountry}">
+                  <ag-grid-angular 
+                  style="width: 100%; height: 520px; margin-top: -5px;" 
+                  class="ag-theme-balham"
+                  [rowData]="rowData" 
+                  [columnDefs]="columnDefs"
+                  [defaultColDef]="defaultColDef"
+                  [frameworkComponents]="frameworkComponents"
+                  #agGrid
+                  (gridReady)="onGridReady($event)"
+                  (cellValueChanged) = "cellValueChanged()"
+                  >
+                  </ag-grid-angular>
+                </div>
+
               </section>
               <div class="row">
                   <div class="col-md-12">

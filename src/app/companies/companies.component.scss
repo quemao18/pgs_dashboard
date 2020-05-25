@@ -154,3 +154,19 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+  a.disabled {
+    color: gray;
+    cursor: not-allowed;
+    text-decoration: underline;
+}
+
+.disabled-table
+{
+  // cursor: not-allowed;
+  pointer-events: none !important;
+  /* for "disabled" effect */
+  opacity: 0.5;
+  background: #CCC;
+}
+

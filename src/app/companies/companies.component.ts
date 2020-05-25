@@ -1,23 +1,22 @@
-import {Component, OnInit, ViewChild, ElementRef, TemplateRef} from '@angular/core';
+import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
 import { Location, DatePipe } from '@angular/common';
 import { NavbarTitleService } from '../lbd/services/navbar-title.service';
-import {  Router, ActivatedRoute, Params } from '@angular/router';
+import {  Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
-import { SchoolService } from '../services/school.service';
+
 import { AuthGuard } from '../services/auth-guard.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
-import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
-import { CompleterCmp, CompleterItem, CompleterService, CompleterData, RemoteData } from 'ng2-completer';
-import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
+import { CompleterService, } from 'ng2-completer';
+import { Http, } from '@angular/http';
 import { CustomData } from "../services/custom-data";
 
-import {INgxMyDpOptions, IMyDateModel} from 'ngx-mydatepicker';
+
 
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { CompanyService } from '../services/company.service';
@@ -25,7 +24,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { UploadService } from '../services/upload.service';
 import { PlanService } from '../services/plan.service';
 import { AgGridAngular } from 'ag-grid-angular';
-import { AgGridEvent } from 'ag-grid-community';
+
 import { NumericEditor } from '../numeric-editor.component';
 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -143,6 +142,8 @@ export class CompaniesComponent implements OnInit {
   @ViewChild('modal', {static:true})
   modal: ModalComponent;
 
+  statusCountry = true;
+
   // agesTable = [
   //   { age_range: '18-24', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
   //   { age_range: '25-29', price1: 0, price2: 0, price3: 0, price4: 0, price5: 0, price6: 0, price7: 0, price8: 0 },
@@ -181,7 +182,7 @@ export class CompaniesComponent implements OnInit {
   arr: any = [];
   defaultColDef: { cellClass: string; resizable: boolean; };
   countries:any;
-  formCountry: any = {country_id:0};
+  formCountry: any = {country_id:0, status: true};
   arrPrices: Array<any> = [];
   selected_country_id: string;
   myGroup: FormGroup;
@@ -254,6 +255,7 @@ export class CompaniesComponent implements OnInit {
     };
 
     this.getCountries();
+
   }
 
   public getCompanies(q:string){
@@ -364,6 +366,7 @@ export class CompaniesComponent implements OnInit {
     this.formDataPlan.price = this.arrPrices;
     //this.formDataPlan = row;
     this.formCountry.country_id = 0;
+    this.statusCountry = true;
     this.rowData = [];
 
     this.myGroup.controls['maternityControl'].setValue(0);
@@ -389,12 +392,14 @@ export class CompaniesComponent implements OnInit {
 
     this.countries.forEach(element => {
 
-      if(this.getPriceByCountryId(element.country_id))
+      if(this.getPriceByCountryId(element.country_id)){
         this.rowData = this.getPriceByCountryId(element.country_id).table;
-      else
+        this.statusCountry = this.getPriceByCountryId(element.country_id).status;
+      }else{
         this.rowData =  this.createRange();
-    
-      this.arrPrices.push({country_id: element.country_id, table: this.rowData});
+        this.statusCountry = true;
+      }
+      this.arrPrices.push({country_id: element.country_id, table: this.rowData, status: this.statusCountry});
     });
     
     //console.log(this.formDataPlan.price)
@@ -402,6 +407,7 @@ export class CompaniesComponent implements OnInit {
 
 
     this.formCountry.country_id = 0;
+    this.formCountry.status = true;
     this.rowData = [];
     
   }
@@ -415,7 +421,12 @@ export class CompaniesComponent implements OnInit {
     // console.log(this.formDataPlan.price.filter(x => x.country_id === id))
     this.formDataPlan.price.filter(x => x.country_id === id)[0].table = this.getAllRows();
   }
-  
+
+  setStatusCountry(id:string){
+    // console.log(this.formDataPlan.price.filter(x => x.country_id === id))
+    this.formDataPlan.price.filter(x => x.country_id === id)[0].status = this.statusCountry;
+  }
+   
   getSelectedCountryId(){
     return this.selected_country_id;
   }
@@ -508,6 +519,10 @@ export class CompaniesComponent implements OnInit {
     else
       if(this.getPriceByCountryId(this.formCountry.country_id)) {
         this.rowData = this.getPriceByCountryId(this.formCountry.country_id).table;
+        // console.log(this.getPriceByCountryId(this.formCountry.country_id))
+        this.statusCountry = this.getPriceByCountryId(this.formCountry.country_id).status !== undefined ? 
+        this.getPriceByCountryId(this.formCountry.country_id).status: true;
+        // console.log(this.statusCountry)
         // console.log(this.rowData.length)
         if(this.rowData.length > 17) this.typeTable = true; else this.typeTable = false;
     }else{
@@ -763,6 +778,16 @@ export class CompaniesComponent implements OnInit {
         () => this.onCompleteStatus()
       );
  
+  }
+
+  
+  public changeStatusCountry(id:string){
+    // console.log(this.formCountry)
+    // this.formCountry.status = !this.formCountry.status;
+    // this.getPriceByCountryId(this.formCountry.country_id).status ? 
+    // this.setStatusCountry(this.formCountry.country_id) : true;
+    this.setStatusCountry(id);
+
   }
 
   public changeStatusPlan(row:any){
