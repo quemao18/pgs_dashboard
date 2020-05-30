@@ -140,20 +140,34 @@
           </div>
 
             <div class="row" [formGroup]="myGroup">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <div class="form-group">
                     <label for="name">Complicaciones de Maternidad</label>
                     <input type="number" class="form-control" placeholder="Precio" formControlName="maternityControl">
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="name">Deducibles Maternidad</label>
+                    <ng-multiselect-dropdown
+                      [placeholder]="'-- Todos --'"
+                      [data]="dropdownList"
+                      formControlName="maternityDeduControl"
+                      [settings]="dropdownSettings"
+                      (onSelect)="onItemSelect($event)"
+                      (onSelectAll)="onSelectAll($event)"
+                    >
+                    </ng-multiselect-dropdown>
+                  </div>
+                </div>
+                <div class="col-md-3">
                     <div class="form-group">
                     <label for="name">Transplante de órganos</label>
                     <input type="number" class="form-control" placeholder="Precio" formControlName="transplantControl">
                   </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                     <label for="name">Gastos administrativos</label>
                     <input type="number" class="form-control" placeholder="Precio" formControlName="costAdminControl">

@@ -73,6 +73,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { VersionCheckService } from './services/version-check.service';
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 enableProdMode();
 
@@ -165,6 +166,7 @@ const appRoutes: Routes = [
     AgGridModule.withComponents([]), 
     ChartsModule,
     ModalModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot()
     // LbdChartComponent
     
   ],

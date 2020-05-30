@@ -29,6 +29,7 @@ import { NumericEditor } from '../numeric-editor.component';
 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-companies',
@@ -189,12 +190,17 @@ export class CompaniesComponent implements OnInit {
   // maternityControl: FormControl;
   modalRef: BsModalRef;
 
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings: IDropdownSettings = {};
+
   constructor(
     private modalService: BsModalService,
     private planService: PlanService, private uploadService: UploadService ,private afStorage: AngularFireStorage, public datePipe:DatePipe, private http: Http, private completerService: CompleterService, private builder: FormBuilder, private _sanitizer: DomSanitizer, public companyService: CompanyService, public userService: UserService, public activatedRoute: ActivatedRoute, private navbarTitleService: NavbarTitleService, public router: Router, public authGuard: AuthGuard, public authService: AuthService,  public location: Location,  private notificationService: NotificationService) {
     this.customData = new CustomData(userService, http); 
     this.myGroup = builder.group({
       'maternityControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])],
+      'maternityDeduControl': [],
       'transplantControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])],
       'costAdminControl': ['', Validators.compose([Validators.required, Validators.pattern("^[0-9]*$"), Validators.maxLength(4)])]
     });
@@ -256,6 +262,38 @@ export class CompaniesComponent implements OnInit {
 
     this.getCountries();
 
+    this.dropdownList = [
+      { item_id: 1, item_text: 'Opción I' },
+      { item_id: 2, item_text: 'Opción II' },
+      { item_id: 3, item_text: 'Opción III' },
+      { item_id: 4, item_text: 'Opción IV' },
+      { item_id: 5, item_text: 'Opción V' },
+      { item_id: 6, item_text: 'Opción VI' },
+      { item_id: 7, item_text: 'Opción VII' },
+      { item_id: 8, item_text: 'Opción VIII' }
+    ];
+    this.selectedItems = [
+      // { item_id: 3, item_text: 'Pune' },
+      // { item_id: 4, item_text: 'Navsari' }
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      enableCheckAll: false,
+      selectAllText: 'Seleccionar Todos',
+      unSelectAllText: 'Quitar Todos',
+      itemsShowLimit: 2,
+      allowSearchFilter: false,
+    };
+
+  }
+
+  onItemSelect(item: any) {
+    console.log('onItemSelect', item);
+  }
+  onSelectAll(items: any) {
+    console.log('onSelectAll', items);
   }
 
   public getCompanies(q:string){
@@ -373,6 +411,8 @@ export class CompaniesComponent implements OnInit {
     this.myGroup.controls['transplantControl'].setValue(0);
     this.myGroup.controls['costAdminControl'].setValue(0);
 
+    // this.selectedItems  = this.dropdownList;
+    this.myGroup.controls['maternityDeduControl'].setValue([]);
   }
 
   public editPlan(row:any){
@@ -382,6 +422,7 @@ export class CompaniesComponent implements OnInit {
     this.titlePlan = 'Editar';
     // console.log(row.maternity);
     this.myGroup.controls['maternityControl'].setValue(row.maternity);
+    this.myGroup.controls['maternityDeduControl'].setValue(row.maternity_deductible);
     this.myGroup.controls['transplantControl'].setValue(row.transplant);
     this.myGroup.controls['costAdminControl'].setValue(row.cost_admin);
     this.formDataPlan = row;
@@ -592,6 +633,7 @@ export class CompaniesComponent implements OnInit {
     window.scroll(0,0);
     this.progress=true;
     this.formDataPlan.maternity = this.myGroup.controls['maternityControl'].value;
+    this.formDataPlan.maternity_deductible = this.myGroup.controls['maternityDeduControl'].value;
     this.formDataPlan.transplant = this.myGroup.controls['transplantControl'].value;
     this.formDataPlan.cost_admin = this.myGroup.controls['costAdminControl'].value;
     

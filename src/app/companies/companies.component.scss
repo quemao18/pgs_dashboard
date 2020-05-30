@@ -170,3 +170,12 @@
   background: #CCC;
 }
 
+:host::ng-deep.dropdown-btn{
+  height: 39px;
+}
+
+// :host::ng-deep.selected-item {
+//   // border-radius: 6px !important;
+//   // background: #BAA28E !important;
+//   // border: 1px solid #BAA28E !important;
+//   }
