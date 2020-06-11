@@ -420,9 +420,9 @@ export class CompaniesComponent implements OnInit {
     this.downloadURLComp = '';
     this.showPlans = false;
     this.titlePlan = 'Editar';
-    // console.log(row.maternity);
+    // console.log(row.maternity_deductible);
     this.myGroup.controls['maternityControl'].setValue(row.maternity);
-    this.myGroup.controls['maternityDeduControl'].setValue(row.maternity_deductible);
+    this.myGroup.controls['maternityDeduControl'].setValue(row.maternity_deductible ? row.maternity_deductible: []);
     this.myGroup.controls['transplantControl'].setValue(row.transplant);
     this.myGroup.controls['costAdminControl'].setValue(row.cost_admin);
     this.formDataPlan = row;
@@ -435,7 +435,8 @@ export class CompaniesComponent implements OnInit {
 
       if(this.getPriceByCountryId(element.country_id)){
         this.rowData = this.getPriceByCountryId(element.country_id).table;
-        this.statusCountry = this.getPriceByCountryId(element.country_id).status;
+        this.statusCountry = this.getPriceByCountryId(element.country_id).status !== undefined ? 
+        this.getPriceByCountryId(element.country_id).status : true;
       }else{
         this.rowData =  this.createRange();
         this.statusCountry = true;
