@@ -64,7 +64,10 @@ import { AuthService } from '../services/auth.service';
     LbdTaskListComponent,
     LbdTableComponent,
     LbdUserProfileComponent,
+    LbdCheckboxComponent,
     LbdCloseLayerComponent,
+    LbdNavbarItemsComponent,
+    LbdSidebarItemsComponent,
   ]
 })
 export class LbdModule { }

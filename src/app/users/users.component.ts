@@ -4,7 +4,7 @@ import { TableData } from '../lbd/lbd-table/lbd-table.component';
 import { Router } from '@angular/router';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { UserService } from '../services/user.service';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { trigger, state, transition, style, animate } from '@angular/animations';
@@ -93,9 +93,9 @@ export class UsersComponent implements OnInit {
   private data:Array<any> = [];
 
   @ViewChild('modalEdit', {static:true})
-  modalEdit: ModalComponent;
+  modalEdit: BsModalComponent;
   @ViewChild('modal', {static:true})
-  modal: ModalComponent;
+  modal: BsModalComponent;
 
   public search:string ='';
 

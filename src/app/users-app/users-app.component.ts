@@ -4,7 +4,8 @@ import { TableData } from '../lbd/lbd-table/lbd-table.component';
 import { Router } from '@angular/router';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
+
 import { UserService } from '../services/user.service';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
@@ -110,9 +111,9 @@ export class UsersAppComponent implements OnInit {
   public myFormPlatinum: FormGroup;
 
   @ViewChild('modalEdit', {static:true})
-  modalEdit: ModalComponent;
+  modalEdit: BsModalComponent;
   @ViewChild('modal', {static:true})
-  modal: ModalComponent;
+  modal: BsModalComponent;
   public customData: CustomData;
   @ViewChild("remoteDataSponsor", {static:true}) private remoteDataSponsor: CompleterCmp;
   @ViewChild("remoteDataPlatinum", {static:true}) private remoteDataPlatinum: CompleterCmp;
@@ -485,5 +486,6 @@ public getUsersAll(q:string){
   isAuth(){
     return this.userService.isAuth();
   }
+
 
 }

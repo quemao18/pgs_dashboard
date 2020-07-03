@@ -16,5 +16,9 @@
     "module": "esnext",
     "baseUrl": "./"
   ,    "target": "es2015"
+},
+"angularCompilerOptions": {
+  "enableIvy": false,
 }
+
 }

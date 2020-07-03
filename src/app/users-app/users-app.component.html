@@ -434,14 +434,13 @@
 
  <!--- fin edit form -->
 
-  <!--- Show Modal -->
-
-<modal #modal class="user-plans">
+<!--- Show Modal -->
+<bs-modal #modal class="user-plans" [backdrop]="'static'">
   <spinner-component [spinnerShow]="progress_modal"></spinner-component>
-   <modal-header [show-close]="true">
+   <bs-modal-header [showDismiss]="true">
         <h4 class="modal-title">{{titleModal}}</h4>
-    </modal-header>
-    <modal-body >
+    </bs-modal-header>
+    <bs-modal-body >
     <div [@cardprofile] >
       <lbd-user-profile
         [backgroundImage]="'assets/img/background-1.jpg'"
@@ -468,8 +467,8 @@
         >
       </lbd-user-profile>
     </div>
-    </modal-body>
-</modal>
+    </bs-modal-body>
+</bs-modal>
 
 <!--
   quitado del modal

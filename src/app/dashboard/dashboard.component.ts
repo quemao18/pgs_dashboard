@@ -8,7 +8,7 @@ import { MediaService } from '../services/media.service';
 import { AuthGuard } from '../services/auth-guard.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { CompanyService } from '../services/company.service';
 import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
@@ -93,9 +93,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   dataUsersLine:any;
   dataUsersBar:any;
   dataPlan:any;
-  progressPie:boolean = false;
-  progressLine:boolean = false;
-  progressBar:boolean = false;
+  progressPie:boolean = true;
+  progressLine:boolean = true;
+  progressBar:boolean = true;
   public titlePie = 'Regiones más cotizadas';
   public subTitlePie = 'Cantidad de usuarios por región'
 
@@ -267,11 +267,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
-    setTimeout(() => {
+    // setTimeout(() => {
       this.updatePie();
       this.updateLine();
       this.updateBar();
-    }, 1000);
+    // }, 1200);
 
   }
 
@@ -321,7 +321,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.pieChartColors =[
       { backgroundColor: colors },
      ];
-
+    
   }
 
   
@@ -484,85 +484,129 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   
   }
 
-  getUsers(q:string){
+  async getUsers(q:string, line:boolean){
     //console.log(this.rols);
-    this.userService.getUsers(q).subscribe(
-        (response) =>{
-          this.dataUsersPie = response;
-          this.dataUsersPie = this.dataUsersPie.filter(i => i.user_type ==4 || i.user_type ==null)
-          this.dataUsersLine = response;
-          this.dataUsersLine = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
-          this.dataUsersBar = response;
-          this.dataUsersBar = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
-          // console.log(this.dataUsersPie);
-        },
-        (error) => { 
-          this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
-          console.log(error); 
-          this.progressLine=false;
-          this.progressPie =false; 
-          this.dataUsersPie = [];
-          this.dataUsersLine = [];
-        }, 
-        //() => this.onCompleteLogin()
+    // this.userService.getUsers(q).subscribe(
+    //     (response) =>{
+    //       this.dataUsersPie = response;
+    //       this.dataUsersPie = this.dataUsersPie.filter(i => i.user_type ==4 || i.user_type ==null)
+    //       this.dataUsersLine = response;
+    //       this.dataUsersLine = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
+    //       this.dataUsersBar = response;
+    //       this.dataUsersBar = this.dataUsersLine.filter(i => i.user_type ==4 || i.user_type ==null)
+    //       // console.log(this.dataUsersPie);
+    //     },
+    //     (error) => { 
+    //       this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
+    //       console.log(error); 
+    //       this.progressLine=false;
+    //       this.progressPie =false; 
+    //       this.dataUsersPie = [];
+    //       this.dataUsersLine = [];
+    //     }, 
+    //     //() => this.onCompleteLogin()
+    // );
+
+    const data = await this.userService.getUsers(q).toPromise().then(
+      (data) => {
+        this.dataUsersPie = data;
+        this.dataUsersLine = data;
+        this.dataUsersBar = data;
+        if(!line && this.countries){
+          this.buildRegionsChart();
+          this.progressPie = false;
+        }
+        if(line){
+          this.buildUsersChart();
+          this.progressLine = false;
+        }
+      }
     );
+
   }
 
-  getCountries(){
-    this.companyService.getCountries('').subscribe(
-      (response) => {
-        // console.log(response);
-        this.progressPie = false; 
-        this.countries = response;
-      },
-      (error) => { 
-        this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
-        this.progressPie=false; 
-        this.progressLine = false;
-      }, 
+  async getCountries(){
+    // this.companyService.getCountries('').subscribe(
+    //   (response) => {
+    //     // console.log(response);
+    //     this.progressPie = false; 
+    //     // this.countries = response;
+    //   },
+    //   (error) => { 
+    //     this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
+    //     this.progressPie=false; 
+    //     this.progressLine = false;
+    //   }, 
 
-    )
+    // );
+    const data = await this.companyService.getCountries('').toPromise().then(
+      (data) => {
+        // this.progressPie = false; 
+        this.countries = data;
+      }
+    );
+
    
   }
 
-  getPLans(company_id){
-    this.companyService.getCompanyPlans(company_id).subscribe(
-      data=>{
-        //console.log(data);
-        if(data['Error']) 
-          this.dataPlan = [];
-          else
-          this.dataPlan = data;
+  async getPLans(company_id){
+    // this.companyService.getCompanyPlans(company_id).subscribe(
+    //   data=>{
+    //     //console.log(data);
+    //     if(data['Error']) 
+    //       this.dataPlan = [];
+    //       else
+    //       this.dataPlan = data;
+    //   }
+    // );
+    const data = await this.companyService.getCompanyPlans(company_id).toPromise().then(
+      (data) => {
+        this.dataPlan = data;
       }
     );
   }
 
-  getStasPLans(){
-    this.userService.getStatsPlans().subscribe(
-      data=>{
-        //console.log(data);
-        if(data['Error']) 
-          this.dataPlan = [];
-          else
-          this.dataPlan = data;
+  async getStasPLans(){
+    // this.userService.getStatsPlans().subscribe(
+    //   data=>{
+    //     //console.log(data);
+    //     if(data['Error']) 
+    //       this.dataPlan = [];
+    //       else
+    //       this.dataPlan = data;
+    //   }
+    // );
+    const data = await this.userService.getStatsPlans().toPromise().then(
+      (data) => {
+        this.dataPlan = data;
+        this.progressBar = false;
+        this.buildPlansChart();
+
       }
     );
   }
 
-  getCompanies(q:string){
+  async getCompanies(q:string){
  
-    this.companyService.getCompanies(q).subscribe(
-        (response) => {
-          this.progressBar = false; 
-          this.companies = response;
-        },
-        (error) => { 
-          this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
-          this.progressBar = false;
-          console.log(error.json()); 
-        }, 
-        //() => this.onCompleteLogin()
+    // this.companyService.getCompanies(q).subscribe(
+    //     (response) => {
+    //       this.progressBar = false; 
+    //       this.companies = response;
+    //     },
+    //     (error) => { 
+    //       this.showNotification('top', 'center', '<b>Error</b>', 'pe-7s-attention', 4); 
+    //       this.progressBar = false;
+    //       console.log(error.json()); 
+    //     }, 
+    //     //() => this.onCompleteLogin()
+    // );
+    const data = await this.companyService.getCompanies(q).toPromise().then(
+      (data) => {
+        this.companies = data;
+        this.progressBar = false; 
+      }
     );
+
   }
 
   getColor(){ 
@@ -579,36 +623,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   updatePie(){
     this.progressPie = true;
     this.getCountries();
-    this.getUsers('');
-    setTimeout(() => {
-      this.buildRegionsChart();
-      this.progressPie = false;
-    }, 3000);
-    
+    this.getUsers('', false);
   }
 
   updateLine(){
-    // this.getCountries();
     this.progressLine= true;
-    this.getUsers('');
-    setTimeout(() => {
-      this.buildUsersChart();
-      this.progressLine = false;
-    }, 3000);
-
+    this.getUsers('', true);
   }
 
   updateBar(){
-    // this.getCountries();
     this.progressBar= true;
     this.getStasPLans();
-    // this.getUsers('');
-    // this.getCompanies('');
-    setTimeout(() => {
-      this.buildPlansChart();
-      this.progressBar = false;
-    }, 3000);
-
   }
 
   // events

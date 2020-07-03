@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "lbd-angularcli": {
+    "pgs-health-dashboard": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -33,6 +33,29 @@
               "node_modules/chartist/dist/chartist.js",
               "src/assets/js/bootstrap-notify.js",
               "src/assets/js/light-bootstrap-dashboard.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "rxjs/Rx",
+              "rxjs/Subject",
+              "ng2-validation",
+              "chartjs-plugin-datalabels",
+              "core-js/library/fn/get-iterator",
+              "chartjs-plugin-annotation",
+              "rxjs/BehaviorSubject",
+              "babel-runtime/helpers/extends",
+              "babel-runtime/core-js/get-iterator",
+              "ng2-component-spinner",
+              "babel-runtime/helpers/createClass",
+              "rxjs-compat/add/operator/map",
+              "rxjs/add/operator/map",
+              "rxjs-compat",
+              "rxjs/internal/util/isNumeric",
+              "@firebase/util",
+              "@firebase/component",
+              "firebase/app",
+              "@firebase/app",
+              "@firebase/performance",
+              "chart.js"
             ]
           },
           "configurations": {
@@ -58,18 +81,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "lbd-angularcli:build"
+            "browserTarget": "pgs-health-dashboard:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "lbd-angularcli:build:production"
+              "browserTarget": "pgs-health-dashboard:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "lbd-angularcli:build"
+            "browserTarget": "pgs-health-dashboard:build"
           }
         },
         "test": {
@@ -111,7 +134,7 @@
         }
       }
     },
-    "lbd-angularcli-e2e": {
+    "pgs-health-dashboard-e2e": {
       "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -120,7 +143,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "lbd-angularcli:serve"
+            "devServerTarget": "pgs-health-dashboard:serve"
           }
         },
         "lint": {
@@ -135,7 +158,7 @@
       }
     }
   },
-  "defaultProject": "lbd-angularcli",
+  "defaultProject": "pgs-health-dashboard",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
@@ -144,5 +167,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": "9d90bf45-0394-4287-b86b-a08b284079e2"
   }
 }

@@ -8,7 +8,7 @@ import { NewService } from '../services/new.service';
 import { AuthGuard } from '../services/auth-guard.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -116,9 +116,9 @@ export class NewsComponent implements OnInit {
   public pagination: number = vars.pagination;
   public url: any;
   @ViewChild('modal', {static:true})
-  modal: ModalComponent;
+  modal: BsModalComponent;
   @ViewChild('modalNewEvent', {static:true})
-  modalNewEvent: ModalComponent;
+  modalNewEvent: BsModalComponent;
 
   @ViewChild("datepickerE", {static:true}) datepickerE: ElementRef;
   public isShowDatepicker: boolean = false;

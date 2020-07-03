@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as vars from '../config';
 import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class MediaService {
@@ -42,7 +43,7 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/new_media/", "media="+encodeURIComponent(JSON.stringify(media))+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
   }
 
     public newAudio(media){
@@ -50,7 +51,8 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/new_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
+
   }
 
   public newCategory(category){
@@ -58,7 +60,8 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/new_category/", "category="+JSON.stringify(category)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
+
   }
 
     public newModule(_module){
@@ -66,7 +69,8 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/new_module/", "module="+JSON.stringify(_module)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
+
   }
   
   public deleteAudio(media){
@@ -74,7 +78,8 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/delete_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
+
   }
 
     public deleteMedia(media){
@@ -82,7 +87,8 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/delete_media/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
+
   }
 
   public newSubCategory(subcategory){
@@ -90,7 +96,8 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/new_sub_category/", "sub_category="+JSON.stringify(subcategory)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
+
   }
 
   public updateMedia(media){
@@ -98,7 +105,8 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/update_media/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
+
   }
 
 
@@ -107,7 +115,7 @@ export class MediaService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/medias/update_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
   }
 
   public getStatus(id_media){
@@ -131,7 +139,7 @@ export class MediaService {
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(vars.apiUrl+ "/medias/update_status/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-    .map(res => res);
+    .pipe(map(res => res));
 }
 
 
@@ -140,7 +148,7 @@ export class MediaService {
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(vars.apiUrl+ "/medias/update_status_audio/", "media="+JSON.stringify(media)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-    .map(res => res);
+    .pipe(map(res => res));
 }
 
 public fileChange(event) {
@@ -158,7 +166,7 @@ public fileChange(event) {
         return this.http.post(vars.apiUrl+ "/medias/upload/"+vars.nameKeyApi+"/"+vars.keyApi, formDataUpload, options)
         //    .map(res => res);
         //return this.http.post(vars.apiUrl+ "/news/upload/", +formDataUpload+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-        .map(res => res);    
+        .pipe(map(res => res)); 
             
     }
 }

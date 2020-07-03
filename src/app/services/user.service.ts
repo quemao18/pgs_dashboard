@@ -7,6 +7,7 @@ import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/
 //import { tokenNotExpired } from 'angular2-jwt';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -102,7 +103,8 @@ export class UserService {
         })
         //    .map(res => res);
         //return this.http.post(vars.apiUrl+ "/news/upload/", +formDataUpload+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-        .map(res => res);    
+        .pipe(map(res => res));
+  
             
     }
     }

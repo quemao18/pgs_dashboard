@@ -151,9 +151,9 @@
                     <label for="name">Deducibles Maternidad</label>
                     <ng-multiselect-dropdown
                       [placeholder]="'-- Todos --'"
+                      [settings]="dropdownSettings"
                       [data]="dropdownList"
                       formControlName="maternityDeduControl"
-                      [settings]="dropdownSettings"
                       (onSelect)="onItemSelect($event)"
                       (onSelectAll)="onSelectAll($event)"
                     >
@@ -249,7 +249,6 @@
                       [extensions]="['jpeg','png', 'jpg']"
                       buttonCaption="Selecciona la foto"
                       dropBoxMessage="O arrastra la foto"
-                  
                       >
                       
                       </image-upload>
@@ -323,7 +322,7 @@
                           [extensions]="['jpeg','png', 'jpg']"
                           buttonCaption="Selecciona la foto"
                           dropBoxMessage="O arrastra la foto"
-                      
+                          [class]="'customClass'"
                           >
                           
                           </image-upload>
@@ -415,7 +414,7 @@
                     [extensions]="['jpeg','png', 'jpg']"
                     buttonCaption="Selecciona la foto"
                     dropBoxMessage="O arrastra la foto"
-                
+                    [class]="'customClass'"
                     >
                     
                     </image-upload>
@@ -468,13 +467,13 @@
       </div>
     </div>
 
-    <modal #modal>
+    <bs-modal #modal>
       <!-- <spinner-component [spinnerShow]="progress_modal"></spinner-component> -->
-       <modal-header [show-close]="true">
+       <bs-modal-header [showDismiss]="true">
             <h4 class="modal-title">{{titleModal}}
             </h4>
-        </modal-header>
-        <modal-body>
+        </bs-modal-header>
+        <bs-modal-body>
         <div [@cardprofile]>
           <lbd-user-profile
             [backgroundImage]="'assets/img/background-1.jpg'"
@@ -485,29 +484,29 @@
             >
           </lbd-user-profile>
         </div>
-        </modal-body>
-    </modal>
+        </bs-modal-body>
+    </bs-modal>
 
 
     
-<modal [animation]="true" [keyboard]="true" [backdrop]="true" (onClose)="saveCountry()" (onDismiss)="dismissed()"
+<bs-modal [animation]="true" [keyboard]="true" [backdrop]="true" (onClose)="saveCountry()" (onDismiss)="dismissed()"
 #modalNewCountry>
 <form #modalFormCountry="ngForm">
-    <modal-header [show-close]="true">
+    <bs-modal-header [showDismiss]="true">
         <h4 class="modal-title">Nuevo País</h4>
-    </modal-header>
-    <modal-body>
+    </bs-modal-header>
+    <bs-modal-body>
         <div class="form-group">
             <label for="name">Nombre</label>
             <input type="text" class="form-control" required [(ngModel)]="formCountry.name" name="country" id="country">
         </div>
-    </modal-body>
-    <modal-footer>
+    </bs-modal-body>
+    <bs-modal-footer>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modalNewCountry.dismiss()">Cancelar</button>
         <button type="button" class="btn btn-primary" [disabled]="!modalFormCountry.valid" (click)="modalNewCountry.close()">Guardar</button>
-    </modal-footer>
+    </bs-modal-footer>
 </form>
-</modal>
+</bs-modal>
 
 <!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">Open modal</button> -->
 <!-- <br><br> -->

@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as vars from '../config';
 import { Http, Headers, URLSearchParams, RequestOptions, Jsonp } from '@angular/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class NewService {
@@ -27,7 +28,7 @@ export class NewService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/news/new_new/", "new="+JSON.stringify(data)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
   }
 
   public newEvent(event){
@@ -35,7 +36,7 @@ export class NewService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/news/new_event/", "event="+JSON.stringify(event)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
   }
   
   public deleteNew(data){
@@ -43,7 +44,7 @@ export class NewService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/news/delete_new/", "new="+JSON.stringify(data)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
   }
 
 
@@ -52,7 +53,7 @@ export class NewService {
       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
       let options = new RequestOptions({ headers: headers });
       return this.http.post(vars.apiUrl+ "/news/update_new/", "new="+JSON.stringify(data)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-      .map(res => res);
+      .pipe(map(res => res));
   }
 
 
@@ -67,7 +68,7 @@ export class NewService {
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(vars.apiUrl+ "/news/update_status/", "new="+JSON.stringify(data)+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-    .map(res => res);
+    .pipe(map(res => res));
 }
 
   public fileChange(event) {
@@ -85,7 +86,7 @@ export class NewService {
         return this.http.post(vars.apiUrl+ "/news/upload/"+vars.nameKeyApi+"/"+vars.keyApi, formDataUpload, options)
         //    .map(res => res);
         //return this.http.post(vars.apiUrl+ "/news/upload/", +formDataUpload+"&"+vars.nameKeyApi+"="+vars.keyApi, options)
-        .map(res => res);    
+        .pipe(map(res => res)); 
             
     }
 }

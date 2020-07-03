@@ -8,7 +8,9 @@ import { UserService } from '../services/user.service';
 import { AuthGuard } from '../services/auth-guard.service';
 import { NotificationService, NotificationType, NotificationOptions } from '../lbd/services/notification.service';
 import * as vars from '../config';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BsModalComponent } from 'ng2-bs3-modal';
+
+import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal'
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -27,7 +29,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 
 import { NumericEditor } from '../numeric-editor.component';
 
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+// import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -141,7 +143,7 @@ export class CompaniesComponent implements OnInit {
   public frameworkComponents;
   typeTable: boolean = false;
   @ViewChild('modal', {static:true})
-  modal: ModalComponent;
+  modal: BsModalComponent;
 
   statusCountry = true;
 
@@ -276,6 +278,7 @@ export class CompaniesComponent implements OnInit {
       // { item_id: 3, item_text: 'Pune' },
       // { item_id: 4, item_text: 'Navsari' }
     ];
+
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'item_id',
