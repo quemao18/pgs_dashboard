@@ -62,8 +62,7 @@
     "serialize-javascript": "^4.0.0",
     "tslib": "^2.0.0",
     "web-animations-js": "^2.3.2",
-    "zone.js": "~0.10.3",
-    "kind-of": ">=6.0.3"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1000.1",
@@ -86,7 +85,8 @@
     "protractor": "^7.0.0",
     "ts-node": "~8.10.2",
     "tslint": "~6.1.2",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.6",
+    "kind-of": ">=6.0.3"
   },
   "resolutions": {
     "minimist": "^1.2.3",
